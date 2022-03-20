@@ -1,2 +1,2 @@
 # portfolio
-my portfolio build with next.js
+my portfolio built with next.js
