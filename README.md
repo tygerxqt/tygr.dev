@@ -1,2 +1,2 @@
-# portfolio
-my portfolio built with next.js
+# portfolio 
+open beta @ [beta.tygr.dev](https://beta.tygr.dev)
