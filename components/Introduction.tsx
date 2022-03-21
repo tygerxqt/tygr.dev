@@ -37,7 +37,7 @@ export default function Introduction() {
                     as="a"
                     variant="outline"
                     size="lg"
-                    href="/github"
+                    href="/instagram"
                 >
                     <BsInstagram size="24px" />
                 </Button>
@@ -46,7 +46,7 @@ export default function Introduction() {
                     as="a"
                     variant="outline"
                     size="lg"
-                    href="/github"
+                    href="/discord"
                 >
                     <BsDiscord size="24px" />
                 </Button>
@@ -54,7 +54,7 @@ export default function Introduction() {
                     as="a"
                     variant="outline"
                     size="lg"
-                    href="/github"
+                    href="/youtube"
                 >
                     <BsYoutube size="24px" />
                 </Button>
@@ -62,7 +62,7 @@ export default function Introduction() {
                     as="a"
                     variant="outline"
                     size="lg"
-                    href="/github"
+                    href="/twitch"
                 >
                     <BsTwitch size="24px" />
                 </Button>
