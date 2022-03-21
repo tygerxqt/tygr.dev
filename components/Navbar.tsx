@@ -38,12 +38,12 @@ export default function Navbar({ enableTransition }) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderColor={colorMode === 'light' ? '#000000' : '#FFFFFF'} borderBottomWidth="1px">
-              <Heading fontSize={'7xl'}>&lt;/lofu&gt;</Heading>
+          <DrawerHeader borderColor={colorMode === 'light' ? '#000000' : '#FFFFFF'}>
+            <Image borderTop={'4vw'} w="32px" h="32px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
           </DrawerHeader>
           <DrawerBody>
             <Stack spacing="24px">
-              <NextLink href="/">
+              <NextLink href="/" passHref>
                 <Button as="a" variant="ghost" fontSize="16px">
                   Home
                 </Button>
@@ -81,21 +81,15 @@ export default function Navbar({ enableTransition }) {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          width="100%"
-          px={isLargerThan768 ? "4vw" : "4vw"}
-          py={isLargerThan768 ? "2vw" : "4vw"}
+          px={isLargerThan768 ? "20vw" : "10vw"}
+          py={isLargerThan768 ? "4vw" : "8vw"}
           borderBottom="0.5px solid borderColor"
         >
-          <NextLink href="/">
-            <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} />
+          <NextLink href="/" passHref>
+            <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
           </NextLink>
           {isLargerThan768 ? (
             <Center>
-              <NextLink href={"/"} passHref>
-                <Button as="a" variant={"ghost"} p="4" ml="3vw" fontSize={"16px"}>
-                  Home
-                </Button>
-              </NextLink>
               <NextLink href={"/projects"} passHref>
                 <Button as="a" variant={"ghost"} p="4" ml="3vw" fontSize={"16px"}>
                   Projects
@@ -107,7 +101,7 @@ export default function Navbar({ enableTransition }) {
                 </Button>
               </NextLink>
               <Button
-                variant="ghost"
+                variant="outline"
                 p="4"
                 ml="3vw"
                 fontSize={"16px"}
@@ -132,6 +126,6 @@ export default function Navbar({ enableTransition }) {
           )}
         </Flex>
       </Slide>
-    </Box>
+    </Box >
   );
 }
