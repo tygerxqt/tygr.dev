@@ -55,7 +55,7 @@ return (
                         fontSize={{ base: "14px", md: "16px" }}
                         whiteSpace="pre-line"
                     >
-                        Hi! I'm tygerxqt, I've been close to a computer since an early
+                        Hi! I&apos;m tygerxqt, I&apos;ve been close to a computer since an early
                         age, and been passionate about it ever since. <br />
                     <br />
                         I really liked to build stuff using
@@ -79,7 +79,7 @@ return (
                         content="Python is an interpreted high-level general-purpose programming language."
                     />
                         <br />
-                        I'm interested in building something helpful and automate tasks
+                        I&apos;m interested in building something helpful and automate tasks
                         with code, currently focused on
                     <MoreInfo
                         text="Web Development,"
@@ -92,8 +92,8 @@ return (
                         and I anticipate entering the game development area soon as well!
                         <br />
                         <br />
-                        When I'm not working on projects, I play video games, watch some
-                        anime, or if the weather's good, I go out on a bike ride with my
+                        When I&apos;m not working on projects, I play video games, watch some
+                        anime, or if the weather&apos;s good, I go out on a bike ride with my
                         friends!
                     </Text>
                 </Stack>
