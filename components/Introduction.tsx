@@ -1,72 +1,97 @@
-import { Stack, Heading, Flex, Button, Text, HStack, Grid, SimpleGrid } from "@chakra-ui/react";
-import { BsGithub, BsTwitter, BsInstagram, BsDiscord, BsYoutube, BsTwitch } from "react-icons/bs";
-import NextLink from 'next/link';
+import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Center, Slide } from "@chakra-ui/react";
+import { type ButtonProps } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+import { BsGithub, BsTwitter, BsInstagram, BsDiscord } from "react-icons/bs";
+import { IoIosArrowDown } from "react-icons/io"
+import useMediaQuery from "../hook/useMediaQuery";
+
+export const MotionButton = motion<ButtonProps>(Button)
 
 export default function Introduction() {
+    const isLargerThan1200 = useMediaQuery(1200);
+    const buttonSize = isLargerThan1200 ? "md" : "sm"
+    function ScrollScript() { window.scrollBy(0, 570) }
     return (
         <>
-            <Stack>
+            <Stack
+                pt={'8vh'}
+            >
+                <SlideFade
+                    in={true}
+                    transition={{ enter: { duration: 0.4, delay: 0.7 } }}
+                >
                 <Heading fontSize="display3" fontWeight="medium" position={"absolute"}>
                     Hey there, I&apos;m...
                 </Heading>
+                </SlideFade>
+                <SlideFade
+                    in={true}
+                    transition={{ enter: { duration: 0.4, delay: 0.8 } }}
+                >
                 <Heading fontSize="display" fontWeight="bold" m="0">
                     tygerxqt.
                 </Heading>
                 <Text fontSize="display2">
                     A self-taught Web/IOT Developer.
                 </Text>
+                </SlideFade>
             </Stack>
-            <SimpleGrid columns={{ base: 3, sm: 3, md: 6 }} spacing={8}>
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/github"
+            <SlideFade in={true} transition={{ enter: { duration: 0.3, delay: 1 } }}>
+                <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8}>
+                    <Button
+                        as="a"
+                        variant="outline"
+                        size={buttonSize}
+                        href="/github"
+                        leftIcon={<BsGithub />}
+                    >
+                        Github
+                    </Button>
+                    <Button
+                        as="a"
+                        variant="outline"
+                        size={buttonSize}
+                        href="/twitter"
+                        leftIcon={<BsTwitter />}
+                    >
+                        Twitter
+                    </Button>
+                    <Button
+                        as="a"
+                        variant="outline"
+                        size={buttonSize}
+                        href="/instagram"
+                        leftIcon={<BsInstagram />}
+                    >
+                        Instagram
+                    </Button>
+                    <Button
+                        as="a"
+                        variant="outline"
+                        size={buttonSize}
+                        href="/discord"
+                        leftIcon={<BsDiscord />}
+                    >
+                        Discord
+                    </Button>
+                </SimpleGrid>
+            </SlideFade>
+            <Center>
+                <SlideFade
+                    in={true}
+                    transition={{ enter: { duration: 0.3, delay: 1 } }}
                 >
-                    <BsGithub size="24px" />
-                </Button>
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/twitter"
-                >
-                    <BsTwitter size="24px" />
-                </Button>
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/instagram"
-                >
-                    <BsInstagram size="24px" />
-                </Button>
-
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/discord"
-                >
-                    <BsDiscord size="24px" />
-                </Button>
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/youtube"
-                >
-                    <BsYoutube size="24px" />
-                </Button>
-                <Button
-                    as="a"
-                    variant="outline"
-                    size="lg"
-                    href="/twitch"
-                >
-                    <BsTwitch size="24px" />
-                </Button>
-            </SimpleGrid>
+                    <MotionButton
+                        as="a"
+                        variant={"ghost"}
+                        p={4}
+                        mt={"8vh"}
+                        onClick={ScrollScript}
+                    >
+                    <IoIosArrowDown />
+                </MotionButton>
+                </SlideFade>
+            </Center>
         </>
     )
 }
