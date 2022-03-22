@@ -47,6 +47,14 @@ const components = {
         bg: mode('white', '#111111')(props),
       }
     })
+  },
+
+  Popover: {
+    baseStyle: props => ({
+      content: {
+        bg: mode('white', '#111111')(props),
+      }
+    })
   }
 };
 
