@@ -13,7 +13,7 @@ export default function Container({ enableTransition, children }) {
         as="main"
         justifyContent="center"
         flexDirection="column"
-        px={isLargerThan768 ? "15vw" : "10vw"}
+        px={"5vh"}
         py={isLargerThan768 ? "4vw" : "8vw"}
       >
         {children}
