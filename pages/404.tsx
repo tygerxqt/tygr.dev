@@ -5,7 +5,7 @@ import Container from '../components/Container'
 export default function IndexPage() {
     return (
         <>
-            <Container enableTransition={true}>
+            <Container enableTransition={false}>
                 <Head>
                     <title>404</title>
                     <meta name="title" content="tygerxqt" />
