@@ -1,0 +1,86 @@
+import { Stack, SimpleGrid, Heading, Link, Text, Box } from "@chakra-ui/react";
+import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
+import NextLink from "next/link";
+import ProjectCard from "./ProjectCard";
+
+export default function FeaturedProjects({ projects }) {
+    return (
+        <>
+            <Stack spacing={8} w="full">
+                <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={16}>
+                    <SlideUpWhenVisible threshold={0.1}>
+                        <Stack spacing={1}>
+                            <Stack
+                                isInline
+                                alignItems={"center"}
+                                justifyContent={"space-between"}
+                            >
+                                <Heading
+                                    fontSize={{ base: "xl", md: "2xl" }}
+                                >
+                                    Featured Projects.
+                                </Heading>
+                                <NextLink href={"/projects"} passHref>
+                                    <Link>
+                                        <Text
+                                            display={{ base: 'block', md: 'none' }}
+                                            fontSize={{ base: 'sm', md: 'xl' }}
+                                        >
+                                            {' '}
+                                            Explore more &rarr;
+                                        </Text>
+                                    </Link>
+                                </NextLink>
+                            </Stack>
+                            <Text fontSize={{ base: 'md', md: 'xl' }}>
+                                Here&apos;s some of my projects I have worked on.
+                            </Text>
+                            <NextLink href={"/projects"} passHref>
+                                <Link>
+                                    <Text
+                                        display={{ base: 'none', md: 'block' }}
+                                        fontSize={{ base: 'md', md: 'xl' }}
+                                    >
+                                        Explore more &rarr;
+                                    </Text>
+                                </Link>
+                            </NextLink>
+                        </Stack>
+                    </SlideUpWhenVisible>
+                    <SlideUpWhenVisible threshold={undefined}>
+                        <ProjectCard
+                            title={projects[0].title}
+                            description={projects[0].description}
+                            image={projects[0].image}
+                            github_link={projects[0].github_link}
+                            deploy_link={projects[0].deploy_link}
+                            tags={projects[0].tags}
+                        />
+                    </SlideUpWhenVisible>
+                    <SlideUpWhenVisible threshold={undefined}>
+                        <Box mt={{ md: '-50%' }}>
+                            <ProjectCard
+                                title={projects[1].title}
+                                description={projects[1].description}
+                                image={projects[1].image}
+                                github_link={projects[1].github_link}
+                                deploy_link={projects[1].deploy_link}
+                                tags={projects[1].tags}
+                            />
+                        </Box>
+                    </SlideUpWhenVisible>
+                    <SlideUpWhenVisible threshold={undefined}>
+                        <ProjectCard
+                            title={projects[2].title}
+                            description={projects[2].description}
+                            image={projects[2].image}
+                            github_link={projects[2].github_link}
+                            deploy_link={projects[2].deploy_link}
+                            tags={projects[2].tags}
+                        />
+                    </SlideUpWhenVisible>
+                </SimpleGrid>
+            </Stack>
+        </>
+    )
+}

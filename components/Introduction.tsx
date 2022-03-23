@@ -9,7 +9,6 @@ export const MotionButton = motion<ButtonProps>(Button)
 export default function Introduction() {
     const isLargerThan1200 = useMediaQuery(1200);
     const buttonSize = isLargerThan1200 ? "md" : "sm"
-    function ScrollScript() { window.scrollBy(0, 570) }
     return (
         <>
             <Stack
@@ -19,24 +18,24 @@ export default function Introduction() {
                     in={true}
                     transition={{ enter: { duration: 0.4, delay: 0.7 } }}
                 >
-                <Heading fontSize="display3" fontWeight="medium" position={"absolute"}>
-                    Hey there, I&apos;m...
-                </Heading>
+                    <Heading fontSize="display3" fontWeight="medium" bottom={""}>
+                        Hey there, I&apos;m...
+                    </Heading>
                 </SlideFade>
                 <SlideFade
                     in={true}
                     transition={{ enter: { duration: 0.4, delay: 0.8 } }}
                 >
-                <Heading fontSize="display" fontWeight="bold" m="0">
-                    tygerxqt.
-                </Heading>
-                <Text fontSize="display2">
-                    A self-taught Web/IOT Developer.
-                </Text>
+                    <Heading fontSize="display" fontWeight="bold" m="0">
+                        tygerxqt.
+                    </Heading>
+                    <Text fontSize="display2">
+                        A self-taught Web/IOT Developer.
+                    </Text>
                 </SlideFade>
             </Stack>
             <SlideFade in={true} transition={{ enter: { duration: 0.3, delay: 1 } }}>
-                <Flex pb={'8vh'}>
+                <Flex pb={'15vh'}>
                     <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8}>
                         <Button
                             as="a"

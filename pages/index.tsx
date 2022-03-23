@@ -3,8 +3,11 @@ import { Stack } from '@chakra-ui/react'
 import Container from '../components/Container'
 import Introduction from '../components/Introduction';
 import AboutMe from '../components/About';
+import Contact from '../components/Contact';
+import { Directus } from '@directus/sdk';
+import FeaturedProjects from '../components/FeaturedProjects';
 
-export default function IndexPage() {
+function IndexPage({ projects }) {
   return (
     <>
       <Container enableTransition={true}>
@@ -21,8 +24,24 @@ export default function IndexPage() {
         >
           <Introduction />
           <AboutMe />
+          <FeaturedProjects projects={projects.data} />
+          <Contact />
         </Stack>
       </Container>
     </>
   )
 }
+
+export async function getStaticProps() {
+  const directus = new Directus(process.env.DIRECTUS_URL);
+
+  const projects = await directus.items('featuredProjects').readByQuery({ meta: 'total_count' });
+
+  return {
+    props: {
+      projects
+    }
+  }
+}
+
+export default IndexPage;

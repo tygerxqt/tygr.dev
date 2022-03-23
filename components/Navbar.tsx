@@ -82,8 +82,10 @@ export default function Navbar({ enableTransition }) {
           justifyContent="space-between"
           alignItems="center"
           px={isLargerThan768 ? "20vw" : "10vw"}
-          py={isLargerThan768 ? "4vw" : "8vw"}
+          pt={isLargerThan768 ? "4vw" : "8vw"}
+          pb={isLargerThan768 ? "1vw" : "2vw"}
           borderBottom="0.5px solid borderColor"
+          backgroundColor={colorMode === 'light' ? '#FFFFFF' : '#000000'}
         >
           <NextLink href="/" passHref>
             <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
