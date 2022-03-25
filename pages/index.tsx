@@ -6,6 +6,7 @@ import AboutMe from '../components/About';
 import Contact from '../components/Contact';
 import { Directus } from '@directus/sdk';
 import FeaturedProjects from '../components/FeaturedProjects';
+import config from '../config.json'
 
 function IndexPage({ projects }) {
   return (
@@ -33,7 +34,7 @@ function IndexPage({ projects }) {
 }
 
 export async function getStaticProps() {
-  const directus = new Directus(process.env.DIRECTUS_URL);
+  const directus = new Directus(config.DIRECTUS_URL);
 
   const projects = await directus.items('featuredProjects').readByQuery({ meta: 'total_count' });
 

@@ -1,8 +1,9 @@
-import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider } from "@chakra-ui/react"
+import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Flex, Box } from "@chakra-ui/react"
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
 import useMediaQuery from "../hook/useMediaQuery"
+import config from '../config.json'
 
 export default function ProjectCard({
     title,
@@ -64,6 +65,7 @@ export default function ProjectCard({
     }
 
     const isLargerThan800 = useMediaQuery(800);
+    const isLargerThan480 = useMediaQuery(480);
 
     const Tags = tags.map((item) => (
         <Tag
@@ -76,7 +78,7 @@ export default function ProjectCard({
         </Tag>
     ))
 
-    const imageURL = process.env.DIRECTUS_URL + "/assets/" + image
+    const imageURL = config.DIRECTUS_URL + "/assets/" + image
 
     return (
         <Stack
@@ -149,7 +151,16 @@ export default function ProjectCard({
                             )}
                         </Stack>
                     </Stack>
-                    <Stack isInline>{Tags}</Stack>
+                    {isLargerThan480 ? (
+                        <Stack isInline>{Tags}</Stack>
+                    ) : (
+                        
+                        <Stack isInline>
+                            <Box>
+                                {Tags}
+                            </Box>
+                        </Stack>
+                    )}
                     <Divider />
                     <Text fontSize={['sm', 'md']}>
                         {description}
