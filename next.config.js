@@ -45,7 +45,11 @@ const nextConfig = {
         permanent: true,
       }
     ]
-  }
+  },
+
+  images: {
+    domains: ["i.imgur.com", "ty8nl6ol.directus.app"],
+  },
 }
 
 module.exports = nextConfig

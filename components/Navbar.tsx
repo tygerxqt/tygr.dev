@@ -81,7 +81,7 @@ export default function Navbar({ enableTransition }) {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          px={isLargerThan768 ? "20vw" : "10vw"}
+          px={isLargerThan768 ? "20vw" : "5vw"}
           pt={isLargerThan768 ? "4vw" : "8vw"}
           pb={isLargerThan768 ? "1vw" : "2vw"}
           borderBottom="0.5px solid borderColor"
