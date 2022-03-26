@@ -154,7 +154,6 @@ export default function ProjectCard({
                     {isLargerThan480 ? (
                         <Stack isInline>{Tags}</Stack>
                     ) : (
-                        
                         <Stack isInline>
                             <Box>
                                 {Tags}

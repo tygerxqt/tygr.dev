@@ -12,9 +12,11 @@ import {
 } from "@chakra-ui/react";
 import useMediaQuery from "../hook/useMediaQuery";
 import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
+import { useColorMode } from "@chakra-ui/react";
 
 export default function AboutMe() {
     const isLargerThan800 = useMediaQuery(800);
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const MoreInfo = ({ text, content }) => {
         return (
@@ -23,7 +25,7 @@ export default function AboutMe() {
                 {isLargerThan800 ? (
                     <Popover trigger="hover" placement="top">
                         <PopoverTrigger>
-                            <chakra.span color="button1" cursor="help">
+                            <chakra.span color={colorMode === "light" ? "#2A4365" : "#90CDF4"} cursor="help">
                                 {text}
                             </chakra.span>
                         </PopoverTrigger>
@@ -35,7 +37,7 @@ export default function AboutMe() {
                         </PopoverContent>
                     </Popover>
                 ) : (
-                    <Text as="span" color="button1">
+                    <Text as="span" color={colorMode === "light" ? "#2A4365" : "#90CDF4"}>
                         {text}
                     </Text>
                 )}{" "}
@@ -47,7 +49,7 @@ export default function AboutMe() {
         <>
             <Stack>
                 <SlideUpWhenVisible threshold={undefined}>
-                    <Stack spacing={4} mx={{ base: "5vw", sm: "8vw" }} mt={"15vh"} mb={"26vh"}>
+                    <Stack spacing={4} mx={{ base: "5vw", sm: "8vw" }} mt={"25vh"} mb={"25vh"}>
                         <Heading fontFamily="Ubuntu" fontSize="2xl">
                             About Me.
                         </Heading>
