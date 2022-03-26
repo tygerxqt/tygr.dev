@@ -1,9 +1,11 @@
 import React from 'react'
-import { Flex, Stack, Box, Text } from '@chakra-ui/react'
+import { Flex, Stack, Box, Text, Link } from '@chakra-ui/react'
 import Navbar from './Navbar'
 import useMediaQuery from '../hook/useMediaQuery'
+import { useColorMode } from '@chakra-ui/react'
 
 export default function Container({ enableTransition, children }) {
+  const { colorMode, toggleColorMode } = useColorMode()
   const isLargerThan768 = useMediaQuery(768);
 
   return (
@@ -18,6 +20,37 @@ export default function Container({ enableTransition, children }) {
       >
         {children}
       </Flex>
+      <Stack alignItems="center" mb={5}>
+        <Text textAlign="center" fontSize="sm">
+          Designed and Developed by tygerxqt.
+          <br />
+          Built with{" "}
+          <Link
+            href="https://nextjs.org/"
+            fontWeight="semibold"
+            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+          >
+            Next.js
+          </Link>{" "}
+          &{" "}
+          <Link
+            href="https://chakra-ui.com/"
+            fontWeight="semibold"
+            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+          >
+            Chakra UI
+          </Link>
+          . Hosted on{" "}
+          <Link
+            href="https://vercel.com/solutions/nextjs?utm_source=next-site&utm_medium=banner&utm_campaign=next-website"
+            fontWeight="semibold"
+            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+          >
+            Vercel
+          </Link>
+          .
+        </Text>
+      </Stack>
     </>
   )
 }
