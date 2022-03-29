@@ -80,7 +80,7 @@ export default function AboutMe() {
                                 text="Python."
                                 content="Python is an interpreted high-level general-purpose programming language."
                             />
-                            <br />
+                            
                             I&apos;m interested in building something helpful and automate tasks
                             with code, currently focused on
                             <MoreInfo

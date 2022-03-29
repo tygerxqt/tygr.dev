@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import { Stack } from '@chakra-ui/react'
-import Container from '../components/Container'
 import Introduction from '../components/Introduction';
 import AboutMe from '../components/About';
 import Contact from '../components/Contact';
 import { Directus } from '@directus/sdk';
 import FeaturedProjects from '../components/FeaturedProjects';
 import config from '../config.json'
+import Container from '../components/Container';
 
 function IndexPage({ projects }) {
   return (

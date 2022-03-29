@@ -28,7 +28,7 @@ export default function Container({ enableTransition, children }) {
           <Link
             href="https://nextjs.org/"
             fontWeight="semibold"
-            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
           >
             Next.js
           </Link>{" "}
@@ -36,7 +36,7 @@ export default function Container({ enableTransition, children }) {
           <Link
             href="https://chakra-ui.com/"
             fontWeight="semibold"
-            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
           >
             Chakra UI
           </Link>
@@ -44,7 +44,7 @@ export default function Container({ enableTransition, children }) {
           <Link
             href="https://vercel.com/solutions/nextjs?utm_source=next-site&utm_medium=banner&utm_campaign=next-website"
             fontWeight="semibold"
-            color={colorMode === "light" ? "#2A4365" : "#90CDF4"}
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
           >
             Vercel
           </Link>

@@ -25,13 +25,13 @@ export default function Contact() {
                     <Text fontSize={"md"} textAlign={"center"}>
                         I&apos;m currently working at{" "}
                         <Link href="https://nordstud.io" isExternal>
-                            <Text display={"inline"} color={colorMode === "light" ? "#2A4365" : "#90CDF4"}>
+                            <Text display={"inline"} color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}>
                                 Nord Studio
                             </Text>
                         </Link>
                         {" "} and {" "}
                         <Link href="https://lofu.studio" isExternal>
-                            <Text display={"inline"} color={colorMode === "light" ? "#2A4365" : "#90CDF4"}>
+                            <Text display={"inline"} color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}>
                                 Lofu Studio.
                             </Text>
                         </Link>

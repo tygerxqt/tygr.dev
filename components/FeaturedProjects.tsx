@@ -1,9 +1,11 @@
-import { Stack, SimpleGrid, Heading, Link, Text, Box } from "@chakra-ui/react";
+import { Stack, SimpleGrid, Heading, Link, Text, Box, useColorMode } from "@chakra-ui/react";
 import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
 import NextLink from "next/link";
 import ProjectCard from "./ProjectCard";
 
 export default function FeaturedProjects({ projects }) {
+    const { colorMode } = useColorMode();
+
     return (
         <>
             <Stack spacing={8} w="full">
@@ -25,6 +27,7 @@ export default function FeaturedProjects({ projects }) {
                                         <Text
                                             display={{ base: 'block', md: 'none' }}
                                             fontSize={{ base: 'sm', md: 'xl' }}
+                                            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
                                         >
                                             {' '}
                                             Explore more &rarr;
@@ -40,6 +43,7 @@ export default function FeaturedProjects({ projects }) {
                                     <Text
                                         display={{ base: 'none', md: 'block' }}
                                         fontSize={{ base: 'md', md: 'xl' }}
+                                        color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
                                     >
                                         Explore more &rarr;
                                     </Text>

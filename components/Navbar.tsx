@@ -14,8 +14,7 @@ import {
   Stack,
   useColorMode,
   Image,
-  Center,
-  Heading,
+  Center
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../hook/useMediaQuery";
@@ -66,7 +65,7 @@ export default function Navbar({ enableTransition }) {
   );
 
   return (
-    <Box zIndex="99">
+    <Box zIndex={99}>
       <Slide
         direction="top"
         in={true}
@@ -77,15 +76,14 @@ export default function Navbar({ enableTransition }) {
         }
       >
         <Flex
-          as="nav"
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          px={isLargerThan768 ? "20vw" : "5vw"}
-          pt={isLargerThan768 ? "4vw" : "8vw"}
+          px={isLargerThan768 ? "25vw" : "5vw"}
+          pt={isLargerThan768 ? "2vw" : "8vw"}
           pb={isLargerThan768 ? "1vw" : "2vw"}
-          borderBottom="0.5px solid borderColor"
           backgroundColor={colorMode === 'light' ? '#FFFFFF' : '#000000'}
+          
         >
           <NextLink href="/" passHref>
             <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
@@ -93,7 +91,7 @@ export default function Navbar({ enableTransition }) {
           {isLargerThan768 ? (
             <Center>
               <NextLink href={"/projects"} passHref>
-                <Button as="a" variant={"ghost"} p="4" ml="3vw" fontSize={"16px"}>
+                <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
                   Projects
                 </Button>
               </NextLink>
