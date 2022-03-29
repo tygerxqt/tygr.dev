@@ -1,4 +1,4 @@
-import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex } from "@chakra-ui/react";
+import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex, Box } from "@chakra-ui/react";
 import { type ButtonProps } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { BsGithub, BsTwitter, BsInstagram, BsDiscord } from "react-icons/bs";
@@ -18,7 +18,7 @@ export default function Introduction() {
                     in={true}
                     transition={{ enter: { duration: 0.4, delay: 0.7 } }}
                 >
-                    <Heading fontSize="display3" fontWeight="medium" bottom={""}>
+                    <Heading fontSize="display3" fontWeight="medium">
                         Hey there, I&apos;m...
                     </Heading>
                 </SlideFade>
@@ -26,7 +26,7 @@ export default function Introduction() {
                     in={true}
                     transition={{ enter: { duration: 0.4, delay: 0.8 } }}
                 >
-                    <Heading fontSize="display" fontWeight="bold" m="0">
+                    <Heading fontSize="display" fontWeight="bold" mt={-7}>
                         tygerxqt.
                     </Heading>
                     <Text fontSize="display2">
