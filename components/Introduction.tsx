@@ -11,10 +11,11 @@ export const MotionButton = motion<ButtonProps>(Button)
 export default function Introduction() {
     const { colorMode } = useColorMode();
     const isLargerThan800 = useMediaQuery(800);
+    const isLargerThan400 = useMediaQuery(400);
     return (
         <>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start" mt={{ base: 16, sm: 8, md: 0 }}>
+            <SimpleGrid columns={isLargerThan800 ? 2 : 1} spacing={8}>
+                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start">
                     <SlideFade
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 0.7 } }}
@@ -24,7 +25,6 @@ export default function Introduction() {
                             color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
                             fontWeight="medium"
                             position={"relative"}
-                            mt={10}
                         >
                             Hey there, I&apos;m...
                         </Heading>
@@ -69,38 +69,80 @@ export default function Introduction() {
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 1.0 } }}
                     >
-                        <Stack isInline spacing={4}>
-                            <Link href="/blog/an-update">
-                                <Button
-                                    leftIcon={<FaGithub />}
-                                    transition="0.3s"
-                                    position="static"
-                                    size={isLargerThan800 ? "md" : "sm"}
-                                >
-                                    GitHub
-                                </Button>
-                            </Link>
-                            <Link href="/donate">
-                                <Button
-                                    leftIcon={<FaDiscord />}
-                                    transition="0.3s"
-                                    position="static"
-                                    size={isLargerThan800 ? "md" : "sm"}
-                                >
-                                    Discord
-                                </Button>
-                            </Link>
-                            <Link href="/donate">
-                                <Button
-                                    leftIcon={<FaTwitter />}
-                                    transition="0.3s"
-                                    position="static"
-                                    size={isLargerThan800 ? "md" : "sm"}
-                                >
-                                    Twitter
-                                </Button>
-                            </Link>
-                        </Stack>
+                        {isLargerThan400 ? (
+                            <Stack isInline spacing={4} >
+                                <Link href="/blog/an-update">
+                                    <Button
+                                        leftIcon={<FaGithub />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                    >
+                                        GitHub
+                                    </Button>
+                                </Link>
+                                <Link href="/donate">
+                                    <Button
+                                        leftIcon={<FaDiscord />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                    >
+                                        Discord
+                                    </Button>
+                                </Link>
+                                <Link href="/donate">
+                                    <Button
+                                        leftIcon={<FaTwitter />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                    >
+                                        Twitter
+                                    </Button>
+                                </Link>
+                            </Stack>
+                        ) : (
+                            <Box>
+                                <Link href="/blog/an-update">
+                                    <Button
+                                        leftIcon={<FaGithub />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                        mr={2}
+                                        mb={2}
+                                    >
+                                        GitHub
+                                    </Button>
+                                </Link>
+                                <Link href="/donate">
+                                    <Button
+                                        leftIcon={<FaDiscord />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                        mr={2}
+                                        mb={2}
+                                    >
+                                        Discord
+                                    </Button>
+                                </Link>
+                                <Link href="/donate">
+                                    <Button
+                                        leftIcon={<FaTwitter />}
+                                        transition="0.3s"
+                                        position="static"
+                                        size={isLargerThan800 ? "md" : "sm"}
+                                        mr={2}
+                                        mb={2}
+                                    >
+                                        Twitter
+                                    </Button>
+                                </Link>
+                            </Box>
+                        )}
+
                     </SlideFade>
                 </Stack>
                 <SlideFade

@@ -79,9 +79,8 @@ export default function Navbar({ enableTransition }) {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          px={isLargerThan768 ? "20vw" : "5vw"}
-          pt={isLargerThan768 ? "2vw" : "4vw"}
-          pb={isLargerThan768 ? "2vw" : "4vw"}
+          px={"4vw"}
+          py={isLargerThan768 ? "2vw" : "4vw"}
           backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(16, 18, 18, 0.5)"}
           backdropBlur={'blur(12px)'}
           borderBottom="0.5px solid borderColor"
