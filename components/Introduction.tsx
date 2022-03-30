@@ -1,99 +1,137 @@
-import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex, Box } from "@chakra-ui/react";
+import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex, Box, Image, useColorMode, Link } from "@chakra-ui/react";
 import { type ButtonProps } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { AiFillGithub } from "react-icons/ai";
 import { BsGithub, BsTwitter, BsInstagram, BsDiscord, BsTwitch, BsYoutube } from "react-icons/bs";
+import { FaGithub, FaDiscord, FaTwitter } from "react-icons/fa";
 import useMediaQuery from "../hook/useMediaQuery";
 
 export const MotionButton = motion<ButtonProps>(Button)
 
 export default function Introduction() {
-    const isLargerThan1200 = useMediaQuery(1200);
-    const buttonSize = isLargerThan1200 ? "md" : "sm"
+    const { colorMode } = useColorMode();
+    const isLargerThan800 = useMediaQuery(800);
     return (
         <>
-            <Stack
-                pt={'8vh'}
-            >
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
+                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start" mt={{ base: 16, sm: 8, md: 0 }}>
+                    <SlideFade
+                        in={true}
+                        transition={{ enter: { duration: 0.4, delay: 0.7 } }}
+                    >
+                        <Heading 
+                            fontSize="display2"
+                            color={colorMode === "light" ? "#006994" : "#90CDF4"}
+                            fontWeight="medium" 
+                            position={"relative"}
+                            mt={10}
+                        >
+                            Hey there, I&apos;m...
+                        </Heading>
+                    </SlideFade>
+                    <SlideFade
+                        in={true}
+                        transition={{ enter: { duration: 0.4, delay: 0.8 } }}
+                    >
+                        <Heading 
+                            fontSize="display" 
+                            letterSpacing={{ sm: "-1.2px", md: "-1.8px" }} 
+                            fontWeight="bold"
+                            mt={-14}
+                            mb={2}
+                        >
+                            tygerxqt.
+                        </Heading>
+                        <Text fontSize="display2" fontWeight={"semibold"}>
+                            A self-taught Web/IOT Developer.
+                        </Text>
+                    </SlideFade>
+
+                    {/* Description */}
+
+                    <SlideFade
+                        in={true}
+                        transition={{ enter: { duration: 0.4, delay: 0.9 } }}
+                    >
+                        <Text fontSize="display3" color="#8F9094">
+                            💻 Working on projects over at Nord Studio.
+                            <br />
+                            <Stack isInline spacing={1}>
+                                <Box></Box>
+                                <Box>Currently a Student from the UK.</Box>
+                            </Stack>
+                        </Text>
+                    </SlideFade>
+
+                    {/* Buttons */}
+
+                        <SlideFade
+                            in={true}
+                            transition={{ enter: { duration: 0.4, delay: 1.0 } }}
+                        >
+                        <Stack isInline spacing={4}>
+                            <Link href="/blog/an-update">
+                                <Button
+                                    leftIcon={<FaGithub fill="#F8C8DC" />}
+                                    transition="0.3s"
+                                    position="static"
+                                    size={isLargerThan800 ? "md" : "sm"}
+                                >
+                                    GitHub
+                                </Button>
+                            </Link>
+                            <Link href="/donate">
+                                <Button
+                                    leftIcon={<FaDiscord fill="#F8C8DC" />}
+                                    transition="0.3s"
+                                    position="static"
+                                    size={isLargerThan800 ? "md" : "sm"}
+                                >
+                                    Discord
+                                </Button>
+                            </Link>
+                            <Link href="/donate">
+                                <Button
+                                    leftIcon={<FaTwitter fill="#F8C8DC" />}
+                                    transition="0.3s"
+                                    position="static"
+                                    size={isLargerThan800 ? "md" : "sm"}
+                                >
+                                    Twitter
+                                </Button>
+                            </Link>
+                        </Stack>
+                    </SlideFade>
+                </Stack>
                 <SlideFade
                     in={true}
-                    transition={{ enter: { duration: 0.4, delay: 0.7 } }}
+                    transition={{ enter: { duration: 0.4, delay: 1.2 } }}
                 >
-                    <Heading fontSize="display3" fontWeight="medium">
-                        Hey there, I&apos;m...
-                    </Heading>
+                    <Flex
+                        marginLeft={{ base: 100, md: 150, lg: 250 }}
+                        mt={16}
+                        alignItems="normal"
+                        justifyContent="center"
+                        display={isLargerThan800 ? "block" : "none"}
+                    >
+                        <Box
+                            maxW={{ base: "312px", md: "412px", lg: "512px" }}
+                            maxH={{ base: "312px", md: "412px", lg: "512px" }}
+                        >
+                            <Image
+                                src={"https://avatars.githubusercontent.com/u/59417077?v=4"}
+                                w="100%"
+                                h="100%"
+                                placeholder="blur"
+                                borderRadius={'full'}
+                                maxW={{ base: "312px", md: "452px", lg: "612px" }}
+                                maxH={{ base: "312px", md: "452px", lg: "612px" }}
+                                alt={"tygerxqt"}
+                            />
+                        </Box>
+                    </Flex>
                 </SlideFade>
-                <SlideFade
-                    in={true}
-                    transition={{ enter: { duration: 0.4, delay: 0.8 } }}
-                >
-                    <Heading fontSize="display" fontWeight="bold" mt={-7}>
-                        tygerxqt.
-                    </Heading>
-                    <Text fontSize="display2">
-                        A self-taught Web/IOT Developer.
-                    </Text>
-                </SlideFade>
-            </Stack>
-            <SlideFade in={true} transition={{ enter: { duration: 0.3, delay: 1 } }}>
-                <Flex pb={'15vh'}>
-                    <SimpleGrid columns={isLargerThan1200 ? 6 : 3} spacing={8}>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/github"
-                            leftIcon={<BsGithub />}
-                        >
-                            Github
-                        </Button>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/twitter"
-                            leftIcon={<BsTwitter />}
-                        >
-                            Twitter
-                        </Button>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/instagram"
-                            leftIcon={<BsInstagram />}
-                        >
-                            Instagram
-                        </Button>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/discord"
-                            leftIcon={<BsDiscord />}
-                        >
-                            Discord
-                        </Button>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/twitch"
-                            leftIcon={<BsTwitch />}
-                        >
-                            Twitch
-                        </Button>
-                        <Button
-                            as="a"
-                            variant="outline"
-                            size={buttonSize}
-                            href="/youtube"
-                            leftIcon={<BsYoutube />}
-                        >
-                            YouTube
-                        </Button>
-                    </SimpleGrid>
-                </Flex>
-            </SlideFade>
+            </SimpleGrid>
         </>
     )
 }

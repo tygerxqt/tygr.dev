@@ -27,7 +27,8 @@ export default function FeaturedProjects({ projects }) {
                                         <Text
                                             display={{ base: 'block', md: 'none' }}
                                             fontSize={{ base: 'sm', md: 'xl' }}
-                                            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
+                                            fontWeight="semibold"
+                                            color={colorMode === "light" ? "#006994" : "#90CDF4"}
                                         >
                                             {' '}
                                             Explore more &rarr;
@@ -43,7 +44,8 @@ export default function FeaturedProjects({ projects }) {
                                     <Text
                                         display={{ base: 'none', md: 'block' }}
                                         fontSize={{ base: 'md', md: 'xl' }}
-                                        color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
+                                        fontWeight="semibold"
+                                        color={colorMode === "light" ? "#006994" : "#90CDF4"}
                                     >
                                         Explore more &rarr;
                                     </Text>
