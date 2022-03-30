@@ -19,10 +19,10 @@ export default function Introduction() {
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 0.7 } }}
                     >
-                        <Heading 
+                        <Heading
                             fontSize="display2"
-                            color={colorMode === "light" ? "#006994" : "#90CDF4"}
-                            fontWeight="medium" 
+                            color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
+                            fontWeight="medium"
                             position={"relative"}
                             mt={10}
                         >
@@ -33,9 +33,9 @@ export default function Introduction() {
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 0.8 } }}
                     >
-                        <Heading 
-                            fontSize="display" 
-                            letterSpacing={{ sm: "-1.2px", md: "-1.8px" }} 
+                        <Heading
+                            fontSize="display"
+                            letterSpacing={{ sm: "-1.2px", md: "-1.8px" }}
                             fontWeight="bold"
                             mt={-14}
                             mb={2}
@@ -56,23 +56,23 @@ export default function Introduction() {
                         <Text fontSize="display3" color="#8F9094">
                             💻 Working on projects over at Nord Studio.
                             <br />
-                            <Stack isInline spacing={1}>
-                                <Box></Box>
-                                <Box>Currently a Student from the UK.</Box>
+                            <Stack isInline spacing={2}>
+                                <Box>📷</Box>
+                                <Box>Creating content at Lofu Studio.</Box>
                             </Stack>
                         </Text>
                     </SlideFade>
 
                     {/* Buttons */}
 
-                        <SlideFade
-                            in={true}
-                            transition={{ enter: { duration: 0.4, delay: 1.0 } }}
-                        >
+                    <SlideFade
+                        in={true}
+                        transition={{ enter: { duration: 0.4, delay: 1.0 } }}
+                    >
                         <Stack isInline spacing={4}>
                             <Link href="/blog/an-update">
                                 <Button
-                                    leftIcon={<FaGithub fill="#F8C8DC" />}
+                                    leftIcon={<FaGithub />}
                                     transition="0.3s"
                                     position="static"
                                     size={isLargerThan800 ? "md" : "sm"}
@@ -82,7 +82,7 @@ export default function Introduction() {
                             </Link>
                             <Link href="/donate">
                                 <Button
-                                    leftIcon={<FaDiscord fill="#F8C8DC" />}
+                                    leftIcon={<FaDiscord />}
                                     transition="0.3s"
                                     position="static"
                                     size={isLargerThan800 ? "md" : "sm"}
@@ -92,7 +92,7 @@ export default function Introduction() {
                             </Link>
                             <Link href="/donate">
                                 <Button
-                                    leftIcon={<FaTwitter fill="#F8C8DC" />}
+                                    leftIcon={<FaTwitter />}
                                     transition="0.3s"
                                     position="static"
                                     size={isLargerThan800 ? "md" : "sm"}
@@ -108,7 +108,7 @@ export default function Introduction() {
                     transition={{ enter: { duration: 0.4, delay: 1.2 } }}
                 >
                     <Flex
-                        marginLeft={{ base: 100, md: 150, lg: 250 }}
+                        marginLeft={{ base: 100, md: 125, lg: 175 }}
                         mt={16}
                         alignItems="normal"
                         justifyContent="center"
