@@ -4,7 +4,7 @@ import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
 import useMediaQuery from "../hook/useMediaQuery";
 
 export default function Contact() {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const isLargerThan800 = useMediaQuery(800);
     return (
         <>

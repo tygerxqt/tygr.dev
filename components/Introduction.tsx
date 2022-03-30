@@ -1,7 +1,7 @@
 import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex, Box } from "@chakra-ui/react";
 import { type ButtonProps } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { BsGithub, BsTwitter, BsInstagram, BsDiscord } from "react-icons/bs";
+import { BsGithub, BsTwitter, BsInstagram, BsDiscord, BsTwitch, BsYoutube } from "react-icons/bs";
 import useMediaQuery from "../hook/useMediaQuery";
 
 export const MotionButton = motion<ButtonProps>(Button)
@@ -36,7 +36,7 @@ export default function Introduction() {
             </Stack>
             <SlideFade in={true} transition={{ enter: { duration: 0.3, delay: 1 } }}>
                 <Flex pb={'15vh'}>
-                    <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8}>
+                    <SimpleGrid columns={isLargerThan1200 ? 6 : 3} spacing={8}>
                         <Button
                             as="a"
                             variant="outline"
@@ -72,6 +72,24 @@ export default function Introduction() {
                             leftIcon={<BsDiscord />}
                         >
                             Discord
+                        </Button>
+                        <Button
+                            as="a"
+                            variant="outline"
+                            size={buttonSize}
+                            href="/twitch"
+                            leftIcon={<BsTwitch />}
+                        >
+                            Twitch
+                        </Button>
+                        <Button
+                            as="a"
+                            variant="outline"
+                            size={buttonSize}
+                            href="/youtube"
+                            leftIcon={<BsYoutube />}
+                        >
+                            YouTube
                         </Button>
                     </SimpleGrid>
                 </Flex>

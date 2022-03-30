@@ -5,7 +5,7 @@ import useMediaQuery from '../hook/useMediaQuery'
 import { useColorMode } from '@chakra-ui/react'
 
 export default function Container({ enableTransition, children }) {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
   const isLargerThan768 = useMediaQuery(768);
 
   return (
@@ -42,7 +42,7 @@ export default function Container({ enableTransition, children }) {
           </Link>
           . Hosted on{" "}
           <Link
-            href="https://vercel.com/solutions/nextjs?utm_source=next-site&utm_medium=banner&utm_campaign=next-website"
+            href="https://vercel.com/"
             fontWeight="semibold"
             color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
           >

@@ -1,4 +1,4 @@
-import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Flex, Box } from "@chakra-ui/react"
+import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode } from "@chakra-ui/react"
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
@@ -66,6 +66,7 @@ export default function ProjectCard({
 
     const isLargerThan800 = useMediaQuery(800);
     const isLargerThan480 = useMediaQuery(480);
+    const { colorMode } = useColorMode();
 
     const Tags = tags.map((item) => (
         <Tag
@@ -86,7 +87,7 @@ export default function ProjectCard({
             minH={"320px"}
             maxH={"500px"}
             border={"1px"}
-            borderColor={{ base: "#333", md: "#111111" }}
+            borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
             <ScaleFade in={true}>
                 {deploy_link ? (

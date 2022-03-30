@@ -17,8 +17,8 @@ const fluidType = (minFont, maxFont) => {
 const styles = {
   global: props => ({
     body: {
-      color: mode('#000000', '#FFFFFF')(props),
-      bg: mode('#FFFFFF', '#000000')(props),
+      color: mode('#101212', '#FFFFFF')(props),
+      bg: mode('#FFFFFF', '#101212')(props),
     },
   }),
 };
