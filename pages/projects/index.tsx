@@ -22,7 +22,7 @@ function ProjectPage({ projects }) {
                 <Stack
                     spacing={10}
                     justifyContent="center"
-                    my={["15vh", "15vh", "22.5vh", "22.5vh"]}
+                    my={["10vh", "10vh", "15vh", "15vh"]}
                 >
                     <Stack spacing={5}>
                         {" "}
