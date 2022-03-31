@@ -1,8 +1,6 @@
 import { Stack, Heading, Button, Text, SimpleGrid, SlideFade, Flex, Box, Image, useColorMode, Link } from "@chakra-ui/react";
 import { type ButtonProps } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { AiFillGithub } from "react-icons/ai";
-import { BsGithub, BsTwitter, BsInstagram, BsDiscord, BsTwitch, BsYoutube } from "react-icons/bs";
 import { FaGithub, FaDiscord, FaTwitter } from "react-icons/fa";
 import useMediaQuery from "../hook/useMediaQuery";
 
@@ -15,7 +13,7 @@ export default function Introduction() {
     return (
         <>
             <SimpleGrid columns={isLargerThan800 ? 2 : 1} spacing={8}>
-                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start">
+                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start" mt={16}>
                     <SlideFade
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 0.7 } }}
@@ -71,7 +69,7 @@ export default function Introduction() {
                     >
                         {isLargerThan400 ? (
                             <Stack isInline spacing={4} >
-                                <Link href="/blog/an-update">
+                                <Link href="/github">
                                     <Button
                                         leftIcon={<FaGithub />}
                                         transition="0.3s"
@@ -81,7 +79,7 @@ export default function Introduction() {
                                         GitHub
                                     </Button>
                                 </Link>
-                                <Link href="/donate">
+                                <Link href="/discord">
                                     <Button
                                         leftIcon={<FaDiscord />}
                                         transition="0.3s"
@@ -91,7 +89,7 @@ export default function Introduction() {
                                         Discord
                                     </Button>
                                 </Link>
-                                <Link href="/donate">
+                                <Link href="/twitter">
                                     <Button
                                         leftIcon={<FaTwitter />}
                                         transition="0.3s"
@@ -104,7 +102,7 @@ export default function Introduction() {
                             </Stack>
                         ) : (
                             <Box>
-                                <Link href="/blog/an-update">
+                                <Link href="/github">
                                     <Button
                                         leftIcon={<FaGithub />}
                                         transition="0.3s"
@@ -116,7 +114,7 @@ export default function Introduction() {
                                         GitHub
                                     </Button>
                                 </Link>
-                                <Link href="/donate">
+                                <Link href="/discord">
                                     <Button
                                         leftIcon={<FaDiscord />}
                                         transition="0.3s"
@@ -128,7 +126,7 @@ export default function Introduction() {
                                         Discord
                                     </Button>
                                 </Link>
-                                <Link href="/donate">
+                                <Link href="/twitter">
                                     <Button
                                         leftIcon={<FaTwitter />}
                                         transition="0.3s"

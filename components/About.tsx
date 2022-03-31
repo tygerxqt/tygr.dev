@@ -25,7 +25,7 @@ export default function AboutMe() {
                 {isLargerThan800 ? (
                     <Popover trigger="hover" placement="top">
                         <PopoverTrigger>
-                            <chakra.span color={colorMode === "light" ? "#006994" : "#90CDF4"} cursor="help">
+                            <chakra.span color={colorMode === "light" ? "#5E81AC" : "#90CDF4"} cursor="help">
                                 {text}
                             </chakra.span>
                         </PopoverTrigger>

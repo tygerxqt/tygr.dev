@@ -28,7 +28,7 @@ export default function FeaturedProjects({ projects }) {
                                             display={{ base: 'block', md: 'none' }}
                                             fontSize={{ base: 'sm', md: 'xl' }}
                                             fontWeight="semibold"
-                                            color={colorMode === "light" ? "#006994" : "#90CDF4"}
+                                            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
                                         >
                                             {' '}
                                             Explore more &rarr;
@@ -45,7 +45,7 @@ export default function FeaturedProjects({ projects }) {
                                         display={{ base: 'none', md: 'block' }}
                                         fontSize={{ base: 'md', md: 'xl' }}
                                         fontWeight="semibold"
-                                        color={colorMode === "light" ? "#006994" : "#90CDF4"}
+                                        color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
                                     >
                                         Explore more &rarr;
                                     </Text>
