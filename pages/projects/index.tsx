@@ -45,7 +45,6 @@ function ProjectPage({ projects }) {
                         </InputGroup>
                         <Divider />
                     </Stack>
-                    {console.log(projects)}
                     <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={8}>
                         {projects.data.filter((project) =>
                             project.title.toLowerCase().includes(query.toLowerCase())
