@@ -13,7 +13,7 @@ export default function Introduction() {
     return (
         <>
             <SimpleGrid columns={isLargerThan800 ? 2 : 1} spacing={8}>
-                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start" mt={16}>
+                <Stack spacing={10} justifyContent="flex-start" alignItems="flex-start" mt={8}>
                     <SlideFade
                         in={true}
                         transition={{ enter: { duration: 0.4, delay: 0.7 } }}
