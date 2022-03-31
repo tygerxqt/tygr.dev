@@ -4,14 +4,14 @@ import Head from "next/head";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Container from "../../components/Container";
+import ProjectCard from "../../components/ProjectCard";
 import config from "../../config.json";
 
-export default function ProjectPage({ projects }) {
+function ProjectPage({ projects }) {
     const [query, setQuery] = useState("");
     const handleChange = (e) => {
         setQuery(e.target.value);
     };
-
 
     return (
         <>
@@ -33,7 +33,9 @@ export default function ProjectPage({ projects }) {
                             A full list of all projects I have created or worked on.
                         </Text>
                         <InputGroup maxW={"400px"}>
-                            <InputRightElement pointerEvents={"none"} children={<FaSearch />} />
+                            <InputRightElement pointerEvents={"none"}>
+                                <FaSearch />
+                            </InputRightElement>
                             <Input
                                 type="text"
                                 placeholder={"Search projects"}
@@ -43,7 +45,21 @@ export default function ProjectPage({ projects }) {
                         </InputGroup>
                         <Divider />
                     </Stack>
-                    <SimpleGrid columns={{ sm: 1, md: 2}} spacing={8}>
+                    {console.log(projects)}
+                    <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={8}>
+                        {projects.data.filter((project) =>
+                            project.title.toLowerCase().includes(query.toLowerCase())
+                        ).map((project) => (
+                            <ProjectCard
+                                key={project.title}
+                                title={project.title}
+                                description={project.description}
+                                deploy_link={project.deploy_link}
+                                github_link={project.github_link}
+                                image={project.image}
+                                tags={project.tags}
+                            />
+                        ))}
                     </SimpleGrid>
                 </Stack>
             </Container>
@@ -61,3 +77,5 @@ export async function getStaticProps() {
         }
     }
 }
+
+export default ProjectPage;

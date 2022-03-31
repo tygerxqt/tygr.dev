@@ -35,7 +35,6 @@ function IndexPage({ projects }) {
 
 export async function getStaticProps() {
   const directus = new Directus(config.DIRECTUS_URL);
-
   const projects = await directus.items('featuredProjects').readByQuery({ meta: 'total_count' });
 
   return {
