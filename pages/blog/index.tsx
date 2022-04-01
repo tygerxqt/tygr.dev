@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Heading, Stack, Text, InputGroup, InputRightElement, Input, Divider, Box, Flex, Link } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import useMediaQuery from "../../hook/useMediaQuery";
+import dateFormat from "dateformat";
+import readingTime from "reading-time";
 
 export default function IndexBlog({ articles }) {
     const [query, setQuery] = useState("");
@@ -46,54 +48,63 @@ export default function IndexBlog({ articles }) {
                             />
                         </InputGroup>
                         <Divider />
-                        <Stack spacing={5}>
-
-                            <Stack
-                                direction={isLargerThan1024 ? "row" : "column"}
-                                alignItems={"flex-start"}
-                                justifyContent={"flex-start"}
-                            >
+                        {articles.data
+                            .filter((e) => 
+                                e.status === "published"
+                            )
+                            .filter((e) => 
+                                e.title.toLowerCase().includes(query.toLowerCase())
+                            )
+                            .map((article) => (
+                                <Stack
+                                    key={article.id}
+                                    direction={isLargerThan1024 ? "row" : "column"}
+                                    alignItems="flex-start"
+                                    justifyContent="flex-start"
+                                >
                                 <Text
                                     display={isLargerThan1024 ? "block" : "none"}
                                 >
-                                    DATE
+                                    {dateFormat(Date.parse(article.date), "mmm d yyyy")}
                                     <br />{" "}
                                     <Text fontSize="sm" textAlign="right">
-                                        TIME
+                                        {readingTime(article.body).text}
                                     </Text>
                                 </Text>
                                 <Text
-                                    fontSize={"sm"}
-                                    display={isLargerThan1024 ? "none" : "block"}
+                                    color="textSecondary"
+                                    fontSize="sm"
+                                    display={isLargerThan1024 ? "none" : "block"}    
                                 >
-                                    DATE{" "}
+                                    {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
                                     <Box as="span" fontSize="xs">
                                         &bull;
                                     </Box>{" "}
-                                    TIME
+                                    {readingTime(article.body).text}
                                 </Text>
-                                <Flex flexDirection="column" px={isLargerThan1024 ? 10 : 0}>
-                                    <Link href={"/blog/"}>
+                                    <Flex flexDirection="column" px={isLargerThan1024 ? 10 : 0}>
+                                    <Link href={"/blog/" + article.slug}>
                                         <a>
-                                            <Text
-                                                fontSize="xl"
-                                                fontWeight={"bold"}
-                                                cursor="pointer"
-                                            >
-                                                TITLE
-                                            </Text>
-                                            <Text>
-                                                SUMMARY
-                                            </Text>
+                                        <Text
+                                            color="displayColor"
+                                            fontSize="xl"
+                                            fontWeight="bold"
+                                            cursor="pointer"
+                                        >
+                                            {article.title}
+                                        </Text>
+                                        <Text color="textSecondary">
+                                            {article.summary}
+                                        </Text>
 
-                                            <Text cursor={"pointer"}>
-                                                Learn more &rarr;
-                                            </Text>
+                                        <Text color="button1" cursor="pointer">
+                                            Learn more &rarr;
+                                        </Text>
                                         </a>
                                     </Link>
-                                </Flex>
-                            </Stack>
-                        </Stack>
+                                    </Flex>
+                                </Stack>
+                            ))}
                     </Stack>
                 </Stack>
             </Container>
@@ -104,8 +115,6 @@ export default function IndexBlog({ articles }) {
 export async function getStaticProps() {
     const directus = new Directus(config.DIRECTUS_URL);
     const articles = await directus.items("posts").readByQuery({ meta: "total_count" });
-
-    console.log(articles);
 
     return {
         props: {

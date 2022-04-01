@@ -83,7 +83,6 @@ export default function Navbar({ enableTransition }) {
           py={isLargerThan768 ? "2vw" : "4vw"}
           backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(16, 18, 18, 0.5)"}
           backdropBlur={'blur(12px)'}
-          borderBottom="0.5px solid borderColor"
         >
           <NextLink href="/" passHref>
             <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
