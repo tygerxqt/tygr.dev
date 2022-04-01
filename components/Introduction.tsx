@@ -22,7 +22,6 @@ export default function Introduction() {
                             fontSize="display2"
                             color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
                             fontWeight="medium"
-                            position={"relative"}
                         >
                             Hey there, I&apos;m...
                         </Heading>

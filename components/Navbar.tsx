@@ -80,6 +80,7 @@ export default function Navbar({ enableTransition }) {
           justifyContent="space-between"
           alignItems="center"
           px={"4vw"}
+          position="relative"
           py={isLargerThan768 ? "2vw" : "4vw"}
           backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(16, 18, 18, 0.5)"}
           backdropBlur={'blur(12px)'}

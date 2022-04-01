@@ -131,7 +131,7 @@ export default function ProjectCard({
                             {github_link ? (
                                 <Link
                                     href={github_link}
-                                    color="white"
+                                    color={colorMode === "light" ? "black" : "white"}
                                     isExternal
                                 >
                                     <FaGithub size={23} />
@@ -142,7 +142,7 @@ export default function ProjectCard({
                             {deploy_link ? (
                                 <Link
                                     href={deploy_link}
-                                    color="white"
+                                    color={colorMode === "light" ? "black" : "white"}
                                     isExternal
                                 >
                                     <FaExternalLinkAlt size={23} />

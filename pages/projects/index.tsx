@@ -32,7 +32,7 @@ function ProjectPage({ projects }) {
                         <Text fontSize={{ base: "14px", md: "16px" }}>
                             A full list of all projects I have created or worked on.
                         </Text>
-                        <InputGroup maxW={"400px"}>
+                        <InputGroup maxW={"400px"} zIndex={-1}>
                             <InputRightElement pointerEvents={"none"}>
                                 <FaSearch />
                             </InputRightElement>

@@ -36,7 +36,7 @@ export default function IndexBlog({ articles }) {
                             This is where I share my writings on programming, tutorials, and my
                             experiences.
                         </Text>
-                        <InputGroup maxW={"400px"}>
+                        <InputGroup maxW={"400px"} zIndex={-1}>
                             <InputRightElement pointerEvents={"none"}>
                                 <FaSearch />
                             </InputRightElement>
@@ -49,10 +49,10 @@ export default function IndexBlog({ articles }) {
                         </InputGroup>
                         <Divider />
                         {articles.data
-                            .filter((e) => 
+                            .filter((e) =>
                                 e.status === "published"
                             )
-                            .filter((e) => 
+                            .filter((e) =>
                                 e.title.toLowerCase().includes(query.toLowerCase())
                             )
                             .map((article) => (
@@ -62,46 +62,46 @@ export default function IndexBlog({ articles }) {
                                     alignItems="flex-start"
                                     justifyContent="flex-start"
                                 >
-                                <Text
-                                    display={isLargerThan1024 ? "block" : "none"}
-                                >
-                                    {dateFormat(Date.parse(article.date), "mmm d yyyy")}
-                                    <br />{" "}
-                                    <Text fontSize="sm" textAlign="right">
+                                    <Text
+                                        display={isLargerThan1024 ? "block" : "none"}
+                                    >
+                                        {dateFormat(Date.parse(article.date), "mmm d yyyy")}
+                                        <br />{" "}
+                                        <Text fontSize="sm" textAlign="right">
+                                            {readingTime(article.body).text}
+                                        </Text>
+                                    </Text>
+                                    <Text
+                                        color="textSecondary"
+                                        fontSize="sm"
+                                        display={isLargerThan1024 ? "none" : "block"}
+                                    >
+                                        {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
+                                        <Box as="span" fontSize="xs">
+                                            &bull;
+                                        </Box>{" "}
                                         {readingTime(article.body).text}
                                     </Text>
-                                </Text>
-                                <Text
-                                    color="textSecondary"
-                                    fontSize="sm"
-                                    display={isLargerThan1024 ? "none" : "block"}    
-                                >
-                                    {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
-                                    <Box as="span" fontSize="xs">
-                                        &bull;
-                                    </Box>{" "}
-                                    {readingTime(article.body).text}
-                                </Text>
                                     <Flex flexDirection="column" px={isLargerThan1024 ? 10 : 0}>
-                                    <Link href={"/blog/" + article.slug}>
-                                        <a>
-                                        <Text
-                                            color="displayColor"
-                                            fontSize="xl"
-                                            fontWeight="bold"
-                                            cursor="pointer"
-                                        >
-                                            {article.title}
-                                        </Text>
-                                        <Text color="textSecondary">
-                                            {article.summary}
-                                        </Text>
+                                        <Link href={"/blog/" + article.slug}>
+                                            <a>
+                                                <Text
+                                                    color="displayColor"
+                                                    fontSize="xl"
+                                                    fontWeight="bold"
+                                                    cursor="pointer"
+                                                >
+                                                    {article.title}
+                                                </Text>
+                                                <Text color="textSecondary">
+                                                    {article.summary}
+                                                </Text>
 
-                                        <Text color="button1" cursor="pointer">
-                                            Learn more &rarr;
-                                        </Text>
-                                        </a>
-                                    </Link>
+                                                <Text color="button1" cursor="pointer">
+                                                    Learn more &rarr;
+                                                </Text>
+                                            </a>
+                                        </Link>
                                     </Flex>
                                 </Stack>
                             ))}
