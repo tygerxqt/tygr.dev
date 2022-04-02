@@ -61,42 +61,33 @@ export default function IndexBlog({ articles }) {
                                     direction={isLargerThan1024 ? "row" : "column"}
                                     alignItems="flex-start"
                                     justifyContent="flex-start"
+                                    pb={4}
                                 >
-                                    <Text
-                                        display={isLargerThan1024 ? "block" : "none"}
-                                    >
-                                        {dateFormat(Date.parse(article.date), "mmm d yyyy")}
-                                        <br />{" "}
-                                        <Text fontSize="sm" textAlign="right">
+                                    <Flex flexDirection="column" >
+                                        <Text
+                                            fontSize="sm"
+                                        >
+                                            {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
+                                            <Box as="span" fontSize="xs">
+                                                &bull;
+                                            </Box>{" "}
                                             {readingTime(article.body).text}
                                         </Text>
-                                    </Text>
-                                    <Text
-                                        color="textSecondary"
-                                        fontSize="sm"
-                                        display={isLargerThan1024 ? "none" : "block"}
-                                    >
-                                        {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
-                                        <Box as="span" fontSize="xs">
-                                            &bull;
-                                        </Box>{" "}
-                                        {readingTime(article.body).text}
-                                    </Text>
-                                    <Flex flexDirection="column" px={isLargerThan1024 ? 10 : 0}>
                                         <Link href={"/blog/" + article.slug}>
                                             <a>
                                                 <Text
-                                                    color="displayColor"
                                                     fontSize="xl"
                                                     fontWeight="bold"
-                                                    cursor="pointer"
                                                 >
                                                     {article.title}
                                                 </Text>
-                                                <Text color="textSecondary">
-                                                    {article.summary}
-                                                </Text>
-
+                                            </a>
+                                        </Link>
+                                        <Text>
+                                            {article.summary}
+                                        </Text>
+                                        <Link href={"/blog/" + article.slug}>
+                                            <a>
                                                 <Text color="button1" cursor="pointer">
                                                     Learn more &rarr;
                                                 </Text>

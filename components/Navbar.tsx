@@ -65,7 +65,7 @@ export default function Navbar({ enableTransition }) {
   );
 
   return (
-    <Box zIndex={99}>
+    <Box>
       <Slide
         direction="top"
         in={true}
@@ -80,13 +80,15 @@ export default function Navbar({ enableTransition }) {
           justifyContent="space-between"
           alignItems="center"
           px={"4vw"}
-          position="relative"
-          py={isLargerThan768 ? "2vw" : "4vw"}
-          backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.8)" : "rgba(16, 18, 18, 0.5)"}
-          backdropBlur={'blur(12px)'}
+          py={{ base: "1.5vh", md: "3vh" }}
+          zIndex={99}
+          backgroundColor={colorMode === 'light' ? '#FFFFFF' : '#101212'}
+          opacity={0.8}
+          borderBottom={"1px"}
+          borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
           <NextLink href="/" passHref>
-            <Image borderTop={'4vw'} w="48px" h="48px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
+            <Image borderTop={'4vw'} w={{ base: "32px", md: "46px" }} h={{ base: "32px", md: "46px" }} src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
           </NextLink>
           {isLargerThan768 ? (
             <Center>
@@ -126,6 +128,6 @@ export default function Navbar({ enableTransition }) {
           )}
         </Flex>
       </Slide>
-    </Box >
+    </Box>
   );
 }

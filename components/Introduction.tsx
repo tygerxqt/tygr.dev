@@ -67,7 +67,7 @@ export default function Introduction() {
                         transition={{ enter: { duration: 0.4, delay: 1.0 } }}
                     >
                         {isLargerThan400 ? (
-                            <Stack isInline spacing={4} >
+                            <Stack isInline spacing={4}>
                                 <Link href="/github">
                                     <Button
                                         leftIcon={<FaGithub />}
@@ -100,7 +100,7 @@ export default function Introduction() {
                                 </Link>
                             </Stack>
                         ) : (
-                            <Box>
+                            <Box >
                                 <Link href="/github">
                                     <Button
                                         leftIcon={<FaGithub />}
@@ -131,7 +131,6 @@ export default function Introduction() {
                                         transition="0.3s"
                                         position="static"
                                         size={isLargerThan800 ? "md" : "sm"}
-                                        mr={2}
                                         mb={2}
                                     >
                                         Twitter
