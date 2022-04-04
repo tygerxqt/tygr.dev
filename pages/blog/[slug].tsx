@@ -8,7 +8,7 @@ import { MDXRemote } from "next-mdx-remote";
 import mdxPrism from "mdx-prism";
 import PostContainer from "../../components/PostContainer";
 import MDXComponents from "../../components/MDXComponents";
-import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
+import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
 
 function Post({ metadata, source }) {
