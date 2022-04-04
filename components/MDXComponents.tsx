@@ -110,9 +110,9 @@ const MDXComponents = {
     />
   ),
   inlineCode: (props) => (
-    <Code colorScheme="blue" fontSize="0.84em" {...props} />
+    <Code colorScheme={"blue"} fontSize="0.84em" {...props} />
   ),
-  pre: (props) => <Box display="flex" borderRadius="md" bg="gray.800" p={4} {...props} />,
+  pre: (props) => <Box display="flex" borderRadius="md" bg="#323232" p={4} {...props} />,
   br: (props) => <Box height="24px" {...props} />,
   hr: Hr,
   a: CustomLink,

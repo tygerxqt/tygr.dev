@@ -70,9 +70,19 @@ function Post({ metadata, source }) {
                                 alt=""
                             ></Image>
                         </Stack>
-                        <PostContainer>
-                            <MDXRemote {...source} components={MDXComponents} />
-                        </PostContainer>
+                        {colorMode === "light" ? (
+                            <>
+                                <PostContainer.light>
+                                    <MDXRemote {...source} components={MDXComponents} />
+                                </PostContainer.light>
+                            </>
+                        ) : (
+                            <>
+                                <PostContainer.dark>
+                                    <MDXRemote {...source} components={MDXComponents} />
+                                </PostContainer.dark>
+                            </>
+                        )}
                     </Stack>
                 </Stack>
             </Container>
