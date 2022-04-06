@@ -14,6 +14,10 @@
     "@directus/sdk": "^9.7.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@mdx-js/loader": "^2.1.1",
+    "@mdx-js/mdx": "^2.1.1",
+    "@mdx-js/react": "^2.1.1",
+    "@next/mdx": "^12.1.4",
     "dateformat": "^5.0.3",
     "directus": "^9.7.0",
     "framer-motion": "^6",
@@ -26,7 +30,7 @@
     "react-icons": "^4.3.1",
     "react-intersection-observer": "^8.33.1",
     "reading-time": "^1.5.0",
-    "styled-jsx": "^5.0.1"
+    "rehype": "^12.0.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",

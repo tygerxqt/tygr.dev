@@ -9,8 +9,8 @@ import {
   Image,
   styled
 } from "@chakra-ui/react";
-import SyntaxHighlighter from "./SyntaxHighlighter";
 import NextLink from "next/link";
+import Highlight, { defaultProps } from "prism-react-renderer";
 
 const CustomLink = (props) => {
   const { colorMode } = useColorMode();
@@ -114,7 +114,30 @@ const MDXComponents = {
   inlineCode: (props) => (
     <Code colorScheme={"blue"} fontSize="0.84em" {...props} />
   ),
-  pre: (props) => <SyntaxHighlighter children={props.children} />,
+  pre: props => {
+    console.log(props.children.props)
+    const className = props.children.props.className || "";
+    const matches = className.match(/language-(?<lang>.*)/);
+    return (
+      <Highlight
+        {...defaultProps}
+        code={props.children.props.children}
+        language={matches[1]}
+      >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <pre className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
+        </pre>
+      )}
+    </Highlight>
+    )
+  },
   br: (props) => <Box height="24px" {...props} />,
   hr: Hr,
   a: CustomLink,

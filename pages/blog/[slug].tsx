@@ -8,7 +8,7 @@ import { MDXRemote } from "next-mdx-remote";
 import mdxPrism from "mdx-prism";
 import PostContainer from "../../components/PostContainer";
 import MDXComponents from "../../components/MDXComponents";
-import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
+import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
 
 function Post({ metadata, source }) {
@@ -112,11 +112,7 @@ export async function getStaticProps({ params }) {
     const article: any = posts.data[0]
     const source = article.body;
     article.readingTime = readingTime(source).text;
-    const mdxSource = await serialize(source, {
-        mdxOptions: {
-            rehypePlugins: [mdxPrism]
-        }
-    });
+    const mdxSource = await serialize(source);
 
     return {
         props: {
