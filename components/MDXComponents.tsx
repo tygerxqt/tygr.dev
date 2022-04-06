@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-key */
+
 import {
   Box,
   Code,
