@@ -114,7 +114,7 @@ const Pre = (props) => {
         }} className={className} style={style}>
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>
-              <chakra.span css={{"display": "inline-block", "width": "2em", "userSelect": "none", "opacity": 0.4, "marginLeft": 10 }} {...getLineProps({ line, key: i })}>
+              <chakra.span css={{ "display": "inline-block", "width": "2em", "userSelect": "none", "opacity": 0.5, "marginLeft": 10 }} {...getLineProps({ line, key: i })}>
                 {i + 1}
               </chakra.span>
               {line.map((token, key) => (
@@ -126,7 +126,7 @@ const Pre = (props) => {
       )}
     </Highlight>
   )
-  
+
 }
 
 const MDXComponents = {

@@ -10,7 +10,7 @@ const darkMode = styled(Stack)`
       margin: 0;
     }
     * + :not(code) {
-      margin-top: 1.2rem;
+      margin-top: revert;
     }
     li {
       margin-top: 0 !important;
@@ -41,7 +41,7 @@ const lightMode = styled(Stack)`
       margin: 0;
     }
     * + :not(code) {
-      margin-top: 1.2rem;
+      margin-top: revert;
     }
     li {
       margin-top: 0 !important;
