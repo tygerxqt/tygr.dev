@@ -9,11 +9,12 @@ import {
   Divider,
   useColorMode,
   Image,
+  chakra
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import Highlight, { defaultProps, PrismTheme } from "prism-react-renderer";
-import darkTheme from "../styles/darkPrism";
-import lightTheme from "../styles/lightPrism";
+import Highlight, { defaultProps } from "prism-react-renderer";
+import lightTheme from "prism-react-renderer/themes/vsLight"
+import darkTheme from "prism-react-renderer/themes/vsDark"
 
 const CustomLink = (props) => {
   const { colorMode } = useColorMode();
@@ -96,7 +97,7 @@ const Pre = (props) => {
 
   const className = props.children.props.className || "";
   const matches = className.match(/language-(?<lang>.*)/);
-  const theme = colorMode === "light" ? (lightTheme as PrismTheme) : (darkTheme as PrismTheme)
+  const theme = colorMode === "light" ? lightTheme : darkTheme
   return (
     <Highlight
       {...defaultProps}
@@ -105,15 +106,23 @@ const Pre = (props) => {
       theme={theme}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={style}>
+        <chakra.pre css={{
+          textAlign: "left",
+          margin: "1em 0",
+          padding: "0.5em",
+          border: "1px"
+        }} className={className} style={style}>
           {tokens.map((line, i) => (
             <div {...getLineProps({ line, key: i })}>
+              <chakra.span css={{"display": "inline-block", "width": "2em", "userSelect": "none", "opacity": 0.4, "marginLeft": 10 }} {...getLineProps({ line, key: i })}>
+                {i + 1}
+              </chakra.span>
               {line.map((token, key) => (
                 <span {...getTokenProps({ token, key })} />
               ))}
             </div>
           ))}
-        </pre>
+        </chakra.pre>
       )}
     </Highlight>
   )
