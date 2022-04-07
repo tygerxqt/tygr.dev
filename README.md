@@ -11,6 +11,8 @@
 # 1-Click Deploys
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Fportfolio&env=DIRECTUS_URL,DIRECTUS_USERNAME,DIRECTUS_PASSWORD&envDescription=Create%20your%20Directus%20instance%20here%20-%3E&envLink=https%3A%2F%2Fdirectus.cloud&project-name=portfolio&repo-name=portfolio&demo-title=Portfolio&demo-description=My%20personal%20website.&demo-url=https%3A%2F%2Ftygr.dev&demo-image=https%3A%2F%2Fty8nl6ol.directus.app%2Fassets%2F75f75408-35ed-4a04-872f-85a4f2a88826)
 
+[![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tygerxqt/portfolio)
+
 # Running Locally
 ```bash
 $ git clone https://github.com/tygerxqt/portfolio.git
