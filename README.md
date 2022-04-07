@@ -1,5 +1,5 @@
 # ☁ Preview  
-![](https://ty8nl6ol.directus.app/assets/75f75408-35ed-4a04-872f-85a4f2a88826?cache-buster=3dcXf2OAVgz0blnk6Dw6M&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhZGFiOGY1LThmYmQtNGNiYS05MTYzLTM5ZGQ0NmY4MmM4MSIsInJvbGUiOiIzYTJlOTg2ZS1kOTYzLTQ4YWUtODkyZi05NTQ3MTUzYzg4OTQiLCJhcHBfYWNjZXNzIjoxLCJhZG1pbl9hY2Nlc3MiOjEsImlhdCI6MTY0OTM0NDUxOSwiZXhwIjoxNjQ5MzQ1NDE5LCJpc3MiOiJkaXJlY3R1cyJ9.HLS1cyYnQfxtSzk9S3-S7zDPR1MLZCpBG3wzs00tNI4)
+![](https://ty8nl6ol.directus.app/assets/75f75408-35ed-4a04-872f-85a4f2a88826)
 
 # Tech stack
 * Framework: [NextJS](https://nextjs.org/)
