@@ -17,8 +17,8 @@ const fluidType = (minFont, maxFont) => {
 const styles = {
   global: props => ({
     body: {
-      color: mode('#101212', '#FFFFFF')(props),
-      bg: mode('#FFFFFF', '#101212')(props),
+      color: mode('#111111', '#FFFFFF')(props),
+      bg: mode('#FFFFFF', '#111111')(props),
     },
   }),
 };
@@ -28,7 +28,7 @@ const components = {
     // setup light/dark mode component defaults
     baseStyle: props => ({
       dialog: {
-        bg: mode('white', '#111111')(props),
+        bg: mode('white', '#101212')(props),
       },
     }),
   },
@@ -36,7 +36,7 @@ const components = {
   Menu: {
     baseStyle: props => ({
       list: {
-        bg: mode('white', '#111111')(props),
+        bg: mode('white', '#101212')(props),
       },
     }),
   },
@@ -44,7 +44,7 @@ const components = {
   Modal: {
     baseStyle: props => ({
       dialog: {
-        bg: mode('white', '#111111')(props),
+        bg: mode('white', '#101212')(props),
       }
     })
   },
@@ -52,7 +52,7 @@ const components = {
   Popover: {
     baseStyle: props => ({
       content: {
-        bg: mode('white', '#111111')(props),
+        bg: mode('white', '#101212')(props),
       }
     })
   }

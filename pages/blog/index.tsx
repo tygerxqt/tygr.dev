@@ -1,6 +1,6 @@
 import { Directus } from "@directus/sdk";
 import config from "../../config.json";
-import Container from "../../components/Container";
+import Container from "../../components/UI/Container";
 import Head from "next/head";
 import { useState } from "react";
 import { Heading, Stack, Text, InputGroup, InputRightElement, Input, Divider, Box, Flex, Link } from "@chakra-ui/react";

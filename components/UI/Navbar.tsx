@@ -14,16 +14,19 @@ import {
   Stack,
   useColorMode,
   Image,
-  Center
+  Center,
+  Avatar
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import useMediaQuery from "../hook/useMediaQuery";
+import useMediaQuery from "../../hook/useMediaQuery";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs"
+import supabase from "../Accounts/SupabaseClient";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
+  const session = supabase.auth.session();
 
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -82,7 +85,7 @@ export default function Navbar({ enableTransition }) {
           px={"4vw"}
           py={{ base: "1.5vh", md: "3vh" }}
           zIndex={99}
-          backgroundColor={colorMode === 'light' ? '#FFFFFF' : '#101212'}
+          backgroundColor={colorMode === 'light' ? '#FFFFFF' : '#111111'}
           opacity={0.8}
           borderBottom={"1px"}
           borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
@@ -103,7 +106,7 @@ export default function Navbar({ enableTransition }) {
                 </Button>
               </NextLink>
               <Button
-                variant="outline"
+                variant="ghost"
                 p="4"
                 ml="3vw"
                 fontSize={"16px"}
@@ -111,9 +114,56 @@ export default function Navbar({ enableTransition }) {
               >
                 {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
               </Button>
+              {session ? (
+                <NextLink href={"/account"} passHref>
+                  <Button
+                    variant="outline"
+                    p="4"
+                    ml="3vw"
+                    colorScheme={"blue"}
+                    fontSize={"16px"}
+                  >
+                    Account
+                  </Button>
+                </NextLink>
+              ) : (
+                <NextLink href={"/account"} passHref>
+                  <Button
+                    variant="outline"
+                    p="4"
+                    ml="3vw"
+                    colorScheme={"blue"}
+                    fontSize={"16px"}
+                  >
+                    Log in
+                  </Button>
+                </NextLink>
+              )}
             </Center>
           ) : (
             <Center>
+              {session ? (
+                <NextLink href={"/account"} passHref>
+                  <Avatar
+                    as="a"
+                    size="sm"
+                    name={session.user.user_metadata.username}
+                    src={session.user.user_metadata.avatar}
+                    mr="2"
+                  />
+                </NextLink>
+              ) : (
+                <NextLink href="/account" passHref>
+                  <Button
+                    variant="ghost"
+                    p="4"
+                    ml="3vw"
+                    fontSize={"16px"}
+                  >
+                    Login
+                  </Button>
+                </NextLink>
+              )}
               <Button
                 variant="ghost"
                 p="4"

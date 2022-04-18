@@ -2,8 +2,8 @@ import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divide
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
-import useMediaQuery from "../hook/useMediaQuery"
-import config from '../config.json'
+import useMediaQuery from "../../hook/useMediaQuery"
+import config from '../../config.json'
 
 export default function ProjectCard({
     title,

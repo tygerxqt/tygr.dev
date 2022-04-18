@@ -1,7 +1,7 @@
 import { Stack, SimpleGrid, Heading, Link, Text, Box, useColorMode } from "@chakra-ui/react";
 import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
 import NextLink from "next/link";
-import ProjectCard from "./ProjectCard";
+import ProjectCard from "./UI/ProjectCard";
 
 export default function FeaturedProjects({ projects }) {
     const { colorMode } = useColorMode();

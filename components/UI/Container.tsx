@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, Stack, Box, Text, Link } from '@chakra-ui/react'
 import Navbar from './Navbar'
-import useMediaQuery from '../hook/useMediaQuery'
+import useMediaQuery from '../../hook/useMediaQuery'
 import { useColorMode } from '@chakra-ui/react'
 
 export default function Container({ enableTransition, children }) {

@@ -6,7 +6,7 @@ import Contact from '../components/Contact';
 import { Directus } from '@directus/sdk';
 import FeaturedProjects from '../components/FeaturedProjects';
 import config from '../config.json'
-import Container from '../components/Container';
+import Container from '../components/UI/Container';
 
 function IndexPage({ projects }) {
   return (

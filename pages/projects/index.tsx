@@ -3,8 +3,8 @@ import { Directus } from "@directus/sdk";
 import Head from "next/head";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import Container from "../../components/Container";
-import ProjectCard from "../../components/ProjectCard";
+import Container from "../../components/UI/Container";
+import ProjectCard from "../../components/UI/ProjectCard";
 import config from "../../config.json";
 
 function ProjectPage({ projects }) {

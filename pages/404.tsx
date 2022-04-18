@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Heading, Stack, Divider, Button, Box } from '@chakra-ui/react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/UI/Navbar'
 
 export default function ErrorPage() {
     return (
