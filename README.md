@@ -1,5 +1,5 @@
 # ☁ Preview  
-![](https://ty8nl6ol.directus.app/assets/75f75408-35ed-4a04-872f-85a4f2a88826)
+![](https://images.ctfassets.net/547zkxycwgvr/6C4HFntLtkxdyM4Ibaetku/0133d3d2c10ba151e539104f5777eb52/firefox_U03cNvDHse.png)
 
 # Tech stack
 * Framework: [NextJS](https://nextjs.org/)
