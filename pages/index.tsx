@@ -3,10 +3,9 @@ import { Stack } from '@chakra-ui/react'
 import Introduction from '../components/Introduction';
 import AboutMe from '../components/About';
 import Contact from '../components/Contact';
-import { Directus } from '@directus/sdk';
 import FeaturedProjects from '../components/FeaturedProjects';
-import config from '../config.json'
 import Container from '../components/UI/Container';
+import { createClient } from 'contentful';
 
 function IndexPage({ projects }) {
   return (
@@ -25,7 +24,7 @@ function IndexPage({ projects }) {
         >
           <Introduction />
           <AboutMe />
-          <FeaturedProjects projects={projects.data} />
+          <FeaturedProjects projects={projects} />
           <Contact />
         </Stack>
       </Container>
@@ -33,13 +32,20 @@ function IndexPage({ projects }) {
   )
 }
 
+let client = createClient({
+  space: process.env.CONTENTFUL_SPACE_ID,
+  accessToken: process.env.CONTENTFUL_SPACE_KEY,
+});
+
 export async function getStaticProps() {
-  const directus = new Directus(config.DIRECTUS_URL);
-  const projects = await directus.items('featuredProjects').readByQuery({ meta: 'total_count' });
+  let data = await client.getEntries({
+    content_type: "featuredProjects",
+    order: "fields.order"
+  });
 
   return {
     props: {
-      projects
+      projects: data.items,
     }
   }
 }

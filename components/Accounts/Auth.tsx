@@ -1,6 +1,5 @@
 import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast } from "@chakra-ui/react";
 import Head from "next/head"
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
@@ -13,10 +12,11 @@ export default function Auth() {
     const [LoginEmail, setLoginEmail] = useState("");
     const [LoginPassword, setLoginPassword] = useState("");
 
+    const [RegisterName, setRegisterName] = useState("");
+    const [RegisterUsername, setRegisterUsername] = useState("");
     const [RegisterEmail, setRegisterEmail] = useState("");
     const [RegisterPassword, setRegisterPassword] = useState("");
     const [RegisterPasswordConfirm, setRegisterPasswordConfirm] = useState("");
-    const [RegisterUsername, setRegisterUsername] = useState("");
 
     const isLargerThan768 = useMediaQuery(768);
     const { colorMode } = useColorMode();
@@ -58,11 +58,17 @@ export default function Auth() {
         }
     }, [toast]);
 
-    const handleRegister = useCallback(async (email: string, password: string, passwordConfirm: string, username: string) => {
+    const handleRegister = useCallback(async (name: string, email: string, username: string, password: string, passwordConfirm: string) => {
         try {
             setLoading(true);
             if (password !== passwordConfirm) throw new Error("Passwords do not match");
-            const { user, session, error } = await supabase.auth.signUp({ email, password }, { data: { username: username, avatar_url: null } });
+            const { user, session, error } = await supabase.auth.signUp({ email: email, password: password }, {
+                data: {
+                    full_name: name,
+                    username: username,
+                    avatar: null,
+                }
+            });
             if (error) {
                 toast({
                     title: "Error",
@@ -102,7 +108,7 @@ export default function Auth() {
                     handleLogin(LoginEmail, LoginPassword);
                 }
                 else if (mode === "register") {
-                    handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername);
+                    handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm);
                 }
             }
         };
@@ -110,7 +116,7 @@ export default function Auth() {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, [LoginEmail, LoginPassword, RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername, handleLogin, handleRegister, mode]);
+    }, [LoginEmail, LoginPassword, RegisterEmail, RegisterName, RegisterPassword, RegisterPasswordConfirm, RegisterUsername, handleLogin, handleRegister, mode]);
 
     return (
         <>
@@ -271,13 +277,17 @@ export default function Auth() {
                                                 </Stack>
                                                 <Box maxW="sm">
                                                     <form>
-                                                        <FormControl >
+                                                        <FormControl>
+                                                            <FormLabel zIndex={-1}>Name</FormLabel>
+                                                            <Input type="text" placeholder="John Doe" onChange={(e) => setRegisterName(e.target.value)} />
+                                                        </FormControl>
+                                                        <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Username</FormLabel>
-                                                            <Input type="text" placeholder="tygerxqt" onChange={(e) => setRegisterUsername(e.target.value)} />
+                                                            <Input type="text" placeholder="johndoe" onChange={(e) => setRegisterUsername(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Email</FormLabel>
-                                                            <Input type="email" placeholder="hello@apple.com" onChange={(e) => setRegisterEmail(e.target.value)} />
+                                                            <Input type="email" placeholder="john@doe.com" onChange={(e) => setRegisterEmail(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Password</FormLabel>
@@ -289,7 +299,7 @@ export default function Auth() {
                                                         </FormControl>
                                                     </form>
                                                 </Box>
-                                                <Button variant={"solid"} mt={6} disabled={loading} onClick={() => handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername)}>
+                                                <Button variant={"solid"} mt={6} disabled={loading} onClick={() => handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm)}>
                                                     Create Account
                                                 </Button>
                                             </Box>
@@ -340,13 +350,17 @@ export default function Auth() {
                                     <Center>
                                         <Box maxW="sm">
                                             <form>
-                                                <FormControl >
+                                                <FormControl>
+                                                    <FormLabel zIndex={-1}>Name</FormLabel>
+                                                    <Input type="text" placeholder="John Doe" onChange={(e) => setRegisterName(e.target.value)} />
+                                                </FormControl>
+                                                <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Username</FormLabel>
-                                                    <Input type="text" placeholder="tygerxqt" onChange={(e) => setRegisterUsername(e.target.value)} />
+                                                    <Input type="text" placeholder="johndoe" onChange={(e) => setRegisterUsername(e.target.value)} />
                                                 </FormControl>
                                                 <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Email</FormLabel>
-                                                    <Input type="email" placeholder="hello@apple.com" onChange={(e) => setRegisterEmail(e.target.value)} />
+                                                    <Input type="email" placeholder="john@doe.com" onChange={(e) => setRegisterEmail(e.target.value)} />
                                                 </FormControl>
                                                 <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Password</FormLabel>
@@ -357,7 +371,7 @@ export default function Auth() {
                                                     <Input type="password" placeholder="********" onChange={(e) => setRegisterPasswordConfirm(e.target.value)} />
                                                 </FormControl>
                                             </form>
-                                            <Button variant={"solid"} mt={6} onClick={() => handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername)}>
+                                            <Button variant={"solid"} mt={6} onClick={() => handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm)}>
                                                 Confirm
                                             </Button>
                                         </Box>

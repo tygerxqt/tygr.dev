@@ -3,14 +3,13 @@ import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
 import useMediaQuery from "../../hook/useMediaQuery"
-import config from '../../config.json'
 
 export default function ProjectCard({
     title,
     description,
     image,
-    github_link,
-    deploy_link,
+    githubLink,
+    deployLink,
     tags,
 }) {
     const getTag = (tag) => {
@@ -79,8 +78,6 @@ export default function ProjectCard({
         </Tag>
     ))
 
-    const imageURL = config.DIRECTUS_URL + "/assets/" + image
-
     return (
         <Stack
             borderRadius={"10px"}
@@ -90,14 +87,14 @@ export default function ProjectCard({
             borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
             <ScaleFade in={true}>
-                {deploy_link ? (
-                    <Link href={deploy_link}>
+                {deployLink ? (
+                    <Link href={deployLink}>
                         <Image
                             width={1250}
                             height={600}
                             w="auto"
                             h="auto"
-                            src={imageURL}
+                            src={image}
                             transition="0.3s"
                             placeholder="blur"
                             borderRadius="10px 10px 0px 0px"
@@ -110,7 +107,7 @@ export default function ProjectCard({
                         height={600}
                         w="auto"
                         h="auto"
-                        src={imageURL}
+                        src={image}
                         transition="0.3s"
                         placeholder="blur"
                         borderRadius="10px 10px 0px 0px"
@@ -128,9 +125,9 @@ export default function ProjectCard({
                             alignItems={"center"}
                             spacing={4}
                         >
-                            {github_link ? (
+                            {githubLink ? (
                                 <Link
-                                    href={github_link}
+                                    href={githubLink}
                                     color={colorMode === "light" ? "black" : "white"}
                                     isExternal
                                 >
@@ -139,9 +136,9 @@ export default function ProjectCard({
                             ) : (
                                 <div />
                             )}
-                            {deploy_link ? (
+                            {deployLink ? (
                                 <Link
-                                    href={deploy_link}
+                                    href={deployLink}
                                     color={colorMode === "light" ? "black" : "white"}
                                     isExternal
                                 >

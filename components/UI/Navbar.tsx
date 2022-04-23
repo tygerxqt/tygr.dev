@@ -15,18 +15,25 @@ import {
   useColorMode,
   Image,
   Center,
-  Avatar
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuGroup,
+  MenuItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs"
 import supabase from "../Accounts/SupabaseClient";
+import Link from "next/link";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
   const session = supabase.auth.session();
+  const user = supabase.auth.user();
 
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -116,15 +123,31 @@ export default function Navbar({ enableTransition }) {
               </Button>
               {session ? (
                 <NextLink href={"/account"} passHref>
-                  <Button
-                    variant="outline"
-                    p="4"
-                    ml="3vw"
-                    colorScheme={"blue"}
-                    fontSize={"16px"}
-                  >
-                    Account
-                  </Button>
+                  <Menu>
+                    <MenuButton
+                      as={Avatar}
+                      ml={"3vw"}
+                      src={user.user_metadata.avatar}
+                      size="md"
+                    />
+                    <MenuList>
+                      <MenuGroup>
+                        {/* <Center>
+                          <Box p={4}>
+                            <Avatar name={user.user_metadata.username} src={user.user_metadata.avatar} size="xl" />
+                          </Box>
+                        </Center> */}
+                        <Link href="/account" passHref>
+                          <MenuItem closeOnSelect={true}>Profile</MenuItem>
+                        </Link>
+                      </MenuGroup>
+                      <MenuGroup>
+                        <MenuItem closeOnSelect={true} onClick={() => supabase.auth.signOut()}>
+                          Sign out
+                        </MenuItem>
+                      </MenuGroup>
+                    </MenuList>
+                  </Menu>
                 </NextLink>
               ) : (
                 <NextLink href={"/account"} passHref>
@@ -155,12 +178,12 @@ export default function Navbar({ enableTransition }) {
               ) : (
                 <NextLink href="/account" passHref>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     p="4"
                     ml="3vw"
                     fontSize={"16px"}
                   >
-                    Login
+                    Log in
                   </Button>
                 </NextLink>
               )}

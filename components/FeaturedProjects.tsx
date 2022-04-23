@@ -55,12 +55,12 @@ export default function FeaturedProjects({ projects }) {
                     </SlideUpWhenVisible>
                     <SlideUpWhenVisible threshold={undefined}>
                         <ProjectCard
-                            title={projects[0].title}
-                            description={projects[0].description}
-                            image={projects[0].image}
-                            github_link={projects[0].github_link}
-                            deploy_link={projects[0].deploy_link}
-                            tags={projects[0].tags}
+                            title={projects[0].fields.title}
+                            description={projects[0].fields.description}
+                            image={projects[0].fields.image}
+                            githubLink={projects[0].fields.githuhLink}
+                            deployLink={projects[0].fields.deployLink}
+                            tags={projects[0].fields.tags}
                         />
                     </SlideUpWhenVisible>
                     <SlideUpWhenVisible threshold={undefined}>
@@ -69,8 +69,8 @@ export default function FeaturedProjects({ projects }) {
                                 title={projects[1].title}
                                 description={projects[1].description}
                                 image={projects[1].image}
-                                github_link={projects[1].github_link}
-                                deploy_link={projects[1].deploy_link}
+                                githubLink={projects[1].github_link}
+                                deployLink={projects[1].deploy_link}
                                 tags={projects[1].tags}
                             />
                         </Box>
@@ -80,8 +80,8 @@ export default function FeaturedProjects({ projects }) {
                             title={projects[2].title}
                             description={projects[2].description}
                             image={projects[2].image}
-                            github_link={projects[2].github_link}
-                            deploy_link={projects[2].deploy_link}
+                            githubLink={projects[2].github_link}
+                            deployLink={projects[2].deploy_link}
                             tags={projects[2].tags}
                         />
                     </SlideUpWhenVisible>
