@@ -180,6 +180,7 @@ function Profile() {
                                         <Button
                                             colorScheme="blue"
                                             variant="outline"
+                                            disabled={true}
                                             onClick={() => {
                                                 document.getElementById("single").click();
                                             }}
@@ -197,7 +198,7 @@ function Profile() {
                                             onChange={uploadAvatar}
                                             disabled={uploading}
                                         />
-                                        <Button onClick={() => removeAvatar()}>Remove</Button>
+                                        <Button onClick={() => removeAvatar()} disabled={true}>Remove</Button>
                                     </Stack>
                                 </Flex>
                                 <Box>
