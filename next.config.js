@@ -3,7 +3,6 @@ const nextConfig = {
   webpack5: true,
   webpack: (config) => {
     config.resolve.fallback = { fs: false };
-
     return config;
   },
   
@@ -55,7 +54,7 @@ const nextConfig = {
   },
 
   images: {
-    domains: ["i.imgur.com", "ty8nl6ol.directus.app"],
+    domains: ["i.imgur.com", "images.ctfassets.net"],
   },
 }
 

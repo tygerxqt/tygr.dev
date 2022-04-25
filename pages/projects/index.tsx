@@ -1,11 +1,10 @@
 import { Heading, Input, InputGroup, InputRightElement, Stack, Text, Divider, SimpleGrid } from "@chakra-ui/react";
-import { Directus } from "@directus/sdk";
+import { createClient } from "contentful";
 import Head from "next/head";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Container from "../../components/UI/Container";
 import ProjectCard from "../../components/UI/ProjectCard";
-import config from "../../config.json";
 
 function ProjectPage({ projects }) {
     const [query, setQuery] = useState("");
@@ -32,7 +31,7 @@ function ProjectPage({ projects }) {
                         <Text fontSize={{ base: "14px", md: "16px" }}>
                             A full list of all projects I have created or worked on.
                         </Text>
-                        <InputGroup maxW={"400px"} zIndex={-1}>
+                        <InputGroup maxW={"400px"}>
                             <InputRightElement pointerEvents={"none"}>
                                 <FaSearch />
                             </InputRightElement>
@@ -46,17 +45,17 @@ function ProjectPage({ projects }) {
                         <Divider />
                     </Stack>
                     <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={8}>
-                        {projects.data.filter((project) =>
-                            project.title.toLowerCase().includes(query.toLowerCase())
+                        {projects.filter((project) =>
+                            project.fields.title.toLowerCase().includes(query.toLowerCase()) || project.fields.description.toLowerCase().includes(query.toLowerCase())
                         ).map((project) => (
                             <ProjectCard
-                                key={project.title}
-                                title={project.title}
-                                description={project.description}
-                                deploy_link={project.deploy_link}
-                                github_link={project.github_link}
-                                image={project.image}
-                                tags={project.tags}
+                                key={project.fields.title}
+                                title={project.fields.title}
+                                description={project.fields.description}
+                                deployLink={project.fields.deployLink}
+                                githubLink={project.fields.githubLink}
+                                image={"https:" + project.fields.image.fields.file.url}
+                                tags={project.fields.tags}
                             />
                         ))}
                     </SimpleGrid>
@@ -66,13 +65,20 @@ function ProjectPage({ projects }) {
     )
 }
 
+const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+});
+
 export async function getStaticProps() {
-    const directus = new Directus(config.DIRECTUS_URL);
-    const projects = await directus.items('projects').readByQuery({ meta: 'total_count' });
+    const data = await client.getEntries({
+        content_type: "project",
+        order: "sys.updatedAt"
+    });
 
     return {
         props: {
-            projects
+            projects: data.items.reverse()
         }
     }
 }

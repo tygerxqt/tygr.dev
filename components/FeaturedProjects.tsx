@@ -57,7 +57,7 @@ export default function FeaturedProjects({ projects }) {
                         <ProjectCard
                             title={projects[0].fields.title}
                             description={projects[0].fields.description}
-                            image={projects[0].fields.image}
+                            image={"https:" + projects[0].fields.image.fields.file.url}
                             githubLink={projects[0].fields.githuhLink}
                             deployLink={projects[0].fields.deployLink}
                             tags={projects[0].fields.tags}
@@ -66,23 +66,23 @@ export default function FeaturedProjects({ projects }) {
                     <SlideUpWhenVisible threshold={undefined}>
                         <Box mt={{ md: '-50%' }}>
                             <ProjectCard
-                                title={projects[1].title}
-                                description={projects[1].description}
-                                image={projects[1].image}
-                                githubLink={projects[1].github_link}
-                                deployLink={projects[1].deploy_link}
-                                tags={projects[1].tags}
+                                title={projects[1].fields.title}
+                                description={projects[1].fields.description}
+                                image={"https:" + projects[1].fields.image.fields.file.url}
+                                githubLink={projects[1].fields.github_link}
+                                deployLink={projects[1].fields.deploy_link}
+                                tags={projects[1].fields.tags}
                             />
                         </Box>
                     </SlideUpWhenVisible>
                     <SlideUpWhenVisible threshold={undefined}>
                         <ProjectCard
-                            title={projects[2].title}
-                            description={projects[2].description}
-                            image={projects[2].image}
-                            githubLink={projects[2].github_link}
-                            deployLink={projects[2].deploy_link}
-                            tags={projects[2].tags}
+                            title={projects[2].fields.title}
+                            description={projects[2].fields.description}
+                            image={"https:" + projects[2].fields.image.fields.file.url}
+                            githubLink={projects[2].fields.github_link}
+                            deployLink={projects[2].fields.deploy_link}
+                            tags={projects[2].fields.tags}
                         />
                     </SlideUpWhenVisible>
                 </SimpleGrid>

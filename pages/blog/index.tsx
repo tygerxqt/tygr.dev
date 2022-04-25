@@ -1,5 +1,3 @@
-import { Directus } from "@directus/sdk";
-import config from "../../config.json";
 import Container from "../../components/UI/Container";
 import Head from "next/head";
 import { useState } from "react";
@@ -7,7 +5,8 @@ import { Heading, Stack, Text, InputGroup, InputRightElement, Input, Divider, Bo
 import { FaSearch } from "react-icons/fa";
 import useMediaQuery from "../../hook/useMediaQuery";
 import dateFormat from "dateformat";
-import readingTime from "reading-time";
+import readingTime from "reading-time/lib/reading-time";
+import { createClient } from "contentful";
 
 export default function IndexBlog({ articles }) {
     const [query, setQuery] = useState("");
@@ -16,6 +15,7 @@ export default function IndexBlog({ articles }) {
     }
 
     const isLargerThan1024 = useMediaQuery(1024);
+    let projectTot = 0;
 
     return (
         <>
@@ -48,16 +48,16 @@ export default function IndexBlog({ articles }) {
                             />
                         </InputGroup>
                         <Divider />
-                        {articles.data
+                        {articles
                             .filter((e) =>
-                                e.status === "published"
+                                e.fields.archived === false
                             )
                             .filter((e) =>
-                                e.title.toLowerCase().includes(query.toLowerCase())
+                                e.fields.title.toLowerCase().includes(query.toLowerCase())
                             )
                             .map((article) => (
                                 <Stack
-                                    key={article.id}
+                                    key={projectTot++}
                                     direction={isLargerThan1024 ? "row" : "column"}
                                     alignItems="flex-start"
                                     justifyContent="flex-start"
@@ -67,26 +67,26 @@ export default function IndexBlog({ articles }) {
                                         <Text
                                             fontSize="sm"
                                         >
-                                            {dateFormat(Date.parse(article.date), "mmm d yyyy")}{" "}
+                                            {dateFormat(Date.parse(article.fields.date), "mmm d yyyy")}{" "}
                                             <Box as="span" fontSize="xs">
                                                 &bull;
                                             </Box>{" "}
-                                            {readingTime(article.body).text}
+                                            {readingTime(article.fields.body).text}
                                         </Text>
-                                        <Link href={"/blog/" + article.slug}>
+                                        <Link href={"/blog/" + article.fields.slug}>
                                             <a>
                                                 <Text
                                                     fontSize="xl"
                                                     fontWeight="bold"
                                                 >
-                                                    {article.title}
+                                                    {article.fields.title}
                                                 </Text>
                                             </a>
                                         </Link>
                                         <Text>
-                                            {article.summary}
+                                            {article.fields.summary}
                                         </Text>
-                                        <Link href={"/blog/" + article.slug}>
+                                        <Link href={"/blog/" + article.fields.slug}>
                                             <a>
                                                 <Text color="button1" cursor="pointer">
                                                     Learn more &rarr;
@@ -103,13 +103,22 @@ export default function IndexBlog({ articles }) {
     )
 }
 
+
+const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+});
+
 export async function getStaticProps() {
-    const directus = new Directus(config.DIRECTUS_URL);
-    const articles = await directus.items("posts").readByQuery({ meta: "total_count" });
+    let data = await client.getEntries({
+        content_type: "post",
+        limit: 3,
+        order: "sys.createdAt"
+    });
 
     return {
         props: {
-            articles: articles
+            articles: data.items.reverse()
         }
     }
 }

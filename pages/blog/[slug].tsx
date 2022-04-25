@@ -1,10 +1,9 @@
 import Container from "../../components/UI/Container";
 import Head from "next/head";
-import { Directus } from "@directus/sdk";
-import config from "../../config.json";
 import readingTime from "reading-time";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
+import mdxPrism from "mdx-prism"
 import PostContainer from "../../components/Blog/PostContainer";
 import MDXComponents from "../../components/Blog/MDXComponents";
 import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
@@ -58,7 +57,7 @@ function Post({ metadata, source }) {
                             borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
                         >
                             <Image
-                                src={config.DIRECTUS_URL + "/assets/" + metadata.hero_image}
+                                src={"https:" + metadata.image.fields.file.url}
                                 borderRadius="10px"
                                 width={1366}
                                 height={892}
@@ -89,26 +88,30 @@ function Post({ metadata, source }) {
     )
 }
 
-let directus = new Directus(config.DIRECTUS_URL);
+let client = require("contentful").createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+});
 
 export async function getStaticPaths() {
-    let posts = await directus.items("posts").readByQuery({
-        meta: "total_count"
+    let data = await client.getEntries({
+      content_type: "post"
     });
     return {
-        paths: posts.data.map((item: any) => ({
-            params: { slug: item.slug }
-        })),
-        fallback: false
+      paths: data.items.map((item) => ({
+        params: { slug: item.fields.slug }
+      })),
+      fallback: false
     };
-}
+  }
 
 export async function getStaticProps({ params }) {
-    let posts = await directus.items("posts").readByQuery({
-        search: params.slug
+    let data = await client.getEntries({
+        content_type: "post",
+        "fields.slug": params.slug
     });
 
-    const article: any = posts.data[0]
+    const article = data.items[0].fields;
     const source = article.body;
     article.readingTime = readingTime(source).text;
     const mdxSource = await serialize(source);
@@ -118,7 +121,7 @@ export async function getStaticProps({ params }) {
             metadata: article,
             source: mdxSource
         }
-    };
+    }
 }
 
 export default Post;
