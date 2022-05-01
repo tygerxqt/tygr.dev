@@ -8,6 +8,10 @@ const nextConfig = {
   
   reactStrictMode: true,
 
+  api: {
+    bodyParser: false, // Disallow body parsing, consume as stream
+  },
+
   async redirects() {
     return [
       {

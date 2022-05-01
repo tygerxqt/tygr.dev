@@ -159,7 +159,6 @@ export default function Auth() {
                                                             <Input type="email" placeholder="hello@apple.com" onChange={(e) => setLoginEmail(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl mt={6}>
-                                                            { /* Place some text next to the <formlabel> */}
                                                             <Flex flexDirection={"row"} justifyContent="space-between">
                                                                 <FormLabel zIndex={-1}>Password</FormLabel>
                                                                 {/* <Link href={"/recovery"} passHref>
@@ -179,7 +178,7 @@ export default function Auth() {
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
                                             <Image
-                                                src="https://i.imgur.com/pwIwzHl.jpg"
+                                                src="https://images.ctfassets.net/547zkxycwgvr/wPurkZMcmxDPVqArvblsY/b54925a4a05f3c291b6bb5f2ffe5ff1f/pwIwzHl.jpg"
                                                 alt="background"
                                                 width={"100%"}
                                                 height={"100%"}
@@ -306,7 +305,7 @@ export default function Auth() {
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
                                             <Image
-                                                src="https://i.imgur.com/pwIwzHl.jpg"
+                                                src="https://images.ctfassets.net/547zkxycwgvr/wPurkZMcmxDPVqArvblsY/b54925a4a05f3c291b6bb5f2ffe5ff1f/pwIwzHl.jpg"
                                                 alt="background"
                                                 width={"100%"}
                                                 height={"100%"}

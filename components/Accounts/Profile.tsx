@@ -5,6 +5,10 @@ import Container from "../UI/Container";
 import supabase from "./SupabaseClient";
 import React from 'react';
 import { Deta } from "deta";
+import { useRouter } from 'next/router'
+import axios, { Axios } from "axios";
+import { uploadFileRequest } from "../../domains/upload.services";
+import FileInputButton from "./FileInputButton";
 
 function Profile() {
     const toast = useToast();
@@ -13,6 +17,12 @@ function Profile() {
     const user = supabase.auth.user();
     const [username, setUsername] = useState(user.user_metadata.username);
     const [email, setEmail] = useState(user.email);
+
+    const router = useRouter();
+
+    const client = axios.create({
+        baseURL: process.env.NEXT_PUBLIC_URL + "/api"
+    });
 
     async function updateEmail() {
         try {
@@ -74,31 +84,46 @@ function Profile() {
     async function uploadAvatar(event) {
         try {
             setUploading(true)
-
             try {
                 if (!event.target.files || event.target.files.length === 0) {
                     throw new Error('You must select an image to upload.')
                 }
-        
+
                 let image = event.target.files[0];
                 let ext = image.name.split('.').pop();
                 const buffer = await image.arrayBuffer();
                 let byteArray = new Uint8Array(buffer);
-        
-                const deta = Deta(process.env.DETA_PROJECT_KEY);
-                const drive = deta.Drive("avatars");
-                if ((await drive.list()).names.filter(name => name.includes(user.user_metadata.username)).length > 0) {
-                    await drive.delete(await user.user_metadata.avatar.replace(/^https?:\/\/[^\/]+\/api\/avatars\//, ''));
-                }
+
+                // const deta = Deta(process.env.DETA_PROJECT_KEY);
+                // const drive = deta.Drive("avatars");
+                // if ((await drive.list()).names.filter(name => name.includes(user.user_metadata.username)).length > 0) {
+                //     await drive.delete(await user.user_metadata.avatar.replace(/^https?:\/\/[^\/]+\/api\/avatars\//, ''));
+                // }
                 const type = event.target.files[0].type;
-                await drive.put(`${user.id}.${ext}`, { data: byteArray, contentType: type });
-        
+                // await drive.put(`${user.id}.${ext}`, { data: byteArray, contentType: type });
+                const data = {
+                    name: `${user.id}.${ext}`,
+                    value: byteArray,
+                    type: type
+                }
+
+                const stringified = JSON.stringify(data)
+                console.log(stringified);
+
+                await client.put(`/avatars/put`, stringified, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                }).catch((err) => {
+                    throw err;
+                });
+
                 await supabase.auth.update({
                     data: {
-                        avatar: `https://tygr.dev/api/avatars/${user.id}.${ext}`,
+                        avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${user.id}.${ext}`,
                     },
                 });
-        
+
                 return true;
             } catch (err) {
                 throw err;
@@ -115,6 +140,14 @@ function Profile() {
             setUploading(false)
         }
     }
+
+    const onChange = async (formData: FormData) => {
+        const response = await uploadFileRequest(user.id, formData, (event) => {
+            console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+        });
+
+        console.log('response', response);
+    };
 
     async function removeAvatar() {
         try {
@@ -177,28 +210,8 @@ function Profile() {
                                         borderRadius="50%"
                                     />
                                     <Stack spacing={5} alignItems="center" pt={3}>
-                                        <Button
-                                            colorScheme="blue"
-                                            variant="outline"
-                                            disabled={true}
-                                            onClick={() => {
-                                                document.getElementById("single").click();
-                                            }}
-                                        >
-                                            {uploading ? 'Uploading ...' : 'Upload'}
-                                        </Button>
-                                        <input
-                                            style={{
-                                                visibility: 'hidden',
-                                                position: 'absolute',
-                                            }}
-                                            type="file"
-                                            id="single"
-                                            accept="image/*"
-                                            onChange={uploadAvatar}
-                                            disabled={uploading}
-                                        />
-                                        <Button onClick={() => removeAvatar()} disabled={true}>Remove</Button>
+                                        <FileInputButton uploadFileName="upload" onChange={onChange} />
+                                        <Button onClick={() => removeAvatar()}>Remove</Button>
                                     </Stack>
                                 </Flex>
                                 <Box>
@@ -243,7 +256,7 @@ function Profile() {
 }
 
 export async function getServerSideProps() {
-    const list: Object = await fetch("https://localhost:3000/api/avatars/list").then(data => data.json());
+    const list: Object = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/avatars/list`).then(data => data.json());
 
     return {
         props: {

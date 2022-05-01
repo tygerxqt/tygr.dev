@@ -48,7 +48,7 @@ export default function Navbar({ enableTransition }) {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderColor={colorMode === 'light' ? '#000000' : '#FFFFFF'}>
-            <Image borderTop={'4vw'} w="32px" h="32px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
+            <Image borderTop={'4vw'} w="32px" h="32px" src={colorMode === 'light' ? 'https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png' : 'https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png'} alt={'tygerxqt'} />
           </DrawerHeader>
           <DrawerBody>
             <Stack spacing="24px">
@@ -98,7 +98,7 @@ export default function Navbar({ enableTransition }) {
           borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
           <NextLink href="/" passHref>
-            <Image borderTop={'4vw'} w={{ base: "32px", md: "46px" }} h={{ base: "32px", md: "46px" }} src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
+            <Image borderTop={'4vw'} w={{ base: "32px", md: "46px" }} h={{ base: "32px", md: "46px" }} src={colorMode === 'light' ? 'https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png' : 'https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png'} alt={'tygerxqt'} />
           </NextLink>
           {isLargerThan768 ? (
             <Center>
@@ -142,7 +142,11 @@ export default function Navbar({ enableTransition }) {
                         </Link>
                       </MenuGroup>
                       <MenuGroup>
-                        <MenuItem closeOnSelect={true} onClick={() => supabase.auth.signOut()}>
+                        <MenuItem closeOnSelect={true} onClick={() => {
+                          supabase.auth.signOut()
+                          window.location.reload()
+                        }
+                          }>
                           Sign out
                         </MenuItem>
                       </MenuGroup>
