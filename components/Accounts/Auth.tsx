@@ -3,7 +3,7 @@ import Head from "next/head"
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
-import supabase from "./SupabaseClient";
+import supabase from "../../lib/SupabaseClient";
 
 export default function Auth() {
     const [loading, setLoading] = useState(false);

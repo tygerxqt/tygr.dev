@@ -1,12 +1,10 @@
 import { Button, Divider, Flex, Heading, Stack, Text, Box, SimpleGrid, Avatar, Input, useToast } from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../UI/Container";
-import supabase from "./SupabaseClient";
+import supabase from "../../lib/SupabaseClient";
 import React from 'react';
 import { Deta } from "deta";
-import { useRouter } from 'next/router'
-import axios, { Axios } from "axios";
 import { uploadFileRequest } from "../../domains/upload.services";
 import FileInputButton from "./FileInputButton";
 
@@ -15,14 +13,15 @@ function Profile() {
     const [uploading, setUploading] = useState(false);
 
     const user = supabase.auth.user();
+    const [token, setToken] = useState(null);
     const [username, setUsername] = useState(user.user_metadata.username);
     const [email, setEmail] = useState(user.email);
 
-    const router = useRouter();
-
-    const client = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_URL + "/api"
-    });
+    useEffect(() => {
+        const value = localStorage.getItem("supabase.auth.token");
+        const token = !!value ? JSON.parse(value).currentSession.access_token : null;
+        setToken(token);
+    }, []);
 
     async function updateEmail() {
         try {
@@ -81,72 +80,30 @@ function Profile() {
         }
     }
 
-    async function uploadAvatar(event) {
-        try {
-            setUploading(true)
-            try {
-                if (!event.target.files || event.target.files.length === 0) {
-                    throw new Error('You must select an image to upload.')
-                }
+    const onChange = async (formData: FormData) => {
+        setUploading(true);
+        const response = await uploadFileRequest(user.id, token, formData, async (event) => {
+            console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+        });
 
-                let image = event.target.files[0];
-                let ext = image.name.split('.').pop();
-                const buffer = await image.arrayBuffer();
-                let byteArray = new Uint8Array(buffer);
-
-                // const deta = Deta(process.env.DETA_PROJECT_KEY);
-                // const drive = deta.Drive("avatars");
-                // if ((await drive.list()).names.filter(name => name.includes(user.user_metadata.username)).length > 0) {
-                //     await drive.delete(await user.user_metadata.avatar.replace(/^https?:\/\/[^\/]+\/api\/avatars\//, ''));
-                // }
-                const type = event.target.files[0].type;
-                // await drive.put(`${user.id}.${ext}`, { data: byteArray, contentType: type });
-                const data = {
-                    name: `${user.id}.${ext}`,
-                    value: byteArray,
-                    type: type
-                }
-
-                const stringified = JSON.stringify(data)
-                console.log(stringified);
-
-                await client.put(`/avatars/put`, stringified, {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).catch((err) => {
-                    throw err;
-                });
-
-                await supabase.auth.update({
-                    data: {
-                        avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${user.id}.${ext}`,
-                    },
-                });
-
-                return true;
-            } catch (err) {
-                throw err;
-            }
-        } catch (error) {
+        if (response.error) {
+            setUploading(false);
             toast({
                 title: "Error",
-                description: error.message,
+                description: response.error,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
             });
-        } finally {
-            setUploading(false)
+            return;
         }
-    }
 
-    const onChange = async (formData: FormData) => {
-        const response = await uploadFileRequest(user.id, formData, (event) => {
-            console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+        await supabase.auth.update({
+            data: {
+                avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+            },
         });
-
-        console.log('response', response);
+        setUploading(false);
     };
 
     async function removeAvatar() {
@@ -226,27 +183,15 @@ function Profile() {
                                     </Text>
                                     <Input value={user.email} onChange={(e) => setEmail(e.target.value)} />
                                 </Box>
-                            </Stack>
-                            {/* <Box display={{ base: "none", md: "block" }}>
-                                <Heading textAlign={"center"} size="lg" pb={5}>Preview</Heading>
-                                <Box p={8} my={2} bg={"#222222"} rounded="lg">
-                                    <Stack spacing={5}>
-                                        <Center>
-                                            <Avatar
-                                                name={username}
-                                                src={user.user_metadata.avatar}
-                                                size="xl"
-                                            />
-                                        </Center>
-                                        <Box textAlign={"center"}>
-                                            <Heading size="md">
-                                                {username}
-                                            </Heading>
-                                            <Text>{email}</Text>
-                                        </Box>
-                                    </Stack>
+                                <Box>
+                                    <Text size="sm" pb="1">
+                                        ID
+                                    </Text>
+                                    <Text>
+                                        {JSON.stringify(user)}
+                                    </Text>
                                 </Box>
-                            </Box> */}
+                            </Stack>
                         </SimpleGrid>
                     </Stack>
                 </Stack>

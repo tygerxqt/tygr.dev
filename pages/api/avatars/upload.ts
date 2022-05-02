@@ -2,8 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import multer from 'multer';
 import { ApiResponse } from '../../../types/ApiResponse';
-import supabase from "../../../components/Accounts/SupabaseClient";
 import { Deta } from 'deta';
+import supabase from '../../../lib/SupabaseClient';
+import cookieParser from 'cookie-parser';
+import cookies from "cookies";
+
 interface NextConnectApiRequest extends NextApiRequest {
   file: Express.Multer.File;
 }
@@ -15,7 +18,7 @@ const upload = multer({
   limits: { fileSize: tenMegabyteInBytes },
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    const acceptFile: boolean = ['image/jpeg', 'image/png', 'image/gif'].includes(file.mimetype);
+    const acceptFile: boolean = ['image/jpeg', 'image/png'].includes(file.mimetype);
     cb(null, acceptFile);
   },
 });
@@ -30,12 +33,26 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.use(upload.single('upload'));
+apiRoute.use(cookieParser());
 
 apiRoute.post(async (req: NextConnectApiRequest, res: NextApiResponse<ResponseData>) => {
+  if (!req.file) {
+    res.status(400).json({ error: 'Invalid file type!' });
+  }
+
   if (!req.query || !req.query.id) return res.status(500).json({
     error: "You need to provide the User ID."
   });
-  console.log(req.file);
+
+  if (!req.query || !req.query.token) return res.status(500).json({
+    error: "You need to provide the User Token."
+  });
+
+  const { user } = await supabase.auth.api.getUser(req.query.token as string);
+
+  if (!user) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   let ext = req.file.originalname.split('.').pop();
   const buffer = await req.file.buffer;
@@ -45,13 +62,7 @@ apiRoute.post(async (req: NextConnectApiRequest, res: NextApiResponse<ResponseDa
   const drive = deta.Drive("avatars");
   await drive.put(`${req.query.id}.${ext}`, { data: byteArray });
 
-  await supabase.auth.update({
-    data: {
-      avatar: `${process.env.NEXT_PUBLIC_URL}api/avatars/${req.query.id}.${ext}`,
-    },
-  });
-
-  res.status(200);
+  res.status(200).json({ "data": [`${req.query.id}.${ext}`] });
 });
 
 export const config = {

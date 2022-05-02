@@ -26,7 +26,7 @@ import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs"
-import supabase from "../Accounts/SupabaseClient";
+import supabase from "../../lib/SupabaseClient";
 import Link from "next/link";
 
 export default function Navbar({ enableTransition }) {
@@ -146,7 +146,7 @@ export default function Navbar({ enableTransition }) {
                           supabase.auth.signOut()
                           window.location.reload()
                         }
-                          }>
+                        }>
                           Sign out
                         </MenuItem>
                       </MenuGroup>
