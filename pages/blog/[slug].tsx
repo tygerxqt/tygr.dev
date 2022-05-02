@@ -3,7 +3,6 @@ import Head from "next/head";
 import readingTime from "reading-time";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import mdxPrism from "mdx-prism"
 import PostContainer from "../../components/Blog/PostContainer";
 import MDXComponents from "../../components/Blog/MDXComponents";
 import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
