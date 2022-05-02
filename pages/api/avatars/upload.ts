@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import multer from 'multer';
-import fs from 'fs';
 import { ApiResponse } from '../../../types/ApiResponse';
 import supabase from "../../../components/Accounts/SupabaseClient";
 import { Deta } from 'deta';
@@ -49,7 +48,7 @@ apiRoute.post(async (req: NextConnectApiRequest, res: NextApiResponse<ResponseDa
 
   await supabase.auth.update({
     data: {
-      avatar: `http://localhost:3000/api/avatars/${req.query.id}.${ext}`,
+      avatar: `${process.env.NEXT_PUBLIC_URL}api/avatars/${req.query.id}.${ext}`,
     },
   });
 
