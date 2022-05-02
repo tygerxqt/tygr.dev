@@ -4,9 +4,8 @@ import multer from 'multer';
 import { ApiResponse } from '../../../types/ApiResponse';
 import supabase from "../../../components/Accounts/SupabaseClient";
 import { Deta } from 'deta';
-
 interface NextConnectApiRequest extends NextApiRequest {
-  files: Express.Multer.File[];
+  file: Express.Multer.File;
 }
 type ResponseData = ApiResponse<string[], string>;
 
