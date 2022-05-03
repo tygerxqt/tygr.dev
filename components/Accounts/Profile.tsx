@@ -5,7 +5,6 @@ import Container from "../UI/Container";
 import supabase from "../../lib/SupabaseClient";
 import React from 'react';
 import { uploadFileRequest } from "../../domains/upload.services";
-import FileInputButton from "./FileInputButton";
 import axios from "axios";
 
 function Profile() {
@@ -81,8 +80,58 @@ function Profile() {
         }
     }
 
+    interface IProps {
+        acceptedFileTypes?: string;
+        allowMultipleFiles?: boolean;
+        onChange: (formData: FormData) => void;
+        uploadFileName: string;
+    }
+
+    const UiFileInputButton: React.FC<IProps> = (props) => {
+        const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+        const formRef = React.useRef<HTMLFormElement | null>(null);
+        const [uploading, setUploading] = useState(false);
+
+        const onClickHandler = () => {
+            setUploading(true);
+            fileInputRef.current?.click();
+        };
+
+        const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (!event.target.files?.length) {
+                return;
+            }
+
+            const formData = new FormData();
+
+            Array.from(event.target.files).forEach((file) => {
+                formData.append(event.target.name, file);
+            });
+
+            props.onChange(formData);
+
+            formRef.current?.reset();
+        };
+
+        return (
+            <form ref={formRef}>
+                <Button type="button" onClick={onClickHandler} colorScheme="blue" variant="outline">
+                    {uploading ? <Spinner /> : "Upload"}
+                </Button>
+                <input
+                    accept={props.acceptedFileTypes}
+                    multiple={props.allowMultipleFiles}
+                    name={props.uploadFileName}
+                    onChange={onChangeHandler}
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    type="file"
+                />
+            </form>
+        );
+    };
+
     const UploadAvatar = async (formData: FormData) => {
-        setUploading(true);
         const response = await uploadFileRequest(user.id, token, formData, async (event) => {
             console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
         });
@@ -168,7 +217,7 @@ function Profile() {
                                         borderRadius="50%"
                                     />
                                     <Stack spacing={5} alignItems="center" pt={3}>
-                                        <FileInputButton uploadFileName="upload" onChange={UploadAvatar} />
+                                        <UiFileInputButton uploadFileName="upload" onChange={UploadAvatar} />
                                         <Button onClick={() => removeAvatar(user.id, token)}> {removing ? <Spinner /> : "Remove"} </Button>
                                     </Stack>
                                 </Flex>

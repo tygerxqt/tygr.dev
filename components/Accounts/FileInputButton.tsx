@@ -1,5 +1,5 @@
-import { Button } from '@chakra-ui/react';
-import React from 'react';
+import { Button, Spinner } from '@chakra-ui/react';
+import React, { useRef, useState } from 'react';
 
 export interface IProps {
   acceptedFileTypes?: string;
@@ -11,8 +11,10 @@ export interface IProps {
 const UiFileInputButton: React.FC<IProps> = (props) => {
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const formRef = React.useRef<HTMLFormElement | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const onClickHandler = () => {
+    setUploading(true);
     fileInputRef.current?.click();
   };
 
@@ -35,7 +37,7 @@ const UiFileInputButton: React.FC<IProps> = (props) => {
   return (
     <form ref={formRef}>
       <Button type="button" onClick={onClickHandler} colorScheme="blue" variant="outline">
-        Upload
+        {uploading ? <Spinner /> : "Upload"}
       </Button>
       <input
         accept={props.acceptedFileTypes}
