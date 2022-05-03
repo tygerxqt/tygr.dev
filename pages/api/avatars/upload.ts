@@ -5,8 +5,6 @@ import { ApiResponse } from '../../../types/ApiResponse';
 import { Deta } from 'deta';
 import supabase from '../../../lib/SupabaseClient';
 import cookieParser from 'cookie-parser';
-import cookies from "cookies";
-
 interface NextConnectApiRequest extends NextApiRequest {
   file: Express.Multer.File;
 }
@@ -55,7 +53,7 @@ apiRoute.post(async (req: NextConnectApiRequest, res: NextApiResponse<ResponseDa
   }
 
   let ext = req.file.originalname.split('.').pop();
-  const buffer = await req.file.buffer;
+  const buffer = req.file.buffer;
   let byteArray = new Uint8Array(buffer);
 
   const deta = Deta(process.env.DETA_PROJECT_KEY);

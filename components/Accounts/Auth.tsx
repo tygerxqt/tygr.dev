@@ -4,8 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
+import { useRouter } from "next/router";
 
 export default function Auth() {
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState("login");
 
@@ -62,6 +64,8 @@ export default function Auth() {
         try {
             setLoading(true);
             if (password !== passwordConfirm) throw new Error("Passwords do not match");
+            if (!name) throw Error("Please provide your full name.");
+            if (!username) throw Error("Please provide your username.");
             const { user, session, error } = await supabase.auth.signUp({ email: email, password: password }, {
                 data: {
                     full_name: name,
@@ -86,6 +90,8 @@ export default function Auth() {
                 duration: 9000,
                 isClosable: true,
             });
+            // var domain = email.substring(email. lastIndexOf("@") +1);
+            // router.push("https://" + domain);
         } catch (error) {
             toast({
                 title: "Error",
@@ -147,7 +153,9 @@ export default function Auth() {
                                                     </Heading>
                                                     <HStack spacing={1}>
                                                         <Text>Don&apos;t have an account?</Text>
-                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("register")}>
+                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                            setMode("register");
+                                                        }}>
                                                             Sign Up
                                                         </Button>
                                                     </HStack>
@@ -214,7 +222,9 @@ export default function Auth() {
                                             </Heading>
                                             <HStack spacing={1}>
                                                 <Text>Don&apos;t have an account?</Text>
-                                                <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("register")}>
+                                                <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                    setMode("register")
+                                                }}>
                                                     Sign Up
                                                 </Button>
                                             </HStack>
@@ -269,7 +279,9 @@ export default function Auth() {
                                                     </Heading>
                                                     <HStack spacing={1}>
                                                         <Text>Have an account?</Text>
-                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("login")}>
+                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                            setMode("login");
+                                                        }}>
                                                             Log in
                                                         </Button>
                                                     </HStack>

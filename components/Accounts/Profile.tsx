@@ -1,16 +1,17 @@
-import { Button, Divider, Flex, Heading, Stack, Text, Box, SimpleGrid, Avatar, Input, useToast } from "@chakra-ui/react";
+import { Button, Divider, Flex, Heading, Stack, Text, Box, SimpleGrid, Avatar, Input, useToast, Spinner } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Container from "../UI/Container";
 import supabase from "../../lib/SupabaseClient";
 import React from 'react';
-import { Deta } from "deta";
 import { uploadFileRequest } from "../../domains/upload.services";
 import FileInputButton from "./FileInputButton";
+import axios from "axios";
 
 function Profile() {
     const toast = useToast();
     const [uploading, setUploading] = useState(false);
+    const [removing, setRemoving] = useState(false);
 
     const user = supabase.auth.user();
     const [token, setToken] = useState(null);
@@ -80,7 +81,7 @@ function Profile() {
         }
     }
 
-    const onChange = async (formData: FormData) => {
+    const UploadAvatar = async (formData: FormData) => {
         setUploading(true);
         const response = await uploadFileRequest(user.id, token, formData, async (event) => {
             console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
@@ -106,12 +107,10 @@ function Profile() {
         setUploading(false);
     };
 
-    async function removeAvatar() {
+    async function removeAvatar(id: string, token: string) {
         try {
-            const deta = Deta(process.env.DETA_PROJECT_KEY);
-            const drive = deta.Drive("avatars");
-            const filename = await user.user_metadata.avatar.replace(/^https?:\/\/[^\/]+\/api\/avatars\//, '');
-            await drive.delete(filename);
+            setRemoving(true);
+            await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
 
             // Remove the avatar from the user
             let { error: UpdateError } = await supabase.auth.update({
@@ -137,6 +136,8 @@ function Profile() {
                 duration: 9000,
                 isClosable: true,
             });
+        } finally {
+            setRemoving(false);
         }
     }
 
@@ -167,8 +168,8 @@ function Profile() {
                                         borderRadius="50%"
                                     />
                                     <Stack spacing={5} alignItems="center" pt={3}>
-                                        <FileInputButton uploadFileName="upload" onChange={onChange} />
-                                        <Button onClick={() => removeAvatar()}>Remove</Button>
+                                        <FileInputButton uploadFileName="upload" onChange={UploadAvatar} />
+                                        <Button onClick={() => removeAvatar(user.id, token)}> {removing ? <Spinner /> : "Remove"} </Button>
                                     </Stack>
                                 </Flex>
                                 <Box>
@@ -182,14 +183,6 @@ function Profile() {
                                         Email
                                     </Text>
                                     <Input value={user.email} onChange={(e) => setEmail(e.target.value)} />
-                                </Box>
-                                <Box>
-                                    <Text size="sm" pb="1">
-                                        ID
-                                    </Text>
-                                    <Text>
-                                        {JSON.stringify(user)}
-                                    </Text>
                                 </Box>
                             </Stack>
                         </SimpleGrid>
