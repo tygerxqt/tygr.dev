@@ -1,10 +1,11 @@
-import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast } from "@chakra-ui/react";
+import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast, Divider, ButtonGroup, VisuallyHidden } from "@chakra-ui/react";
 import Head from "next/head"
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
 import { useRouter } from "next/router";
+import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
 
 export default function Auth() {
     const router = useRouter();
@@ -179,9 +180,30 @@ export default function Auth() {
                                                         </FormControl>
                                                     </form>
                                                 </Box>
-                                                <Button variant={"solid"} mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
+                                                <Button variant={"solid"} w="full" mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                     Confirm
                                                 </Button>
+                                                <HStack p={4}>
+                                                    <Divider />
+                                                    <Text fontSize="sm" whiteSpace="nowrap">
+                                                        or continue with
+                                                    </Text>
+                                                    <Divider />
+                                                </HStack>
+                                                <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
+                                                    <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Discord</VisuallyHidden>
+                                                        <FaDiscord size={"22px"} />
+                                                    </Button>
+                                                    <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Github</VisuallyHidden>
+                                                        <FaGithub size={"22px"} />
+                                                    </Button>
+                                                    <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
+                                                        <FaSpotify size={"22px"} />
+                                                    </Button>
+                                                </ButtonGroup>
                                             </Box>
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
@@ -242,9 +264,30 @@ export default function Auth() {
                                                     <Input type="password" placeholder="********" onChange={(e) => setLoginPassword(e.target.value)} />
                                                 </FormControl>
                                             </form>
-                                            <Button variant={"solid"} mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
+                                            <Button variant={"solid"} mt={6} w="full" onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                 Confirm
                                             </Button>
+                                            <HStack p={8}>
+                                                <Divider />
+                                                <Text fontSize="sm" whiteSpace="nowrap">
+                                                    or continue with
+                                                </Text>
+                                                <Divider />
+                                            </HStack>
+                                            <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
+                                                <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Discord</VisuallyHidden>
+                                                    <FaDiscord size={"22px"} />
+                                                </Button>
+                                                <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Github</VisuallyHidden>
+                                                    <FaGithub size={"22px"} />
+                                                </Button>
+                                                <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
+                                                    <FaSpotify size={"22px"} />
+                                                </Button>
+                                            </ButtonGroup>
                                         </Box>
                                     </Center>
                                 </Stack>

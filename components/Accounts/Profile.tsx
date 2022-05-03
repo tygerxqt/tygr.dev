@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Heading, Stack, Text, Box, SimpleGrid, Avatar, Input, useToast, Spinner } from "@chakra-ui/react";
+import { Button, Divider, Flex, Heading, Stack, Text, Box, SimpleGrid, Avatar, Input, useToast, Spinner, Spacer, Center } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Container from "../UI/Container";
@@ -6,6 +6,8 @@ import supabase from "../../lib/SupabaseClient";
 import React from 'react';
 import { uploadFileRequest } from "../../domains/upload.services";
 import axios from "axios";
+import EmailField from "./EmailField";
+import UsernameField from "./UsernameField";
 
 function Profile() {
     const toast = useToast();
@@ -14,71 +16,12 @@ function Profile() {
 
     const user = supabase.auth.user();
     const [token, setToken] = useState(null);
-    const [username, setUsername] = useState(user.user_metadata.username);
-    const [email, setEmail] = useState(user.email);
 
     useEffect(() => {
         const value = localStorage.getItem("supabase.auth.token");
         const token = !!value ? JSON.parse(value).currentSession.access_token : null;
         setToken(token);
     }, []);
-
-    async function updateEmail() {
-        try {
-            const { error } = await supabase.auth.update({
-                email: email
-            });
-
-            if (error) {
-                toast({
-                    title: "Error",
-                    description: error.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            } else {
-                toast({
-                    title: "Success",
-                    description: "Profile updated",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            }
-        } catch (err) {
-            throw err;
-        }
-    }
-
-    async function updateUsername() {
-        try {
-            const { error } = await supabase.auth.update({
-                data: {
-                    username: setUsername,
-                },
-            });
-            if (error) {
-                toast({
-                    title: "Error",
-                    description: error.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            } else {
-                toast({
-                    title: "Success",
-                    description: "Profile updated",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            }
-        } catch (err) {
-            throw err;
-        }
-    }
 
     interface IProps {
         acceptedFileTypes?: string;
@@ -209,30 +152,26 @@ function Profile() {
                         <Divider />
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
                             <Stack spacing={5}>
-                                <Flex flexDirection={"row"} justifyContent="center" gap={10}>
+                                <Flex flexDirection={"row"} justifyContent="center" gap={{ base: 10, lg: "3rem" }}>
                                     <Avatar
                                         src={user.user_metadata.avatar}
-                                        w="128px"
-                                        h="128px"
+                                        w={{
+                                            base: "128px", lg: "192px"
+                                        }}
+                                        h={{
+                                            base: "128px", lg: "192px"
+                                        }}
                                         borderRadius="50%"
                                     />
-                                    <Stack spacing={5} alignItems="center" pt={3}>
-                                        <UiFileInputButton uploadFileName="upload" onChange={UploadAvatar} />
-                                        <Button onClick={() => removeAvatar(user.id, token)}> {removing ? <Spinner /> : "Remove"} </Button>
-                                    </Stack>
+                                    <Center>
+                                        <Stack spacing={5} alignItems="center" pt={3}>
+                                            <UiFileInputButton uploadFileName="upload" onChange={UploadAvatar} />
+                                            <Button onClick={() => removeAvatar(user.id, token)}> {removing ? <Spinner /> : "Remove"} </Button>
+                                        </Stack>
+                                    </Center>
                                 </Flex>
-                                <Box>
-                                    <Text size="sm" pb="1">
-                                        Username
-                                    </Text>
-                                    <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-                                </Box>
-                                <Box>
-                                    <Text size="sm" pb="1">
-                                        Email
-                                    </Text>
-                                    <Input value={user.email} onChange={(e) => setEmail(e.target.value)} />
-                                </Box>
+                                <UsernameField user={user} />
+                                <EmailField user={user} />
                             </Stack>
                         </SimpleGrid>
                     </Stack>

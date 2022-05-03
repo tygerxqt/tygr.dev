@@ -131,7 +131,7 @@ export default function Navbar({ enableTransition }) {
                       size="md"
                     />
                     <MenuList>
-                      <MenuGroup>
+                      <MenuGroup title={"Account"}>
                         {/* <Center>
                           <Box p={4}>
                             <Avatar name={user.user_metadata.username} src={user.user_metadata.avatar} size="xl" />
