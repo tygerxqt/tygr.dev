@@ -43,6 +43,7 @@
     "reading-time": "^1.5.0",
     "rehype": "^12.0.1",
     "tls": "^0.0.1",
+    "vercel": "^24.2.0",
     "webpack": "4"
   },
   "devDependencies": {

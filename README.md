@@ -5,7 +5,7 @@
 * Framework: [NextJS](https://nextjs.org/)
 * Deployment: [Vercel](https://vercel.com/)
 * Content: [MDX](https://mdxjs.com/)
-* CMS: [Directus](https://directus.cloud/)
+* CMS: [Contentful](https://contentful.com/)
 * Styling: [Chakra UI](https://chakra-ui.com/)
 
 # 1-Click Deploys
