@@ -107,7 +107,7 @@ function Profile() {
             // Remove the avatar from the user
             let { error: UpdateError } = await supabase.auth.update({
                 data: {
-                    avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
+                    avatar: null,
                 }
             });
 
@@ -172,9 +172,6 @@ function Profile() {
                                 </Flex>
                                 <UsernameField user={user} />
                                 <EmailField user={user} />
-                                <Text>
-                                    {JSON.stringify(user)}
-                                </Text>
                             </Stack>
                         </SimpleGrid>
                     </Stack>
@@ -182,6 +179,16 @@ function Profile() {
             </Container >
         </>
     )
+}
+
+export async function getServerSideProps() {
+    const list: Object = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/avatars/list`).then(data => data.json());
+
+    return {
+        props: {
+            list: list,
+        }
+    }
 }
 
 export default Profile;

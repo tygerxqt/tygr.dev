@@ -8,12 +8,11 @@ interface IProps {
     user: User;
 }
 
-const UsernameField: React.FC<IProps> = async ({ user }) => {
-    const { data: originUsername, error } = await supabase.from("users").select("username").eq("id", user.id);
+const UsernameField: React.FC<IProps> = ({ user }) => {
     const toast = useToast();
     const [editing, setEditing] = useState(false);
-    const [oldUsername, setOldUsername] = useState(originUsername);
-    const [username, setUsername] = useState(originUsername);
+    const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
+    const [username, setUsername] = useState(user.user_metadata.username);
 
     const handleUpdate = async () => {
         try {
@@ -25,18 +24,13 @@ const UsernameField: React.FC<IProps> = async ({ user }) => {
                 isClosable: true,
             });
 
-            const { data, error } = await supabase.from("users").update({
-                username: username,
-            }).eq("id", user.id);
-
-            if (error) {
-                if (error.code === "23505") {
-                    setUsername(oldUsername)
-                    throw new Error("Username is already taken.");
-                } else {
-                    throw error;
+            const { user, error } = await supabase.auth.update({
+                data: {
+                    username: username,
                 }
-            }
+            });
+
+            if (error) throw error;
 
             toast({
                 title: "Success",
@@ -47,7 +41,6 @@ const UsernameField: React.FC<IProps> = async ({ user }) => {
             });
 
             setOldUsername(username);
-            setUsername(username);
         } catch (err) {
             toast({
                 title: "Error",
