@@ -71,7 +71,7 @@ export default function Auth() {
                 data: {
                     full_name: name,
                     username: username,
-                    avatar: null,
+                    avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
                 }
             });
             if (error) {
@@ -165,7 +165,7 @@ export default function Auth() {
                                                     <form>
                                                         <FormControl >
                                                             <FormLabel zIndex={-1}>Email</FormLabel>
-                                                            <Input type="email" placeholder="hello@apple.com" onChange={(e) => setLoginEmail(e.target.value)} />
+                                                            <Input type="email" placeholder="john@doe.com" onChange={(e) => setLoginEmail(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl mt={6}>
                                                             <Flex flexDirection={"row"} justifyContent="space-between">
@@ -183,7 +183,7 @@ export default function Auth() {
                                                 <Button variant={"solid"} w="full" mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                     Confirm
                                                 </Button>
-                                                <HStack p={4}>
+                                                {/* <HStack p={4}>
                                                     <Divider />
                                                     <Text fontSize="sm" whiteSpace="nowrap">
                                                         or continue with
@@ -203,7 +203,7 @@ export default function Auth() {
                                                         <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
                                                         <FaSpotify size={"22px"} />
                                                     </Button>
-                                                </ButtonGroup>
+                                                </ButtonGroup> */}
                                             </Box>
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
@@ -257,7 +257,7 @@ export default function Auth() {
                                             <form>
                                                 <FormControl>
                                                     <FormLabel>Email</FormLabel>
-                                                    <Input type="email" placeholder="hello@apple.com" onChange={(e) => setLoginEmail(e.target.value)} />
+                                                    <Input type="email" placeholder="john@doe.com" onChange={(e) => setLoginEmail(e.target.value)} />
                                                 </FormControl>
                                                 <FormControl mt={6}>
                                                     <FormLabel>Password</FormLabel>
@@ -267,7 +267,7 @@ export default function Auth() {
                                             <Button variant={"solid"} mt={6} w="full" onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                 Confirm
                                             </Button>
-                                            <HStack p={8}>
+                                            {/* <HStack p={8}>
                                                 <Divider />
                                                 <Text fontSize="sm" whiteSpace="nowrap">
                                                     or continue with
@@ -287,7 +287,7 @@ export default function Auth() {
                                                     <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
                                                     <FaSpotify size={"22px"} />
                                                 </Button>
-                                            </ButtonGroup>
+                                            </ButtonGroup> */}
                                         </Box>
                                     </Center>
                                 </Stack>

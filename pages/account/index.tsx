@@ -7,6 +7,7 @@ export default function Account() {
     const [session, setSession] = useState(null)
 
     useEffect(() => {
+        console.log(session);
         setSession(supabase.auth.session())
 
         supabase.auth.onAuthStateChange((_event, session) => {
