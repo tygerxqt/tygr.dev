@@ -122,7 +122,7 @@ export default function Navbar({ enableTransition }) {
                 {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
               </Button>
               {session ? (
-                <NextLink href={"/account"} passHref>
+                <NextLink href={"/profile"} passHref>
                   <Menu>
                     <MenuButton
                       as={Avatar}
@@ -137,7 +137,7 @@ export default function Navbar({ enableTransition }) {
                             <Avatar name={user.user_metadata.username} src={user.user_metadata.avatar} size="xl" />
                           </Box>
                         </Center> */}
-                        <Link href="/account" passHref>
+                        <Link href="/profile" passHref>
                           <MenuItem closeOnSelect={true}>Profile</MenuItem>
                         </Link>
                       </MenuGroup>
@@ -154,7 +154,7 @@ export default function Navbar({ enableTransition }) {
                   </Menu>
                 </NextLink>
               ) : (
-                <NextLink href={"/account"} passHref>
+                <NextLink href={"/profile"} passHref>
                   <Button
                     variant="outline"
                     p="4"
@@ -170,7 +170,7 @@ export default function Navbar({ enableTransition }) {
           ) : (
             <Center>
               {session ? (
-                <NextLink href={"/account"} passHref>
+                <NextLink href={"/profile"} passHref>
                   <Avatar
                     as="a"
                     size="sm"
@@ -180,7 +180,7 @@ export default function Navbar({ enableTransition }) {
                   />
                 </NextLink>
               ) : (
-                <NextLink href="/account" passHref>
+                <NextLink href="/profile" passHref>
                   <Button
                     variant="outline"
                     p="4"

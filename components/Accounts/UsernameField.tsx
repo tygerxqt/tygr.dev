@@ -1,14 +1,14 @@
 import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
 import { User } from "@supabase/supabase-js";
+import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../lib/SupabaseClient";
-
 interface IProps {
     user: User;
 }
 
-const UsernameField: React.FC<IProps> = ({ user }) => {
+const UsernameField: React.FC<IProps> = ({ user }, data) => {
     const toast = useToast();
     const [editing, setEditing] = useState(false);
     const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
@@ -24,13 +24,25 @@ const UsernameField: React.FC<IProps> = ({ user }) => {
                 isClosable: true,
             });
 
-            const { user, error } = await supabase.auth.update({
+            const { error: tableError } = await supabase.from("users").update({ username: username }).eq("id", user.id);
+            const { error: metadataError } = await supabase.auth.update({
                 data: {
-                    username: username,
-                }
+                    username: username
+                },
             });
 
-            if (error) throw error;
+            if (tableError) {
+                if (tableError.code === "23505") {
+                    setUsername(oldUsername);
+                    throw new Error("Username is already taken.")
+                }
+                setUsername(oldUsername);
+                throw tableError;
+            }
+
+            if (metadataError) {
+                throw new Error("Metadata Error: " + metadataError.message);
+            }
 
             toast({
                 title: "Success",
@@ -40,6 +52,7 @@ const UsernameField: React.FC<IProps> = ({ user }) => {
                 isClosable: true,
             });
 
+            setUsername(username);
             setOldUsername(username);
         } catch (err) {
             toast({
@@ -94,6 +107,16 @@ const UsernameField: React.FC<IProps> = ({ user }) => {
             </Box>
         </>
     )
+}
+
+export async function getServerSideProps(user: User) {
+    const res = await axios.get(`/api/users/${user.id}?token=${supabase.auth.session().access_token}`);
+
+    return {
+        props: {
+            data: res.data,
+        }
+    }
 }
 
 export default UsernameField;

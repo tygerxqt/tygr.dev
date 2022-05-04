@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import supabase from '../../lib/SupabaseClient';
 import Auth from '../../components/Accounts/Auth';
-import Account from '../../components/Accounts/Account';
+import Profile from '../../components/Accounts/Profile';
 
-export default function AccountPage() {
+export default function Account() {
     const [session, setSession] = useState(null)
 
     useEffect(() => {
@@ -16,7 +16,7 @@ export default function AccountPage() {
 
     return (
         <div>
-            {!session ? <Auth /> : <Account />}
+            {!session ? <Auth /> : <Profile />}
         </div>
     )
 }

@@ -10,11 +10,11 @@ import EmailField from "./EmailField";
 import UsernameField from "./UsernameField";
 
 function Profile() {
+    const user = supabase.auth.user();
     const toast = useToast();
     const [uploading, setUploading] = useState(false);
     const [removing, setRemoving] = useState(false);
 
-    const user = supabase.auth.user();
     const [token, setToken] = useState(null);
 
     useEffect(() => {
@@ -137,7 +137,7 @@ function Profile() {
         <>
             <Container enableTransition={false}>
                 <Head>
-                    <title>Account</title>
+                    <title>Profile</title>
                 </Head>
                 <Stack
                     spacing={10}

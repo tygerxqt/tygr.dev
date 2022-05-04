@@ -30,7 +30,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-  
+
     const deta = Deta(process.env.DETA_PROJECT_KEY);
     const drive = deta.Drive("avatars");
     const list = await (await drive.list()).names;
@@ -48,7 +48,6 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
 
   } catch (err) {
     res.status(502).json({ error: err });
-    console.log(err);
   }
 });
 

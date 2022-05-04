@@ -1,14 +1,11 @@
-import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast, Divider, ButtonGroup, VisuallyHidden } from "@chakra-ui/react";
+import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast } from "@chakra-ui/react";
 import Head from "next/head"
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
-import { useRouter } from "next/router";
-import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
 
 export default function Auth() {
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState("login");
 
@@ -71,18 +68,11 @@ export default function Auth() {
                 data: {
                     full_name: name,
                     username: username,
-                    avatar: null,
+                    avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
                 }
             });
             if (error) {
-                toast({
-                    title: "Error",
-                    description: error.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-                return console.log(error);
+                throw error;
             }
             toast({
                 title: "Success!",
@@ -91,6 +81,7 @@ export default function Auth() {
                 duration: 9000,
                 isClosable: true,
             });
+            // // Push to their email providor automatically
             // var domain = email.substring(email. lastIndexOf("@") +1);
             // router.push("https://" + domain);
         } catch (error) {
@@ -183,7 +174,7 @@ export default function Auth() {
                                                 <Button variant={"solid"} w="full" mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                     Confirm
                                                 </Button>
-                                                <HStack p={4}>
+                                                {/* <HStack p={4}>
                                                     <Divider />
                                                     <Text fontSize="sm" whiteSpace="nowrap">
                                                         or continue with
@@ -203,7 +194,7 @@ export default function Auth() {
                                                         <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
                                                         <FaSpotify size={"22px"} />
                                                     </Button>
-                                                </ButtonGroup>
+                                                </ButtonGroup> */}
                                             </Box>
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
@@ -267,7 +258,7 @@ export default function Auth() {
                                             <Button variant={"solid"} mt={6} w="full" onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                 Confirm
                                             </Button>
-                                            <HStack p={8}>
+                                            {/* <HStack p={8}>
                                                 <Divider />
                                                 <Text fontSize="sm" whiteSpace="nowrap">
                                                     or continue with
@@ -287,7 +278,7 @@ export default function Auth() {
                                                     <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
                                                     <FaSpotify size={"22px"} />
                                                 </Button>
-                                            </ButtonGroup>
+                                            </ButtonGroup> */}
                                         </Box>
                                     </Center>
                                 </Stack>
