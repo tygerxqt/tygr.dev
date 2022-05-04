@@ -75,28 +75,34 @@ function Profile() {
     };
 
     const UploadAvatar = async (formData: FormData) => {
-        const response = await uploadFileRequest(user.id, token, formData, async (event) => {
-            console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
-        });
+        try {
+            const response = await uploadFileRequest(user.id, token, formData, async (event) => {
+                console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+            });
 
-        if (response.error) {
-            setUploading(false);
+            if (response.error) throw response.error;
+
+            const { error } = await supabase.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}` }).eq("id", user.id);
+            if (error) throw error;
+
+            const { error: metadataError } = await supabase.auth.update({
+                data: {
+                    avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+                },
+            });
+
+            if (metadataError) throw error;
+        } catch (err) {
             toast({
                 title: "Error",
-                description: response.error,
+                description: err.message,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
             });
-            return;
+        } finally {
+            setUploading(false);
         }
-
-        await supabase.auth.update({
-            data: {
-                avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
-            },
-        });
-        setUploading(false);
     };
 
     async function removeAvatar(id: string, token: string) {
@@ -104,7 +110,9 @@ function Profile() {
             setRemoving(true);
             await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
 
-            // Remove the avatar from the user
+            let { error } = await supabase.from("users").update({ avatar: null }).eq("id", user.id);
+            if (error) throw error;
+
             let { error: UpdateError } = await supabase.auth.update({
                 data: {
                     avatar: null,
