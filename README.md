@@ -5,28 +5,30 @@
 * Framework: [NextJS](https://nextjs.org/)
 * Deployment: [Vercel](https://vercel.com/)
 * Content: [MDX](https://mdxjs.com/)
-* CMS: [Directus](https://directus.cloud/)
+* CMS: [Contentful](https://contentful.com/)
 * Styling: [Chakra UI](https://chakra-ui.com/)
+* Authentication / Database: [Supabase](https://supabase.com/)
+* Auth CMS: [Deta](https://deta.sh/)
 
 # 1-Click Deploys
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Fportfolio&env=DIRECTUS_URL,DIRECTUS_USERNAME,DIRECTUS_PASSWORD&envDescription=Create%20your%20Directus%20instance%20here%20-%3E&envLink=https%3A%2F%2Fdirectus.cloud&project-name=portfolio&repo-name=portfolio&demo-title=Portfolio&demo-description=My%20personal%20website.&demo-url=https%3A%2F%2Ftygr.dev&demo-image=https%3A%2F%2Fty8nl6ol.directus.app%2Fassets%2F75f75408-35ed-4a04-872f-85a4f2a88826)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Ftygr.dev&env=NEXT_PUBLIC_URL,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_KEY,DETA_PROJECT_ID,DETA_PROJECT_KEY,CONTENTFUL_SPACE_ID,CONTENTFUL_ACCESS_TOKEN&envDescription=API%20Keys%20needed%20for%20the%20app.&envLink=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Ftygr.dev%23running-locally&project-name=website&repo-name=website&demo-title=tygr.dev)
 
-[![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tygerxqt/portfolio)
-
-# Running Locally
+# Running locally
 ```bash
-$ git clone https://github.com/tygerxqt/portfolio.git
-$ cd portfolio
+$ git clone https://github.com/tygerxqt/tygr.dev
+$ cd tygr.dev
 $ yarn
-$ yarn run dev
 ```
-Create a `.env` file, fill and replace the contents with:
+Create a `.env` file, an example is shown below. Please use your own values:
 ```
-DIRECTUS_URL=YOUR_DIRECTUS_URL
-DIRECTUS_USERNAME=YOUR_DIRECTUS_USERNAME
-DIRECTUS_PASSWORD=YOUR_DIRECTUS_PASSWORD
+NEXT_PUBLIC_URL=https://tygr.dev
+NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_KEY=YOUR_SUPABASE_KEY
+DETA_PROJECT_KEY=YOUR_DETA_KEY
+DETA_PROJECT_ID=YOUR_DETA_ID
+CONTENTFUL_ACCESS_TOKEN=YOUR_CONTENTFUL_TOKEN
+CONTENTFUL_SPACE_ID=YOUR_CONTENTFUL_SPACEID
 ```
-Make sure to change `YOUR_DIRECTUS_*` with the corrent details.
 
 # Help
 If more help is needed, you can contact me by [e-mail](mailto:tygerxqt@nordstud.io) or [tweet](https://twitter.com/intent/tweet?text=%40tygerxqt) to me.

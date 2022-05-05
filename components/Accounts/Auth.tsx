@@ -1,10 +1,9 @@
 import { Flex, Stack, Box, Heading, HStack, Button, FormControl, FormLabel, Input, Center, Image, Text, useColorMode, useToast } from "@chakra-ui/react";
 import Head from "next/head"
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
-import supabase from "./SupabaseClient";
+import supabase from "../../lib/SupabaseClient";
 
 export default function Auth() {
     const [loading, setLoading] = useState(false);
@@ -13,10 +12,11 @@ export default function Auth() {
     const [LoginEmail, setLoginEmail] = useState("");
     const [LoginPassword, setLoginPassword] = useState("");
 
+    const [RegisterName, setRegisterName] = useState("");
+    const [RegisterUsername, setRegisterUsername] = useState("");
     const [RegisterEmail, setRegisterEmail] = useState("");
     const [RegisterPassword, setRegisterPassword] = useState("");
     const [RegisterPasswordConfirm, setRegisterPasswordConfirm] = useState("");
-    const [RegisterUsername, setRegisterUsername] = useState("");
 
     const isLargerThan768 = useMediaQuery(768);
     const { colorMode } = useColorMode();
@@ -58,20 +58,21 @@ export default function Auth() {
         }
     }, [toast]);
 
-    const handleRegister = useCallback(async (email: string, password: string, passwordConfirm: string, username: string) => {
+    const handleRegister = useCallback(async (name: string, email: string, username: string, password: string, passwordConfirm: string) => {
         try {
             setLoading(true);
             if (password !== passwordConfirm) throw new Error("Passwords do not match");
-            const { user, session, error } = await supabase.auth.signUp({ email, password }, { data: { username: username, avatar_url: null } });
+            if (!name) throw Error("Please provide your full name.");
+            if (!username) throw Error("Please provide your username.");
+            const { user, session, error } = await supabase.auth.signUp({ email: email, password: password }, {
+                data: {
+                    full_name: name,
+                    username: username,
+                    avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
+                }
+            });
             if (error) {
-                toast({
-                    title: "Error",
-                    description: error.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-                return console.log(error);
+                throw error;
             }
             toast({
                 title: "Success!",
@@ -80,6 +81,9 @@ export default function Auth() {
                 duration: 9000,
                 isClosable: true,
             });
+            // // Push to their email providor automatically
+            // var domain = email.substring(email. lastIndexOf("@") +1);
+            // router.push("https://" + domain);
         } catch (error) {
             toast({
                 title: "Error",
@@ -102,7 +106,7 @@ export default function Auth() {
                     handleLogin(LoginEmail, LoginPassword);
                 }
                 else if (mode === "register") {
-                    handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername);
+                    handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm);
                 }
             }
         };
@@ -110,7 +114,7 @@ export default function Auth() {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, [LoginEmail, LoginPassword, RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername, handleLogin, handleRegister, mode]);
+    }, [LoginEmail, LoginPassword, RegisterEmail, RegisterName, RegisterPassword, RegisterPasswordConfirm, RegisterUsername, handleLogin, handleRegister, mode]);
 
     return (
         <>
@@ -141,7 +145,9 @@ export default function Auth() {
                                                     </Heading>
                                                     <HStack spacing={1}>
                                                         <Text>Don&apos;t have an account?</Text>
-                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("register")}>
+                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                            setMode("register");
+                                                        }}>
                                                             Sign Up
                                                         </Button>
                                                     </HStack>
@@ -153,7 +159,6 @@ export default function Auth() {
                                                             <Input type="email" placeholder="hello@apple.com" onChange={(e) => setLoginEmail(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl mt={6}>
-                                                            { /* Place some text next to the <formlabel> */}
                                                             <Flex flexDirection={"row"} justifyContent="space-between">
                                                                 <FormLabel zIndex={-1}>Password</FormLabel>
                                                                 {/* <Link href={"/recovery"} passHref>
@@ -166,14 +171,35 @@ export default function Auth() {
                                                         </FormControl>
                                                     </form>
                                                 </Box>
-                                                <Button variant={"solid"} mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
+                                                <Button variant={"solid"} w="full" mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                     Confirm
                                                 </Button>
+                                                {/* <HStack p={4}>
+                                                    <Divider />
+                                                    <Text fontSize="sm" whiteSpace="nowrap">
+                                                        or continue with
+                                                    </Text>
+                                                    <Divider />
+                                                </HStack>
+                                                <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
+                                                    <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Discord</VisuallyHidden>
+                                                        <FaDiscord size={"22px"} />
+                                                    </Button>
+                                                    <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Github</VisuallyHidden>
+                                                        <FaGithub size={"22px"} />
+                                                    </Button>
+                                                    <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
+                                                        <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
+                                                        <FaSpotify size={"22px"} />
+                                                    </Button>
+                                                </ButtonGroup> */}
                                             </Box>
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
                                             <Image
-                                                src="https://i.imgur.com/pwIwzHl.jpg"
+                                                src="https://images.ctfassets.net/547zkxycwgvr/wPurkZMcmxDPVqArvblsY/b54925a4a05f3c291b6bb5f2ffe5ff1f/pwIwzHl.jpg"
                                                 alt="background"
                                                 width={"100%"}
                                                 height={"100%"}
@@ -209,7 +235,9 @@ export default function Auth() {
                                             </Heading>
                                             <HStack spacing={1}>
                                                 <Text>Don&apos;t have an account?</Text>
-                                                <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("register")}>
+                                                <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                    setMode("register")
+                                                }}>
                                                     Sign Up
                                                 </Button>
                                             </HStack>
@@ -227,9 +255,30 @@ export default function Auth() {
                                                     <Input type="password" placeholder="********" onChange={(e) => setLoginPassword(e.target.value)} />
                                                 </FormControl>
                                             </form>
-                                            <Button variant={"solid"} mt={6} onClick={() => handleLogin(LoginEmail, LoginPassword)}>
+                                            <Button variant={"solid"} mt={6} w="full" onClick={() => handleLogin(LoginEmail, LoginPassword)}>
                                                 Confirm
                                             </Button>
+                                            {/* <HStack p={8}>
+                                                <Divider />
+                                                <Text fontSize="sm" whiteSpace="nowrap">
+                                                    or continue with
+                                                </Text>
+                                                <Divider />
+                                            </HStack>
+                                            <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
+                                                <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Discord</VisuallyHidden>
+                                                    <FaDiscord size={"22px"} />
+                                                </Button>
+                                                <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Github</VisuallyHidden>
+                                                    <FaGithub size={"22px"} />
+                                                </Button>
+                                                <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
+                                                    <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
+                                                    <FaSpotify size={"22px"} />
+                                                </Button>
+                                            </ButtonGroup> */}
                                         </Box>
                                     </Center>
                                 </Stack>
@@ -264,20 +313,26 @@ export default function Auth() {
                                                     </Heading>
                                                     <HStack spacing={1}>
                                                         <Text>Have an account?</Text>
-                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => setMode("login")}>
+                                                        <Button variant={"link"} color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"} onClick={() => {
+                                                            setMode("login");
+                                                        }}>
                                                             Log in
                                                         </Button>
                                                     </HStack>
                                                 </Stack>
                                                 <Box maxW="sm">
                                                     <form>
-                                                        <FormControl >
+                                                        <FormControl>
+                                                            <FormLabel zIndex={-1}>Name</FormLabel>
+                                                            <Input type="text" placeholder="John Doe" onChange={(e) => setRegisterName(e.target.value)} />
+                                                        </FormControl>
+                                                        <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Username</FormLabel>
-                                                            <Input type="text" placeholder="tygerxqt" onChange={(e) => setRegisterUsername(e.target.value)} />
+                                                            <Input type="text" placeholder="johndoe" onChange={(e) => setRegisterUsername(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Email</FormLabel>
-                                                            <Input type="email" placeholder="hello@apple.com" onChange={(e) => setRegisterEmail(e.target.value)} />
+                                                            <Input type="email" placeholder="john@doe.com" onChange={(e) => setRegisterEmail(e.target.value)} />
                                                         </FormControl>
                                                         <FormControl pt={6}>
                                                             <FormLabel zIndex={-1}>Password</FormLabel>
@@ -289,14 +344,14 @@ export default function Auth() {
                                                         </FormControl>
                                                     </form>
                                                 </Box>
-                                                <Button variant={"solid"} mt={6} disabled={loading} onClick={() => handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername)}>
+                                                <Button variant={"solid"} mt={6} disabled={loading} onClick={() => handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm)}>
                                                     Create Account
                                                 </Button>
                                             </Box>
                                         </Flex>
                                         <Flex width={"65vw"} height={"100vh"}>
                                             <Image
-                                                src="https://i.imgur.com/pwIwzHl.jpg"
+                                                src="https://images.ctfassets.net/547zkxycwgvr/wPurkZMcmxDPVqArvblsY/b54925a4a05f3c291b6bb5f2ffe5ff1f/pwIwzHl.jpg"
                                                 alt="background"
                                                 width={"100%"}
                                                 height={"100%"}
@@ -340,13 +395,17 @@ export default function Auth() {
                                     <Center>
                                         <Box maxW="sm">
                                             <form>
-                                                <FormControl >
+                                                <FormControl>
+                                                    <FormLabel zIndex={-1}>Name</FormLabel>
+                                                    <Input type="text" placeholder="John Doe" onChange={(e) => setRegisterName(e.target.value)} />
+                                                </FormControl>
+                                                <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Username</FormLabel>
-                                                    <Input type="text" placeholder="tygerxqt" onChange={(e) => setRegisterUsername(e.target.value)} />
+                                                    <Input type="text" placeholder="johndoe" onChange={(e) => setRegisterUsername(e.target.value)} />
                                                 </FormControl>
                                                 <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Email</FormLabel>
-                                                    <Input type="email" placeholder="hello@apple.com" onChange={(e) => setRegisterEmail(e.target.value)} />
+                                                    <Input type="email" placeholder="john@doe.com" onChange={(e) => setRegisterEmail(e.target.value)} />
                                                 </FormControl>
                                                 <FormControl pt={6}>
                                                     <FormLabel zIndex={-1}>Password</FormLabel>
@@ -357,7 +416,7 @@ export default function Auth() {
                                                     <Input type="password" placeholder="********" onChange={(e) => setRegisterPasswordConfirm(e.target.value)} />
                                                 </FormControl>
                                             </form>
-                                            <Button variant={"solid"} mt={6} onClick={() => handleRegister(RegisterEmail, RegisterPassword, RegisterPasswordConfirm, RegisterUsername)}>
+                                            <Button variant={"solid"} mt={6} onClick={() => handleRegister(RegisterName, RegisterEmail, RegisterUsername, RegisterPassword, RegisterPasswordConfirm)}>
                                                 Confirm
                                             </Button>
                                         </Box>

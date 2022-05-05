@@ -15,18 +15,25 @@ import {
   useColorMode,
   Image,
   Center,
-  Avatar
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuGroup,
+  MenuItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs"
-import supabase from "../Accounts/SupabaseClient";
+import supabase from "../../lib/SupabaseClient";
+import Link from "next/link";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
   const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
   const session = supabase.auth.session();
+  const user = supabase.auth.user();
 
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -41,7 +48,7 @@ export default function Navbar({ enableTransition }) {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderColor={colorMode === 'light' ? '#000000' : '#FFFFFF'}>
-            <Image borderTop={'4vw'} w="32px" h="32px" src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
+            <Image borderTop={'4vw'} w="32px" h="32px" src={colorMode === 'light' ? 'https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png' : 'https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png'} alt={'tygerxqt'} />
           </DrawerHeader>
           <DrawerBody>
             <Stack spacing="24px">
@@ -91,7 +98,7 @@ export default function Navbar({ enableTransition }) {
           borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
           <NextLink href="/" passHref>
-            <Image borderTop={'4vw'} w={{ base: "32px", md: "46px" }} h={{ base: "32px", md: "46px" }} src={colorMode === 'light' ? 'https://i.imgur.com/SOSvCdA.png' : 'https://i.imgur.com/IWlV3zu.png'} alt={'tygerxqt'} />
+            <Image borderTop={'4vw'} w={{ base: "32px", md: "46px" }} h={{ base: "32px", md: "46px" }} src={colorMode === 'light' ? 'https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png' : 'https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png'} alt={'tygerxqt'} />
           </NextLink>
           {isLargerThan768 ? (
             <Center>
@@ -115,19 +122,39 @@ export default function Navbar({ enableTransition }) {
                 {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
               </Button>
               {session ? (
-                <NextLink href={"/account"} passHref>
-                  <Button
-                    variant="outline"
-                    p="4"
-                    ml="3vw"
-                    colorScheme={"blue"}
-                    fontSize={"16px"}
-                  >
-                    Account
-                  </Button>
+                <NextLink href={"/profile"} passHref>
+                  <Menu>
+                    <MenuButton
+                      as={Avatar}
+                      ml={"3vw"}
+                      src={user.user_metadata.avatar}
+                      size="md"
+                    />
+                    <MenuList>
+                      <MenuGroup title={"Account"}>
+                        {/* <Center>
+                          <Box p={4}>
+                            <Avatar name={user.user_metadata.username} src={user.user_metadata.avatar} size="xl" />
+                          </Box>
+                        </Center> */}
+                        <Link href="/profile" passHref>
+                          <MenuItem closeOnSelect={true}>Profile</MenuItem>
+                        </Link>
+                      </MenuGroup>
+                      <MenuGroup>
+                        <MenuItem closeOnSelect={true} onClick={() => {
+                          supabase.auth.signOut()
+                          window.location.reload()
+                        }
+                        }>
+                          Sign out
+                        </MenuItem>
+                      </MenuGroup>
+                    </MenuList>
+                  </Menu>
                 </NextLink>
               ) : (
-                <NextLink href={"/account"} passHref>
+                <NextLink href={"/profile"} passHref>
                   <Button
                     variant="outline"
                     p="4"
@@ -143,7 +170,7 @@ export default function Navbar({ enableTransition }) {
           ) : (
             <Center>
               {session ? (
-                <NextLink href={"/account"} passHref>
+                <NextLink href={"/profile"} passHref>
                   <Avatar
                     as="a"
                     size="sm"
@@ -153,14 +180,14 @@ export default function Navbar({ enableTransition }) {
                   />
                 </NextLink>
               ) : (
-                <NextLink href="/account" passHref>
+                <NextLink href="/profile" passHref>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     p="4"
                     ml="3vw"
                     fontSize={"16px"}
                   >
-                    Login
+                    Log in
                   </Button>
                 </NextLink>
               )}

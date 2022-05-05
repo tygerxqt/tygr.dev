@@ -1,4 +1,0 @@
-[template.enviroment]
-    DIRECTUS_URL = "URL" 
-    DIRECTUS_USERNAME = "USERNAME"
-    DIRECTUS_PASSWORD = "PASSWORD"
