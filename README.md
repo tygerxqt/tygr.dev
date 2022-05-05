@@ -8,9 +8,27 @@
 * CMS: [Contentful](https://contentful.com/)
 * Styling: [Chakra UI](https://chakra-ui.com/)
 * Authentication / Database: [Supabase](https://supabase.com/)
+* Auth CMS: [Deta](https://deta.sh/)
 
 # 1-Click Deploys
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Ftygr.dev&env=NEXT_PUBLIC_URL,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_KEY,DETA_PROJECT_ID,DETA_PROJECT_KEY,CONTENTFUL_SPACE_ID,CONTENTFUL_ACCESS_TOKEN&envDescription=API%20Keys%20needed%20for%20the%20app.&envLink=https%3A%2F%2Fgithub.com%2Ftygerxqt%2Ftygr.dev%23running-locally&project-name=website&repo-name=website&demo-title=tygr.dev)
+
+# Running locally
+```bash
+$ git clone https://github.com/tygerxqt/tygr.dev
+$ cd tygr.dev
+$ yarn
+```
+Create a `.env` file, an example is shown below. Please use your own values:
+```
+NEXT_PUBLIC_URL=https://tygr.dev
+NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_KEY=YOUR_SUPABASE_KEY
+DETA_PROJECT_KEY=YOUR_DETA_KEY
+DETA_PROJECT_ID=YOUR_DETA_ID
+CONTENTFUL_ACCESS_TOKEN=YOUR_CONTENTFUL_TOKEN
+CONTENTFUL_SPACE_ID=YOUR_CONTENTFUL_SPACEID
+```
 
 # Help
 If more help is needed, you can contact me by [e-mail](mailto:tygerxqt@nordstud.io) or [tweet](https://twitter.com/intent/tweet?text=%40tygerxqt) to me.
