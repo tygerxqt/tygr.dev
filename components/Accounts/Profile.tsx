@@ -197,7 +197,7 @@ function Profile() {
           <Stack spacing={5}>
             {" "}
             <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
-            <Divider />
+            <Divider zIndex={-1} />
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
               <Stack spacing={5}>
                 <Flex
@@ -216,6 +216,7 @@ function Profile() {
                       lg: "192px",
                     }}
                     borderRadius="50%"
+                    zIndex={-1}
                   />
                   <Center>
                     <Stack spacing={5} alignItems="center" pt={3}>
