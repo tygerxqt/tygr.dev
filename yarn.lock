@@ -7345,7 +7345,7 @@ vary@^1, vary@~1.1.2:
 
 vercel@^24.2.0:
   version "24.2.0"
-  resolved "https://registry.npmjs.org/vercel/-/vercel-24.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/vercel/-/vercel-24.2.0.tgz#909593f6b1c846a3af16173b4da969276dbc6b8a"
   integrity sha512-XC0ejLnWJ90hk6K9r3zycClhpzCz3hU4p7vStvbQe73r+kyqzLEdop1CB+vBg5jSy7ApE+6pz0fon7TWA1gNrg==
   dependencies:
     "@vercel/build-utils" "2.16.0"
