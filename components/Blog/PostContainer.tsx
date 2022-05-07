@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
-import { Stack } from '@chakra-ui/react'
+import styled from "@emotion/styled";
+import { Stack } from "@chakra-ui/react";
 
 const darkMode = styled(Stack)`
   &&& {
@@ -20,7 +20,7 @@ const darkMode = styled(Stack)`
       color: rgba(255, 255, 255, 1);
       border-left: 0.35em solid;
       border-color: #779ecb;
-      background: #1F1E1D;
+      background: #1f1e1d;
     }
     blockquote p {
       font-style: italic;
@@ -30,7 +30,7 @@ const darkMode = styled(Stack)`
       margin: auto;
     }
   }
-`
+`;
 
 const lightMode = styled(Stack)`
   &&& {
@@ -51,7 +51,7 @@ const lightMode = styled(Stack)`
       color: rgba(0, 0, 0, 1);
       border-left: 0.35em solid;
       border-color: #779ecb;
-      background: #F3F3F3;
+      background: #f3f3f3;
     }
     blockquote p {
       font-style: italic;
@@ -61,11 +61,11 @@ const lightMode = styled(Stack)`
       margin: auto;
     }
   }
-`
+`;
 
 const PostContainer = {
   dark: darkMode,
-  light: lightMode
-}
+  light: lightMode,
+};
 
 export default PostContainer;

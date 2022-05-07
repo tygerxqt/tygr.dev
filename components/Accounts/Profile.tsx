@@ -4,16 +4,13 @@ import {
   Flex,
   Heading,
   Stack,
-  Text,
-  Box,
   SimpleGrid,
   Avatar,
-  Input,
   useToast,
   Spinner,
-  Spacer,
   Center,
-  CircularProgress,
+  Box,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -185,6 +182,7 @@ function Profile() {
 
   return (
     <>
+      {console.log(user.id)}
       <Container enableTransition={false}>
         <Head>
           <title>Profile</title>
@@ -194,49 +192,47 @@ function Profile() {
           justifyContent="center"
           my={["10vh", "10vh", "15vh", "15vh"]}
         >
-          <Stack spacing={5}>
-            {" "}
-            <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
-            <Divider zIndex={-1} />
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
-              <Stack spacing={5}>
-                <Flex
-                  flexDirection={"row"}
-                  justifyContent="center"
-                  gap={{ base: 10, lg: "3rem" }}
-                >
-                  <Avatar
-                    src={user.user_metadata.avatar}
-                    w={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    h={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    borderRadius="50%"
-                    zIndex={-1}
+          {" "}
+          <Flex flexDirection={"column"} gap={5}>
+            <Stack spacing={5}>
+              <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
+              <Divider />
+            </Stack>
+            <Flex
+              flexDirection={"row"}
+              justifyContent="center"
+              gap={{ base: 10, lg: "3rem" }}
+            >
+              <Avatar
+                src={user.user_metadata.avatar}
+                w={{
+                  base: "128px",
+                  lg: "192px",
+                }}
+                h={{
+                  base: "128px",
+                  lg: "192px",
+                }}
+                borderRadius="50%"
+                zIndex={-1}
+              />
+              <Center>
+                <Stack spacing={5} pt={3}>
+                  <UiFileInputButton
+                    uploadFileName="upload"
+                    onChange={UploadAvatar}
                   />
-                  <Center>
-                    <Stack spacing={5} alignItems="center" pt={3}>
-                      <UiFileInputButton
-                        uploadFileName="upload"
-                        onChange={UploadAvatar}
-                      />
-                      <Button onClick={() => removeAvatar(user.id, token)}>
-                        {" "}
-                        {removing ? <Spinner /> : "Remove"}{" "}
-                      </Button>
-                    </Stack>
-                  </Center>
-                </Flex>
-                <UsernameField user={user} />
-                <EmailField user={user} />
-                <PasswordField user={user} />
-              </Stack>
-            </SimpleGrid>
-          </Stack>
+                  <Button onClick={() => removeAvatar(user.id, token)}>
+                    {" "}
+                    {removing ? <Spinner /> : "Remove"}{" "}
+                  </Button>
+                </Stack>
+              </Center>
+            </Flex>
+            <UsernameField user={user} />
+            <EmailField user={user} />
+            <PasswordField user={user} />
+          </Flex>
         </Stack>
       </Container>
     </>

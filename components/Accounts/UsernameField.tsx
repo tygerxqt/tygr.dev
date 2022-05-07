@@ -5,118 +5,130 @@ import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../lib/SupabaseClient";
 interface IProps {
-    user: User;
+  user: User;
 }
 
 const UsernameField: React.FC<IProps> = ({ user }, data) => {
-    const toast = useToast();
-    const [editing, setEditing] = useState(false);
-    const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
-    const [username, setUsername] = useState(user.user_metadata.username);
+  const toast = useToast();
+  const [editing, setEditing] = useState(false);
+  const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
+  const [username, setUsername] = useState(user.user_metadata.username);
 
-    const handleUpdate = async () => {
-        try {
-            if (username === oldUsername) return toast({
-                title: "Unable to update.",
-                description: "No changes were made",
-                status: "info",
-                duration: 3000,
-                isClosable: true,
-            });
+  const handleUpdate = async () => {
+    try {
+      if (username === oldUsername)
+        return toast({
+          title: "Unable to update.",
+          description: "No changes were made",
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+        });
 
-            const { error: tableError } = await supabase.from("users").update({ username: username }).eq("id", user.id);
-            const { error: metadataError } = await supabase.auth.update({
-                data: {
-                    username: username
-                },
-            });
+      const { error: tableError } = await supabase
+        .from("users")
+        .update({ username: username })
+        .eq("id", user.id);
+      const { error: metadataError } = await supabase.auth.update({
+        data: {
+          username: username,
+        },
+      });
 
-            if (tableError) {
-                if (tableError.code === "23505") {
-                    setUsername(oldUsername);
-                    throw new Error("Username is already taken.")
-                }
-                setUsername(oldUsername);
-                throw tableError;
-            }
-
-            if (metadataError) {
-                throw new Error("Metadata Error: " + metadataError.message);
-            }
-
-            toast({
-                title: "Success",
-                description: "Username updated.",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-            });
-
-            setUsername(username);
-            setOldUsername(username);
-        } catch (err) {
-            toast({
-                title: "Error",
-                description: err.message,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-            });
-        } finally {
-            setEditing(false);
+      if (tableError) {
+        if (tableError.code === "23505") {
+          setUsername(oldUsername);
+          throw new Error("Username is already taken.");
         }
-    }
+        setUsername(oldUsername);
+        throw tableError;
+      }
 
-    return (
-        <>
-            <Box>
-                <Text size="sm" pb="1">
-                    Username
-                </Text>
-                {editing ? (
-                    <Flex flexDirection={"row"}>
-                        <Flex w={"95vw"}>
-                            <Input disabled={!editing} value={username} onChange={(e) => setUsername(e.target.value)} />
-                        </Flex>
-                        <Flex pl={4}>
-                            <Button onClick={() => handleUpdate()}>
-                                <AiOutlineCheck />
-                            </Button>
-                        </Flex>
-                        <Flex pl={2}>
-                            <Button onClick={() => {
-                                setUsername(oldUsername);
-                                setEditing(false);
-                            }}>
-                                <AiOutlineClose />
-                            </Button>
-                        </Flex>
-                    </Flex>
-                ) : (
-                    <Flex flexDirection={"row"}>
-                        <Flex w={"95vw"}>
-                            <Input disabled={!editing} value={username} />
-                        </Flex>
-                        <Flex pl={4}>
-                            <Button onClick={() => setEditing(true)}>
-                                <AiOutlineEdit />
-                            </Button>
-                        </Flex>
-                    </Flex>
-                )}
-            </Box>
-        </>
-    )
-}
+      if (metadataError) {
+        throw new Error("Metadata Error: " + metadataError.message);
+      }
+
+      toast({
+        title: "Success",
+        description: "Username updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      setUsername(username);
+      setOldUsername(username);
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setEditing(false);
+    }
+  };
+
+  return (
+    <>
+      <Box>
+        <Text size="sm" pb="1">
+          Username
+        </Text>
+        {editing ? (
+          <Flex flexDirection={"row"}>
+            <Flex w={"95vw"}>
+              <Input
+                disabled={!editing}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Flex>
+            <Flex pl={4}>
+              <Button onClick={() => handleUpdate()}>
+                <AiOutlineCheck />
+              </Button>
+            </Flex>
+            <Flex pl={2}>
+              <Button
+                onClick={() => {
+                  setUsername(oldUsername);
+                  setEditing(false);
+                }}
+              >
+                <AiOutlineClose />
+              </Button>
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex flexDirection={"row"}>
+            <Flex w={"95vw"}>
+              <Input disabled={!editing} value={username} />
+            </Flex>
+            <Flex pl={4}>
+              <Button onClick={() => setEditing(true)}>
+                <AiOutlineEdit />
+              </Button>
+            </Flex>
+          </Flex>
+        )}
+      </Box>
+    </>
+  );
+};
 
 export async function getServerSideProps(user: User) {
-    const res = await axios.get(`/api/users/${user.id}?token=${supabase.auth.session().access_token}`);
+  const res = await axios.get(
+    `/api/users/${user.id}?token=${supabase.auth.session().access_token}`
+  );
 
-    return {
-        props: {
-            data: res.data,
-        }
-    }
+  return {
+    props: {
+      data: res.data,
+    },
+  };
 }
 
 export default UsernameField;
