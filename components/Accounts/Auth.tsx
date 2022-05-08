@@ -13,12 +13,17 @@ import {
   Text,
   useColorMode,
   useToast,
+  ButtonGroup,
+  Divider,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
+import Link from "next/link";
+import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -216,10 +221,10 @@ export default function Auth() {
                               >
                                 <FormLabel zIndex={-1}>Password</FormLabel>
                                 {/* <Link href={"/recovery"} passHref>
-                                                                    <Button variant={"link"} pb={2} >
-                                                                        Forgot Password?
-                                                                    </Button>
-                                                                </Link> */}
+                                  <Button variant={"link"} pb={2} >
+                                    Forgot Password?
+                                  </Button>
+                                </Link> */}
                               </Flex>
                               <Input
                                 type="password"
@@ -239,27 +244,27 @@ export default function Auth() {
                         >
                           Confirm
                         </Button>
-                        {/* <HStack p={4}>
-                                                    <Divider />
-                                                    <Text fontSize="sm" whiteSpace="nowrap">
-                                                        or continue with
-                                                    </Text>
-                                                    <Divider />
-                                                </HStack>
-                                                <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
-                                                    <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
-                                                        <VisuallyHidden>Sign in with Discord</VisuallyHidden>
-                                                        <FaDiscord size={"22px"} />
-                                                    </Button>
-                                                    <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
-                                                        <VisuallyHidden>Sign in with Github</VisuallyHidden>
-                                                        <FaGithub size={"22px"} />
-                                                    </Button>
-                                                    <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
-                                                        <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
-                                                        <FaSpotify size={"22px"} />
-                                                    </Button>
-                                                </ButtonGroup> */}
+                        <HStack p={4}>
+                          <Divider />
+                          <Text fontSize="sm" whiteSpace="nowrap">
+                            or continue with
+                          </Text>
+                          <Divider />
+                        </HStack>
+                        <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
+                          <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                            <VisuallyHidden>Sign in with Discord</VisuallyHidden>
+                            <FaDiscord size={"22px"} />
+                          </Button>
+                          <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                            <VisuallyHidden>Sign in with Github</VisuallyHidden>
+                            <FaGithub size={"22px"} />
+                          </Button>
+                          {/* <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
+                            <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
+                            <FaSpotify size={"22px"} />
+                          </Button> */}
+                        </ButtonGroup>
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>
