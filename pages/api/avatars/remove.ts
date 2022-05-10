@@ -48,6 +48,12 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     await drive.deleteMany(files);
+    await supabase.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg` }).eq("id", user.id);
+    await supabase.auth.update({
+      data: {
+        avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
+      }
+    });
     res.status(200).json({ data: true });
   } catch (err) {
     res.status(502).json({ error: err });

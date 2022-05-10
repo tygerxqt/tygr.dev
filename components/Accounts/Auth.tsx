@@ -252,11 +252,11 @@ export default function Auth() {
                           <Divider />
                         </HStack>
                         <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
-                          <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
+                          <Button key={"Discord"} isFullWidth>
                             <VisuallyHidden>Sign in with Discord</VisuallyHidden>
                             <FaDiscord size={"22px"} />
                           </Button>
-                          <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
+                          <Button key={"Github"} isFullWidth>
                             <VisuallyHidden>Sign in with Github</VisuallyHidden>
                             <FaGithub size={"22px"} />
                           </Button>

@@ -22,6 +22,9 @@ import axios from "axios";
 import EmailField from "./EmailField";
 import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
+import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
+import Link from "next/link";
+import Identities from "./Identities";
 
 function Profile() {
   const user = supabase.auth.user();
@@ -31,6 +34,8 @@ function Profile() {
   const [removing, setRemoving] = useState(false);
 
   const [token, setToken] = useState(null);
+
+  const DiscordURI = `https://discord.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/link/discord"}&response_type=code&scope=identify`;
 
   useEffect(() => {
     const value = localStorage.getItem("supabase.auth.token");
@@ -146,20 +151,6 @@ function Profile() {
       setRemoving(true);
       await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
 
-      let { error } = await supabase
-        .from("users")
-        .update({ avatar: null })
-        .eq("id", user.id);
-      if (error) throw error;
-
-      let { error: UpdateError } = await supabase.auth.update({
-        data: {
-          avatar: null,
-        },
-      });
-
-      if (UpdateError) throw UpdateError;
-
       toast({
         title: "Success",
         description: "Avatar removed",
@@ -232,23 +223,16 @@ function Profile() {
             <UsernameField user={user} />
             <EmailField user={user} />
             <PasswordField user={user} />
+            <Stack spacing={5} pt={16}>
+              <Heading fontSize={{ base: "2xl", md: "4xl" }}>Identities</Heading>
+              <Divider />
+            </Stack>
+            <Identities />
           </Flex>
         </Stack>
       </Container>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  const list: Object = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/avatars/list`
-  ).then((data) => data.json());
-
-  return {
-    props: {
-      list: list,
-    },
-  };
 }
 
 export default Profile;
