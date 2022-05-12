@@ -6,14 +6,16 @@ export default function Identities() {
     return (
         <>
             <Stack spacing={5}>
-                <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/link/discord"}&response_type=code&scope=identify`} passHref>
+                <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/callback/discord"}&response_type=code&scope=identify%20email`} passHref>
                     <Button leftIcon={<FaDiscord />} colorScheme='blue' variant='solid'>
                         Link Discord
                     </Button>
                 </Link>
-                <Button leftIcon={<FaGithub />} variant='solid' disabled>
+                <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
+                <Button leftIcon={<FaGithub />} variant='solid'>
                     Link Github
                 </Button>
+                </Link>
                 <Button leftIcon={<FaSpotify />} colorScheme='green' variant='solid' disabled>
                     Link Spotify
                 </Button>
