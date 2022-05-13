@@ -22,8 +22,8 @@ import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
-import Link from "next/link";
 import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
+import { useUser } from "../../contexts/user";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -41,12 +41,13 @@ export default function Auth() {
   const isLargerThan768 = useMediaQuery(768);
   const { colorMode } = useColorMode();
   const toast = useToast();
+  const { emailSignIn, user } = useUser();
 
   const handleLogin = useCallback(
     async (email: string, password: string) => {
       try {
         setLoading(true);
-        const { error } = await supabase.auth.signIn({ email, password });
+        const { error } = emailSignIn(email, password);
         if (error) {
           toast({
             title: "Error",
@@ -57,7 +58,6 @@ export default function Auth() {
           });
           return console.log(error);
         }
-        const user = supabase.auth.user();
         toast({
           title: "Success",
           description: `Logged in as ${user.user_metadata.username}!`,
@@ -78,7 +78,7 @@ export default function Auth() {
         setLoading(false);
       }
     },
-    [toast]
+    [emailSignIn, toast, user]
   );
 
   const handleRegister = useCallback(

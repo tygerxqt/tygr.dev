@@ -1,15 +1,8 @@
 import { Stack, Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
-import { useUser } from "../../contexts/user";
-import supabase from "../../lib/SupabaseClient";
+import { FaDiscord, FaGithub } from "react-icons/fa";
 
-export default async function Identities() {
-    const { user } = useUser();
-    const { data: gitUser } = await supabase.from("user").select("github").eq("id", user.id);
-    console.log(gitUser);
-    const { data: discordUser } = await supabase.from("user").select("discord").eq("id", user.id);
-    console.log(discordUser);
+export default function Identities() {
     return (
         <>
             <Stack spacing={5}>
@@ -19,13 +12,10 @@ export default async function Identities() {
                     </Button>
                 </Link>
                 <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
-                <Button leftIcon={<FaGithub />} variant='solid'>
-                    Link Github
-                </Button>
+                    <Button leftIcon={<FaGithub />} variant='solid'>
+                        Link Github
+                    </Button>
                 </Link>
-                <Button leftIcon={<FaSpotify />} colorScheme='green' variant='solid' disabled>
-                    Link Spotify
-                </Button>
             </Stack>
         </>
     )

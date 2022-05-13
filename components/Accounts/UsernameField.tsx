@@ -1,14 +1,13 @@
 import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
-import { User } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
+import { useUser } from "../../contexts/user";
 import supabase from "../../lib/SupabaseClient";
-interface IProps {
-  user: User;
-}
 
-const UsernameField: React.FC<IProps> = ({ user }, data) => {
+const UsernameField = () => {
+  const { user, session } = useUser();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
@@ -119,9 +118,9 @@ const UsernameField: React.FC<IProps> = ({ user }, data) => {
   );
 };
 
-export async function getServerSideProps(user: User) {
+export async function getServerSideProps(user: User, session: Session) {
   const res = await axios.get(
-    `/api/users/${user.id}?token=${supabase.auth.session().access_token}`
+    `/api/users/${user.id}?token=${session.access_token}`
   );
 
   return {

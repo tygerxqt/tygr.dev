@@ -4,13 +4,10 @@ import {
   Flex,
   Heading,
   Stack,
-  SimpleGrid,
   Avatar,
   useToast,
   Spinner,
   Center,
-  Box,
-  ButtonGroup,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -22,8 +19,6 @@ import axios from "axios";
 import EmailField from "./EmailField";
 import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
-import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
-import Link from "next/link";
 import Identities from "./Identities";
 
 function Profile() {
@@ -34,8 +29,6 @@ function Profile() {
   const [removing, setRemoving] = useState(false);
 
   const [token, setToken] = useState(null);
-
-  const DiscordURI = `https://discord.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/link/discord"}&response_type=code&scope=identify`;
 
   useEffect(() => {
     const value = localStorage.getItem("supabase.auth.token");
@@ -220,9 +213,9 @@ function Profile() {
                 </Stack>
               </Center>
             </Flex>
-            <UsernameField user={user} />
-            <EmailField user={user} />
-            <PasswordField user={user} />
+            <UsernameField />
+            <EmailField />
+            <PasswordField />
             <Stack spacing={5} pt={16}>
               <Heading fontSize={{ base: "2xl", md: "4xl" }}>Identities</Heading>
               <Divider />

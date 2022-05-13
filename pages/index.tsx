@@ -6,8 +6,11 @@ import Contact from "../components/Contact";
 import FeaturedProjects from "../components/FeaturedProjects";
 import Container from "../components/UI/Container";
 import { createClient } from "contentful";
+import { useUser } from "../contexts/user";
 
 function IndexPage({ projects }) {
+  const { session } = useUser();
+  console.log({ session });
   return (
     <>
       <Container enableTransition={true}>
