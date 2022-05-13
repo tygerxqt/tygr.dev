@@ -1,6 +1,6 @@
-import { ApiError, Session, User } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 import axios from "axios";
-import React, { SetStateAction, useContext } from "react";
+import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import supabase from "../lib/SupabaseClient";
 
@@ -29,11 +29,11 @@ const Provider = ({ children }) => {
             const sessionUser = supabase.auth.user();
 
             if (sessionUser) {
-                const {data: profile} = await supabase
-                .from("users")
-                .select("*")
-                .eq("id", sessionUser.id)
-                .single()
+                const { data: profile } = await supabase
+                    .from("users")
+                    .select("*")
+                    .eq("id", sessionUser.id)
+                    .single()
 
                 setUser({
                     ...sessionUser,
@@ -83,7 +83,7 @@ const Provider = ({ children }) => {
     const exposed = {
         user,
         session,
-        emailSignIn, 
+        emailSignIn,
         oAuthSignIn,
         signOut,
     };

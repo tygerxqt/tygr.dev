@@ -166,7 +166,6 @@ function Profile() {
 
   return (
     <>
-      {console.log(user.id)}
       <Container enableTransition={false}>
         <Head>
           <title>Profile</title>

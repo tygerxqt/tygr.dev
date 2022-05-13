@@ -9,7 +9,7 @@ const apiRoute = nextConnect({
         res.status(501).json({ error: `Sorry something happened! ${error.message}` });
     },
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
-        res.status(501).json({ error: `Method '${req.method}' Not allowed.`})
+        res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 });
 
@@ -51,7 +51,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { error } = await supabase.from("users").update({ discord: { id: discordUser.id, username: discordUser.username, discriminator: discordUser.discriminator, email: discordUser.email } }).eq("id", user.id);
     if (error) return res.status(502).json({ error: error.message });
 
-    res.status(200).redirect("/profile").json({ data: true });
+    res.status(200).json({ data: true });
 });
 
 export default apiRoute;

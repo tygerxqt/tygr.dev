@@ -7,7 +7,7 @@ import { useUser } from "../../contexts/user";
 import supabase from "../../lib/SupabaseClient";
 
 const UsernameField = () => {
-  const { user, session } = useUser();
+  const { user } = useUser();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [oldUsername, setOldUsername] = useState(user.user_metadata.username);

@@ -6,7 +6,7 @@ export default function Identities() {
     return (
         <>
             <Stack spacing={5}>
-                <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/callback/discord"}&response_type=code&scope=identify%20email`} passHref>
+                <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/link/discord"}&response_type=code&scope=identify%20email`} passHref>
                     <Button leftIcon={<FaDiscord />} colorScheme='blue' variant='solid'>
                         Link Discord
                     </Button>
