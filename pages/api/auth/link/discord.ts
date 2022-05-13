@@ -1,8 +1,8 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
+import supabase from "../../../../lib/SupabaseClient";
 import { DiscordUser } from "../../../../types/DiscordUser";
-import { GithubUser } from "../../../../types/GithubUser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -23,7 +23,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     params.append('client_secret', process.env.DISCORD_CLIENT_SECRET);
     params.append('grant_type', 'authorization_code');
     params.append('code', req.query.code as string);
-    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/callback/discord`);
+    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/link/discord`);
     params.append('scope', 'identify%20email');
 
     const json = await (await fetch('https://discord.com/api/oauth2/token', { method: "POST", body: params })).json();
@@ -46,7 +46,12 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    res.status(200).json({ data: discordUser });
+    const { user } = await supabase.auth.api.getUserByCookie(req);
+
+    const { error } = await supabase.from("users").update({ discord: { id: discordUser.id, username: discordUser.username, discriminator: discordUser.discriminator, email: discordUser.email } }).eq("id", user.id);
+    if (error) return res.status(502).json({ error: error.message });
+
+    res.status(200).redirect("/profile").json({ data: true });
 });
 
 export default apiRoute;

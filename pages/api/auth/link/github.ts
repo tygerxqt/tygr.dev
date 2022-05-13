@@ -1,6 +1,7 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
+import supabase from "../../../../lib/SupabaseClient";
 import { GithubUser } from "../../../../types/GithubUser";
 
 const apiRoute = nextConnect({
@@ -25,21 +26,38 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         },
     });
 
-    const user = await client.get(`https://api.github.com/user`, {
+    const fetchedUser = await client.get(`https://api.github.com/user`, {
         headers: {
             "Authorization": `token ${json.data.access_token}`,
         },
     });
 
     const gitUser: GithubUser = {
-        login: user.data.login,
-        id: user.data.id,
-        avatar_url: user.data.avatar_url,
-        url: user.data.url,
-        email: user.data.email,
+        login: fetchedUser.data.login,
+        id: fetchedUser.data.id,
+        avatar_url: fetchedUser.data.avatar_url,
+        url: fetchedUser.data.url,
+        email: fetchedUser.data.email,
     };
-    
-    res.status(200).json({ data: gitUser });
+
+    const { user } = await supabase.auth.api.getUserByCookie(req, res);
+
+    if (user.email != gitUser.email) return res.status(502).json({ error: "Github Email and Pixel Email do not match." });
+
+    const { error } = await supabase
+    .from("users")
+    .update({
+        github: {
+            username: gitUser.login,
+            id: gitUser.id,
+            avatar_url: gitUser.avatar_url,
+            url: gitUser.url,
+            email: gitUser.email,
+        },
+    }).eq("id", user.id);
+    if (error) return res.status(502).json({ error: error.message });
+
+    res.status(200).redirect("/profile").json({ data: true });
 });
 
 export default apiRoute;

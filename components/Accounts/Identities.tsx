@@ -1,8 +1,15 @@
 import { Stack, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
+import { useUser } from "../../contexts/user";
+import supabase from "../../lib/SupabaseClient";
 
-export default function Identities() {
+export default async function Identities() {
+    const { user } = useUser();
+    const { data: gitUser } = await supabase.from("user").select("github").eq("id", user.id);
+    console.log(gitUser);
+    const { data: discordUser } = await supabase.from("user").select("discord").eq("id", user.id);
+    console.log(discordUser);
     return (
         <>
             <Stack spacing={5}>
