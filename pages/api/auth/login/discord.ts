@@ -1,7 +1,8 @@
+import { createClient } from "@supabase/supabase-js";
 import axios from "axios";
+import * as jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabase from "../../../../lib/SupabaseClient";
 import { DiscordUser } from "../../../../types/DiscordUser";
 
 const apiRoute = nextConnect({
@@ -23,7 +24,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     params.append('client_secret', process.env.DISCORD_CLIENT_SECRET);
     params.append('grant_type', 'authorization_code');
     params.append('code', req.query.code as string);
-    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/link/discord`);
+    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/login/discord`);
     params.append('scope', 'identify%20email');
 
     const json = await (await fetch('https://discord.com/api/oauth2/token', { method: "POST", body: params })).json();
@@ -46,34 +47,25 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const cookie = await supabase.auth.api.getUserByCookie(req);
-    if (!cookie) {
-        return res.status(500).json({
-            error: "Unauthorized.",
-        });
-    }
-    await supabase.auth.setAuth(cookie.token);
-
-    const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
-    if (userData[0].discord.id) {
-        return res.status(500).json({
-            error: "You already linked your account.",
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_ADMIN_KEY);
+    const { data: dbUserData } = await supabase.from("users").select("*").eq("discord->>id", discordUser.id);
+    if (!dbUserData) {
+        res.status(500).json({
+            error: "This Discord account is not linked to a Pixel account.",
         });
     }
 
-    const { error } = await supabase.from("users").update({
-        discord: {
-            id: discordUser.id,
-            username: discordUser.username,
-            discriminator: discordUser.discriminator,
-            avatar: discordUser.avatar,
-            email: discordUser.email
-        }
-    }).eq("id", cookie.user.id);
+    // const token = jwt.sign({
+    //     "exp": Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7),
+    //     "sub": dbUserData[0].id,
+    //     "email": dbUserData[0].email,
+    //     "phone": dbUserData[0].phone,
+    //     "name": dbUserData[0].name,
+    //     "iat": Math.floor(Date.now() / 1000),
+    //     "user_metadata": dbUserData[0].user_metadata,
+    // }, process.env.JWT_SECRET);
 
-    if (error) return res.status(500).json({ error: error.message });
-
-    res.status(200).json({ data: true, message: "Successfully linked your Discord account to your Pixel account." });
+    res.status(200).json({ ...dbUserData[0] });
 });
 
 export default apiRoute;

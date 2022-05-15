@@ -22,8 +22,9 @@ import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
-import { FaDiscord, FaGithub, FaSpotify } from "react-icons/fa";
-import { useUser } from "../../contexts/user";
+import { FaDiscord, FaGithub } from "react-icons/fa";
+import axios from "axios";
+import AuthButtons from "./AuthButtons";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -41,13 +42,21 @@ export default function Auth() {
   const isLargerThan768 = useMediaQuery(768);
   const { colorMode } = useColorMode();
   const toast = useToast();
-  const { emailSignIn, user } = useUser();
 
   const handleLogin = useCallback(
     async (email: string, password: string) => {
       try {
         setLoading(true);
-        const { error } = emailSignIn(email, password);
+
+        // set client cookie
+        const { user, error } = await supabase.auth.signIn({ email, password });
+
+        // set server cookie
+        axios.post("/api/auth/cookie/set", {
+          event: user ? "SIGNED_IN" : "SIGNED_OUT",
+          session: supabase.auth.session(),
+        });
+
         if (error) {
           toast({
             title: "Error",
@@ -78,7 +87,7 @@ export default function Auth() {
         setLoading(false);
       }
     },
-    [emailSignIn, toast, user]
+    [toast]
   );
 
   const handleRegister = useCallback(
@@ -251,20 +260,7 @@ export default function Auth() {
                           </Text>
                           <Divider />
                         </HStack>
-                        <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
-                          <Button key={"Discord"} isFullWidth>
-                            <VisuallyHidden>Sign in with Discord</VisuallyHidden>
-                            <FaDiscord size={"22px"} />
-                          </Button>
-                          <Button key={"Github"} isFullWidth>
-                            <VisuallyHidden>Sign in with Github</VisuallyHidden>
-                            <FaGithub size={"22px"} />
-                          </Button>
-                          {/* <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
-                            <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
-                            <FaSpotify size={"22px"} />
-                          </Button> */}
-                        </ButtonGroup>
+                        <AuthButtons />
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>

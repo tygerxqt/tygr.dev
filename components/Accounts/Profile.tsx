@@ -30,6 +30,12 @@ function Profile() {
 
   const [token, setToken] = useState(null);
 
+  // set server cookie
+  axios.post("/api/auth/cookie/set", {
+    event: user ? "SIGNED_IN" : "SIGNED_OUT",
+    session: supabase.auth.session(),
+  });
+
   useEffect(() => {
     const value = localStorage.getItem("supabase.auth.token");
     const token = !!value
@@ -163,6 +169,8 @@ function Profile() {
       setRemoving(false);
     }
   }
+
+  console.log(supabase.auth.session());
 
   return (
     <>

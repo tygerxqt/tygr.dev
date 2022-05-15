@@ -3,11 +3,10 @@ import { Session, User } from "@supabase/supabase-js";
 import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
-import { useUser } from "../../contexts/user";
 import supabase from "../../lib/SupabaseClient";
 
 const UsernameField = () => {
-  const { user } = useUser();
+  const user = supabase.auth.user();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [oldUsername, setOldUsername] = useState(user.user_metadata.username);

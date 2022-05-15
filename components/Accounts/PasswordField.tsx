@@ -23,10 +23,8 @@ import { AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../lib/SupabaseClient";
 import * as React from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
-import { useUser } from "../../contexts/user";
 
 const PasswordField = () => {
-  const { signOut } = useUser();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [passwordHidden, setPasswordHidden] = React.useState(true);
@@ -67,7 +65,7 @@ const PasswordField = () => {
         isClosable: true,
       });
 
-      signOut();
+      await supabase.auth.signOut();
     } catch (err) {
       toast({
         title: "Error",
