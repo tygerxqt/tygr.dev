@@ -65,7 +65,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     //     "user_metadata": dbUserData[0].user_metadata,
     // }, process.env.JWT_SECRET);
 
-    res.status(200).json({ ...dbUserData[0] });
+    res.status(200).json({ data: "This is still a work in progress, idk how you managed to get here but ight." });
 });
 
 export default apiRoute;
