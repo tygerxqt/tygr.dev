@@ -170,8 +170,6 @@ function Profile() {
     }
   }
 
-  console.log(supabase.auth.session());
-
   return (
     <>
       <Container enableTransition={false}>
