@@ -8,6 +8,7 @@ import React from "react";
 import { BiUnlink } from "react-icons/bi";
 import { AiOutlineCheck, AiOutlineIdcard } from "react-icons/ai";
 import { DiscordUser } from "../../types/DiscordUser";
+import { GithubUser } from "../../types/GithubUser";
 
 function Identities() {
     const toast = useToast();
@@ -27,7 +28,7 @@ function Identities() {
 
     // social data
     const [discordData, setDiscordData] = useState<DiscordUser>(null);
-    const [githubData, setGithubData] = useState(null);
+    const [githubData, setGithubData] = useState<GithubUser>(null);
 
     useEffect(() => {
         setLoading(true)
@@ -64,6 +65,46 @@ function Identities() {
                 toast({
                     title: "Success",
                     description: "Discord account unlinked.",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+                setUpdate(true);
+            }
+        } catch (err) {
+            toast({
+                title: "Error",
+                description: "An unexpected error occured. " + err.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function destroyGithubLink() {
+        setLoading(true);
+        try {
+            const res = await axios.post(`/api/auth/unlink/github`, {
+                token: supabase.auth.session().access_token,
+            });
+
+            if (res.status != 200) console.log(res.data.error)
+
+            if (res.status != 200) {
+                toast({
+                    title: "Error",
+                    description: "An error occured: " + res.data.error,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            } else {
+                toast({
+                    title: "Success",
+                    description: "GitHub account unlinked.",
                     status: "success",
                     duration: 9000,
                     isClosable: true,
@@ -145,7 +186,7 @@ function Identities() {
                                                         mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
                                                     >
                                                         <Button as="a" variant="solid" fontSize="16px" onClick={() => setDiscordModalUISwitch(DiscordModalUISwitch ? false : true)}>
-                                                            Data view
+                                                            Toggle view
                                                         </Button>
                                                         {DiscordUnlinkConfirm ? (
                                                             <Button
@@ -222,21 +263,143 @@ function Identities() {
                 </Flex>
             </Box>
 
-            {/* Github
+            {/* https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false */}
+
             <Box>
                 <Flex flexDirection={"row"}>
                     <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
-                        <Button leftIcon={<FaGithub />} variant='solid'>
-                            Link Github
-                        </Button>
+                        <Skeleton isLoaded={!loading}>
+                            <Button w="full" leftIcon={<FaGithub />} variant='solid' disabled={githubData ? true : false}>
+                                {githubData ? `Linked to ${githubData.username}` : "Link GitHub"}
+                            </Button>
+                        </Skeleton>
                     </Link>
-                    <Flex pl={4}>
-                        <Button>
-                            <BiUnlink />
-                        </Button>
-                    </Flex>
+                    {githubData ? (
+                        <Flex pl={4} display={{ base: "none", sm: "block" }}>
+                            {GithubUnlinkConfirm ? (
+                                // Confirm button
+                                <Button onClick={() => destroyGithubLink()} colorScheme={"red"} disabled={loading}>
+                                    <AiOutlineCheck />
+                                </Button>
+                            ) : (
+                                <Button onClick={() => setGithubUnlinkConfirm(true)} disabled={loading}>
+                                    <BiUnlink />
+                                </Button>
+                            )}
+                        </Flex>
+                    ) : <div />}
+                    {githubData ? (
+                        <Flex pl={4}>
+                            <Button onClick={GithubModalOnOpen}>
+                                <AiOutlineIdcard />
+                            </Button>
+                            <Modal onClose={GithubModalOnClose} isOpen={GithubModalIsOpen} isCentered>
+                                <ModalOverlay />
+                                <ModalContent>
+                                    <ModalHeader />
+                                    <ModalCloseButton />
+                                    <ModalBody>
+                                        {GithubModalUISwitch ? (
+                                            <>
+                                                <Center>
+                                                    <VStack spacing={5}>
+                                                        <Avatar
+                                                            src={`${githubData.avatar_url}`}
+                                                            rounded="full"
+                                                            size="2xl"
+                                                        />
+                                                        <VStack>
+                                                            <Text fontSize="26px" fontWeight="bold">
+                                                                {githubData.username}
+                                                            </Text>
+                                                            <Text fontSize="14px">Email: {githubData.email}</Text>
+                                                            <Text fontSize="14px">ID: {githubData.id}</Text>
+                                                        </VStack>
+                                                    </VStack>
+                                                </Center>
+                                                <Center>
+                                                    <SimpleGrid
+                                                        columns={2}
+                                                        spacing={5}
+                                                        mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
+                                                    >
+                                                        <Button as="a" variant="solid" fontSize="16px" onClick={() => setGithubModalUISwitch(GithubModalUISwitch ? false : true)}>
+                                                            Toggle view
+                                                        </Button>
+                                                        {GithubUnlinkConfirm ? (
+                                                            <Button
+                                                                as="a"
+                                                                variant="solid"
+                                                                colorScheme={"red"}
+                                                                fontSize="16px"
+                                                                onClick={() => destroyGithubLink()}
+                                                            >
+                                                                Confirm unlink
+                                                            </Button>
+                                                        ) : (
+                                                            <Button
+                                                                as="a"
+                                                                variant="solid"
+                                                                fontSize="16px"
+                                                                onClick={() => setGithubUnlinkConfirm(true)}
+                                                            >
+                                                                Unlink
+                                                            </Button>
+                                                        )}
+                                                    </SimpleGrid>
+                                                </Center>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Center>
+                                                    <VStack>
+                                                        <Text fontSize="16px">Username: <b>{githubData.username}</b></Text>
+                                                        <Text fontSize="16px">URL: <b>{githubData.url}</b></Text>
+                                                        <Text fontSize="16px">Email: <b>{githubData.email}</b></Text>
+                                                        <Text fontSize="16px">ID: <b>{githubData.id}</b></Text>
+                                                    </VStack>
+                                                </Center>
+                                                <Center>
+                                                    <SimpleGrid
+                                                        columns={2}
+                                                        spacing={5}
+                                                        mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
+                                                    >
+                                                        <Button as="a" variant="solid" fontSize="16px" onClick={() => setGithubModalUISwitch(GithubModalUISwitch ? false : true)}>
+                                                            Toggle view
+                                                        </Button>
+                                                        {GithubUnlinkConfirm ? (
+                                                            <Button
+                                                                as="a"
+                                                                variant="solid"
+                                                                fontSize="16px"
+                                                                colorScheme={"red"}
+                                                                onClick={() => destroyGithubLink()}
+                                                            >
+                                                                Confirm unlink
+                                                            </Button>
+                                                        ) : (
+                                                            <Button
+                                                                as="a"
+                                                                variant="solid"
+                                                                fontSize="16px"
+                                                                onClick={() => setGithubUnlinkConfirm(true)}
+                                                            >
+                                                                Unlink
+                                                            </Button>
+                                                        )}
+                                                    </SimpleGrid>
+                                                </Center>
+                                            </>
+                                        )}
+                                    </ModalBody>
+                                    <ModalFooter />
+                                </ModalContent>
+                            </Modal>
+                        </Flex>
+                    ) : <div />}
                 </Flex>
-            </Box> */}
+            </Box>
         </>
     )
 }

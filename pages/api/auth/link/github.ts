@@ -9,13 +9,13 @@ const apiRoute = nextConnect({
         res.status(501).json({ error: `Sorry something happened! ${error.message}` });
     },
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
-        res.status(501).json({ error: `Method '${req.method}' Not allowed.`})
+        res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 });
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) return res.status(502).json({ error: "You need to provide a 'code' query." });
-    if (req.query.error) return res.status(502).redirect("/profile").json({ error: req.query.error });
+    if (req.query.error) return res.status(502).json({ error: req.query.error });
     if (!req.query.code) return res.status(502).json({ error: "Missing 'code' query." });
 
     const client = axios.create();
@@ -40,24 +40,28 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         email: fetchedUser.data.email,
     };
 
-    const { user } = await supabase.auth.api.getUserByCookie(req, res);
-
-    if (user.email != gitUser.email) return res.status(502).json({ error: "Github Email and Pixel Email do not match." });
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
+    }
+    await supabase.auth.setAuth(cookie.token);
 
     const { error } = await supabase
-    .from("users")
-    .update({
-        github: {
-            username: gitUser.login,
-            id: gitUser.id,
-            avatar_url: gitUser.avatar_url,
-            url: gitUser.url,
-            email: gitUser.email,
-        },
-    }).eq("id", user.id);
+        .from("users")
+        .update({
+            github: {
+                username: gitUser.login,
+                id: gitUser.id,
+                avatar_url: gitUser.avatar_url,
+                url: gitUser.url,
+                email: gitUser.email,
+            },
+        }).eq("id", cookie.user.id);
     if (error) return res.status(502).json({ error: error.message });
 
-    res.status(200).redirect("/profile").json({ data: true });
+    res.status(200).redirect("/profile");
 });
 
 export default apiRoute;

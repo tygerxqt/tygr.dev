@@ -15,7 +15,7 @@ const apiRoute = nextConnect({
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) return res.status(502).json({ error: "You need to provide a 'code' query." });
-    if (req.query.error) return res.status(502).redirect("/profile").json({ error: req.query.error });
+    if (req.query.error) return res.status(502).json({ error: req.query.error });
     if (!req.query.code) return res.status(502).json({ error: "Missing 'code' query." });
 
     const params = new URLSearchParams();
@@ -29,7 +29,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const json = await (await fetch('https://discord.com/api/oauth2/token', { method: "POST", body: params })).json();
 
     if (!json) {
-        return res.status(500).redirect("/profile").json({
+        return res.status(500).json({
             error: "Linking failed. Please try again.",
         });
     }
@@ -41,7 +41,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     const discordUser: DiscordUser = await (await client.get(`/users/@me`, { headers: { Authorization: `Bearer ${json.access_token}` } })).data;
 
     if (!discordUser) {
-        return res.status(500).redirect("/profile").json({
+        return res.status(500).json({
             error: "Linking failed. Please try again.",
         });
     }
@@ -56,7 +56,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
     if (userData[0].discord.id) {
-        return res.status(500).redirect(`/profile`).json({
+        return res.status(500).json({
             error: "You already linked your account.",
         });
     }
@@ -73,7 +73,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (error) return res.status(500).json({ error: error.message });
 
-    res.status(200).redirect("/profile").json({ data: true, message: "Successfully linked your Discord account to your Pixel account." });
+    res.status(200).redirect("/profile");
 });
 
 export default apiRoute;
