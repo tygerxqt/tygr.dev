@@ -1,16 +1,16 @@
-import { motion, useAnimation } from 'framer-motion'
-import { useEffect } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 export default function SlideUpWhenVisible({ children, threshold }) {
-  const controls = useAnimation()
-  const [ref, inView] = useInView({ threshold: threshold ? threshold : 0.35 })
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: threshold ? threshold : 0.35 });
 
   useEffect(() => {
     if (inView) {
-      controls.start('visible')
+      controls.start("visible");
     }
-  }, [controls, inView])
+  }, [controls, inView]);
   return (
     <motion.div
       ref={ref}
@@ -24,5 +24,5 @@ export default function SlideUpWhenVisible({ children, threshold }) {
     >
       {children}
     </motion.div>
-  )
+  );
 }

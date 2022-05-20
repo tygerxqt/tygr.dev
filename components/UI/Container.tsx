@@ -1,11 +1,11 @@
-import React from 'react'
-import { Flex, Stack, Box, Text, Link } from '@chakra-ui/react'
-import Navbar from './Navbar'
-import useMediaQuery from '../../hook/useMediaQuery'
-import { useColorMode } from '@chakra-ui/react'
+import React from "react";
+import { Flex, Stack, Text, Link } from "@chakra-ui/react";
+import Navbar from "./Navbar";
+import useMediaQuery from "../../hook/useMediaQuery";
+import { useColorMode } from "@chakra-ui/react";
 
 export default function Container({ enableTransition, children }) {
-  const { colorMode } = useColorMode()
+  const { colorMode } = useColorMode();
   const isLargerThan768 = useMediaQuery(768);
 
   return (
@@ -52,5 +52,5 @@ export default function Container({ enableTransition, children }) {
         </Text>
       </Stack>
     </>
-  )
+  );
 }

@@ -1,26 +1,40 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import supabase from "../../../lib/SupabaseClient";
+import nextConnect from "next-connect";
+import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method != "GET") {
-        res.status(405).json({ error: "Method not allowed!" });
-    }
+const apiRoute = nextConnect({
+    onError(error, req: NextApiRequest, res: NextApiResponse) {
+        res.status(501).json({ error: `Sorry something happened! ${error.message}` });
+    },
+    onNoMatch(req: NextApiRequest, res: NextApiResponse) {
+        res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
+    },
+});
 
-    if (!req.query.token || req.query.token === null) {
-        res.status(502).json({ error: "Missing User Token." });
-    }
+apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
+    if (!req.query || !req.query.token || req.query.token === null) return res.status(502).json({ error: "You need to provide a 'TOKEN' query." });
 
-    const { user } = await supabase.auth.api.getUser(req.query.token as string);
+    const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
 
     if (!user) {
-        return res.status(401).json({ error: "Unauthorized" });
+        res.status(502).json({
+            error: "Unauthorized.",
+        });
     }
 
-    const { data, error } = await supabase.from("users").select("*").eq("id", req.query.id);
-    if (error) {
-        res.status(502).json({ error: error });
-        throw error;
+    const { data: discord, error: discordError } = await supabaseAdmin.from("users").select("discord").eq("id", user.id);
+    if (discordError) {
+        res.status(502).json({ error: discordError });
+        throw discordError;
     }
 
-    res.status(200).json({ user });
-}
+    const { data: github, error: githubError } = await supabaseAdmin.from("users").select("github").eq("id", user.id);
+    if (githubError) {
+        res.status(502).json({ error: githubError });
+        throw githubError;
+    }
+
+    res.status(200).json({ ...user, discord, github });
+});
+
+export default apiRoute;

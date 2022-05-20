@@ -20,17 +20,11 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { AiOutlineEdit } from "react-icons/ai";
-import { User } from "@supabase/supabase-js";
-import axios from "axios";
 import supabase from "../../lib/SupabaseClient";
 import * as React from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
 
-interface IProps {
-  user: User;
-}
-
-const PasswordField: React.FC<IProps> = ({ user }, data) => {
+const PasswordField = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [passwordHidden, setPasswordHidden] = React.useState(true);
@@ -165,17 +159,5 @@ const PasswordField: React.FC<IProps> = ({ user }, data) => {
     </>
   );
 };
-
-export async function getServerSideProps(user: User) {
-  const res = await axios.get(
-    `/api/users/${user.id}?token=${supabase.auth.session().access_token}`
-  );
-
-  return {
-    props: {
-      data: res.data,
-    },
-  };
-}
 
 export default PasswordField;

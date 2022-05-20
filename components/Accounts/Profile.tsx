@@ -4,16 +4,10 @@ import {
   Flex,
   Heading,
   Stack,
-  Text,
-  Box,
-  SimpleGrid,
   Avatar,
-  Input,
   useToast,
   Spinner,
-  Spacer,
   Center,
-  CircularProgress,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -25,6 +19,7 @@ import axios from "axios";
 import EmailField from "./EmailField";
 import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
+import Identities from "./Identities";
 
 function Profile() {
   const user = supabase.auth.user();
@@ -34,6 +29,12 @@ function Profile() {
   const [removing, setRemoving] = useState(false);
 
   const [token, setToken] = useState(null);
+
+  // set server cookie
+  axios.post("/api/auth/cookie/set", {
+    event: user ? "SIGNED_IN" : "SIGNED_OUT",
+    session: supabase.auth.session(),
+  });
 
   useEffect(() => {
     const value = localStorage.getItem("supabase.auth.token");
@@ -119,14 +120,14 @@ function Profile() {
       const { error } = await supabase
         .from("users")
         .update({
-          avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+          avatar: `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/avatars/${response.data[0]}`,
         })
         .eq("id", user.id);
       if (error) throw error;
 
       const { error: metadataError } = await supabase.auth.update({
         data: {
-          avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+          avatar: `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/avatars/${response.data[0]}`,
         },
       });
 
@@ -148,20 +149,6 @@ function Profile() {
     try {
       setRemoving(true);
       await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
-
-      let { error } = await supabase
-        .from("users")
-        .update({ avatar: null })
-        .eq("id", user.id);
-      if (error) throw error;
-
-      let { error: UpdateError } = await supabase.auth.update({
-        data: {
-          avatar: null,
-        },
-      });
-
-      if (UpdateError) throw UpdateError;
 
       toast({
         title: "Success",
@@ -194,65 +181,56 @@ function Profile() {
           justifyContent="center"
           my={["10vh", "10vh", "15vh", "15vh"]}
         >
-          <Stack spacing={5}>
-            {" "}
-            <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
-            <Divider zIndex={-1} />
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={20}>
-              <Stack spacing={5}>
-                <Flex
-                  flexDirection={"row"}
-                  justifyContent="center"
-                  gap={{ base: 10, lg: "3rem" }}
-                >
-                  <Avatar
-                    src={user.user_metadata.avatar}
-                    w={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    h={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    borderRadius="50%"
-                    zIndex={-1}
+          {" "}
+          <Flex flexDirection={"column"} gap={5}>
+            <Stack spacing={5}>
+              <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
+              <Divider />
+            </Stack>
+            <Flex
+              flexDirection={"row"}
+              justifyContent="center"
+              gap={{ base: 10, lg: "3rem" }}
+            >
+              <Avatar
+                src={user.user_metadata.avatar}
+                w={{
+                  base: "128px",
+                  lg: "192px",
+                }}
+                h={{
+                  base: "128px",
+                  lg: "192px",
+                }}
+                borderRadius="50%"
+                zIndex={-1}
+              />
+              <Center>
+                <Stack spacing={5} pt={3}>
+                  <UiFileInputButton
+                    uploadFileName="upload"
+                    onChange={UploadAvatar}
                   />
-                  <Center>
-                    <Stack spacing={5} alignItems="center" pt={3}>
-                      <UiFileInputButton
-                        uploadFileName="upload"
-                        onChange={UploadAvatar}
-                      />
-                      <Button onClick={() => removeAvatar(user.id, token)}>
-                        {" "}
-                        {removing ? <Spinner /> : "Remove"}{" "}
-                      </Button>
-                    </Stack>
-                  </Center>
-                </Flex>
-                <UsernameField user={user} />
-                <EmailField user={user} />
-                <PasswordField user={user} />
-              </Stack>
-            </SimpleGrid>
-          </Stack>
+                  <Button onClick={() => removeAvatar(user.id, token)}>
+                    {" "}
+                    {removing ? <Spinner /> : "Remove"}{" "}
+                  </Button>
+                </Stack>
+              </Center>
+            </Flex>
+            <UsernameField />
+            <EmailField />
+            <PasswordField />
+            <Stack spacing={5} pt={16}>
+              <Heading fontSize={{ base: "2xl", md: "4xl" }}>Identities</Heading>
+              <Divider />
+            </Stack>
+            <Identities />
+          </Flex>
         </Stack>
       </Container>
     </>
   );
-}
-
-export async function getServerSideProps() {
-  const list: Object = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/avatars/list`
-  ).then((data) => data.json());
-
-  return {
-    props: {
-      list: list,
-    },
-  };
 }
 
 export default Profile;

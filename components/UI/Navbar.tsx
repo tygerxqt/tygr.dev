@@ -31,7 +31,6 @@ import {
   Text,
   SimpleGrid,
   ModalFooter,
-  HStack,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
@@ -109,7 +108,7 @@ export default function Navbar({ enableTransition }) {
         isOpen={isOpenModal}
         isCentered
         motionPreset="slideInBottom"
-        size={"lg"}
+        size={"sm"}
       >
         <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="5px" />
         <ModalContent>
@@ -117,7 +116,7 @@ export default function Navbar({ enableTransition }) {
           <ModalCloseButton />
           <ModalBody>
             <Center>
-              <HStack spacing={10}>
+              <VStack spacing={5}>
                 <Avatar
                   src={user.user_metadata.avatar}
                   rounded="full"
@@ -129,7 +128,7 @@ export default function Navbar({ enableTransition }) {
                   </Text>
                   <Text fontSize="14px">{user.email}</Text>
                 </VStack>
-              </HStack>
+              </VStack>
             </Center>
             <Center>
               <SimpleGrid
@@ -180,8 +179,7 @@ export default function Navbar({ enableTransition }) {
           px={"4vw"}
           py={{ base: "1.5vh", md: "3vh" }}
           zIndex={99}
-          backgroundColor={colorMode === "light" ? "#FFFFFF" : "#111111"}
-          opacity={isLargerThan768 ? 0.8 : 1}
+          backgroundColor={colorMode === "light" ? "#FFFFFF" : "#121212"}
           borderBottom={"1px"}
           borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         >
@@ -262,7 +260,7 @@ export default function Navbar({ enableTransition }) {
               ) : (
                 <NextLink href={"/profile"} passHref>
                   <Button
-                    variant="outline"
+                    variant="solid"
                     p="4"
                     ml="3vw"
                     colorScheme={"blue"}
@@ -289,7 +287,7 @@ export default function Navbar({ enableTransition }) {
                 </>
               ) : (
                 <NextLink href="/profile" passHref>
-                  <Button variant="outline" p="4" ml="3vw" fontSize={"16px"}>
+                  <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
                     Log in
                   </Button>
                 </NextLink>

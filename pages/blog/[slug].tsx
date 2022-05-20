@@ -69,6 +69,7 @@ function Post({ metadata, source }) {
                         </Stack>
                         {colorMode === "light" ? (
                             <>
+                
                                 <PostContainer.light>
                                     <MDXRemote {...source} components={MDXComponents} />
                                 </PostContainer.light>
@@ -94,15 +95,15 @@ let client = require("contentful").createClient({
 
 export async function getStaticPaths() {
     let data = await client.getEntries({
-      content_type: "post"
+        content_type: "post"
     });
     return {
-      paths: data.items.map((item) => ({
-        params: { slug: item.fields.slug }
-      })),
-      fallback: false
+        paths: data.items.map((item) => ({
+            params: { slug: item.fields.slug }
+        })),
+        fallback: false
     };
-  }
+}
 
 export async function getStaticProps({ params }) {
     let data = await client.getEntries({
