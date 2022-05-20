@@ -109,7 +109,7 @@ export default function Auth() {
             data: {
               full_name: name,
               username: username,
-              avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
+              avatar: `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL ? process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL : process.env.VERCEL_URL}/api/avatars/default.jpg`,
             },
           }
         );

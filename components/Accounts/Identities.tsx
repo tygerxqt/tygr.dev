@@ -129,7 +129,7 @@ function Identities() {
             {/* Discord */}
             <Box>
                 <Flex flexDirection={"row"}>
-                    <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/link/discord"}&response_type=code&scope=identify%20email`} passHref>
+                    <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL + "/api/auth/link/discord"}&response_type=code&scope=identify%20email`} passHref>
                         <Skeleton isLoaded={!loading}>
                             <Button w="full" leftIcon={<FaDiscord />} colorScheme='blue' variant='solid' disabled={discordData ? true : false}>
                                 {discordData ? `Linked to ${discordData.username}#${discordData.discriminator}` : "Link Discord"}
@@ -406,7 +406,7 @@ export async function getServerSideProps({ req }) {
     const client = axios.create()
     const { user, token } = await supabase.auth.api.getUserByCookie(req);
     supabase.auth.setAuth(token);
-    const { data } = await client.get(`${process.env.NEXT_PUBLIC_URL}/api/users/${user.id}?token=${token}`);
+    const { data } = await client.get(`${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/users/${user.id}?token=${token}`);
 
     return {
         props: {

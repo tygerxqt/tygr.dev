@@ -120,14 +120,14 @@ function Profile() {
       const { error } = await supabase
         .from("users")
         .update({
-          avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+          avatar: `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/avatars/${response.data[0]}`,
         })
         .eq("id", user.id);
       if (error) throw error;
 
       const { error: metadataError } = await supabase.auth.update({
         data: {
-          avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
+          avatar: `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/avatars/${response.data[0]}`,
         },
       });
 
