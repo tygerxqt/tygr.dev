@@ -24,7 +24,6 @@ import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import axios from "axios";
-import AuthButtons from "./AuthButtons";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -253,14 +252,6 @@ export default function Auth() {
                         >
                           Confirm
                         </Button>
-                        <HStack p={4}>
-                          <Divider />
-                          <Text fontSize="sm" whiteSpace="nowrap">
-                            or continue with
-                          </Text>
-                          <Divider />
-                        </HStack>
-                        <AuthButtons />
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>

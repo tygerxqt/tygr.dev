@@ -4945,11 +4945,6 @@ mdurl@^1.0.0:
   resolved "https://registry.npmjs.org/mdurl/-/mdurl-1.0.1.tgz"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
 
-mdx-embed@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/mdx-embed/-/mdx-embed-1.0.0.tgz#b1d6ae7fe8d27299769430b2ea7df280ae85c539"
-  integrity sha512-Ey2TqM7EA+EKHXUheD4me1rfxYvd633ZqoRIFv1shsfSxUQ+5776hUtPYm5g8WMZAKOkzta7cZKZ/ipUWCNoXQ==
-
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.npmjs.org/media-typer/-/media-typer-0.3.0.tgz"

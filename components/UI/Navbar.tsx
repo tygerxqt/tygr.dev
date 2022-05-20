@@ -260,7 +260,7 @@ export default function Navbar({ enableTransition }) {
               ) : (
                 <NextLink href={"/profile"} passHref>
                   <Button
-                    variant="outline"
+                    variant="solid"
                     p="4"
                     ml="3vw"
                     colorScheme={"blue"}
@@ -287,7 +287,7 @@ export default function Navbar({ enableTransition }) {
                 </>
               ) : (
                 <NextLink href="/profile" passHref>
-                  <Button variant="outline" p="4" ml="3vw" fontSize={"16px"}>
+                  <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
                     Log in
                   </Button>
                 </NextLink>

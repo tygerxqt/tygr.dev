@@ -7,7 +7,6 @@ import PostContainer from "../../components/Blog/PostContainer";
 import MDXComponents from "../../components/Blog/MDXComponents";
 import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
-import { MDXEmbedProvider } from "mdx-embed";
 
 function Post({ metadata, source }) {
     const { colorMode } = useColorMode();
@@ -70,19 +69,16 @@ function Post({ metadata, source }) {
                         </Stack>
                         {colorMode === "light" ? (
                             <>
-                                <MDXEmbedProvider>
-                                    <PostContainer.light>
-                                        <MDXRemote {...source} components={MDXComponents} />
-                                    </PostContainer.light>
-                                </MDXEmbedProvider>
+                
+                                <PostContainer.light>
+                                    <MDXRemote {...source} components={MDXComponents} />
+                                </PostContainer.light>
                             </>
                         ) : (
                             <>
-                                <MDXEmbedProvider>
-                                    <PostContainer.dark>
-                                        <MDXRemote {...source} components={MDXComponents} />
-                                    </PostContainer.dark>
-                                </MDXEmbedProvider>
+                                <PostContainer.dark>
+                                    <MDXRemote {...source} components={MDXComponents} />
+                                </PostContainer.dark>
                             </>
                         )}
                     </Stack>
