@@ -23,7 +23,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     params.append('client_secret', process.env.DISCORD_CLIENT_SECRET);
     params.append('grant_type', 'authorization_code');
     params.append('code', req.query.code as string);
-    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/auth/link/discord`);
+    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/link/discord`);
     params.append('scope', 'identify%20email');
 
     const json = await (await fetch('https://discord.com/api/oauth2/token', { method: "POST", body: params })).json();
@@ -52,7 +52,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
             error: "Unauthorized.",
         });
     }
-    
+
     supabase.auth.setAuth(cookie.token);
 
     const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
