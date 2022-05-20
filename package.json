@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "env": "npm i -g vercel && vercel link && vercel env pull"
   },
   "dependencies": {
     "@babel/core": "^7.17.7",
