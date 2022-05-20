@@ -52,7 +52,8 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
             error: "Unauthorized.",
         });
     }
-    await supabase.auth.setAuth(cookie.token);
+    
+    supabase.auth.setAuth(cookie.token);
 
     const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
     if (userData[0].discord.id) {
@@ -72,7 +73,6 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     }).eq("id", cookie.user.id);
 
     if (error) return res.status(500).json({ error: error.message });
-
     res.status(200).redirect("/profile");
 });
 

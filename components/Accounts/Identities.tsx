@@ -263,11 +263,9 @@ function Identities() {
                 </Flex>
             </Box>
 
-            {/* https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false */}
-
             <Box>
                 <Flex flexDirection={"row"}>
-                    <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
+                    <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_PIXEL_LINK_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
                         <Skeleton isLoaded={!loading}>
                             <Button w="full" leftIcon={<FaGithub />} variant='solid' disabled={githubData ? true : false}>
                                 {githubData ? `Linked to ${githubData.username}` : "Link GitHub"}

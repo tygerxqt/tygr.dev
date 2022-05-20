@@ -20,7 +20,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const client = axios.create();
 
-    const json = await client.post(`https://github.com/login/oauth/access_token?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${req.query.code}`, undefined, {
+    const json = await client.post(`https://github.com/login/oauth/access_token?client_id=${process.env.NEXT_PUBLIC_PIXEL_LINK_GITHUB_CLIENT_ID}&client_secret=${process.env.PIXEL_LINK_GITHUB_CLIENT_SECRET}&code=${req.query.code}`, undefined, {
         headers: {
             "Accept": "application/json",
         },
@@ -33,7 +33,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     const gitUser: GithubUser = {
-        login: fetchedUser.data.login,
+        username: fetchedUser.data.login,
         id: fetchedUser.data.id,
         avatar_url: fetchedUser.data.avatar_url,
         url: fetchedUser.data.url,
@@ -52,7 +52,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         .from("users")
         .update({
             github: {
-                username: gitUser.login,
+                username: gitUser.username,
                 id: gitUser.id,
                 avatar_url: gitUser.avatar_url,
                 url: gitUser.url,

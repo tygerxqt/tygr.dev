@@ -340,27 +340,13 @@ export default function Auth() {
                       >
                         Confirm
                       </Button>
-                      {/* <HStack p={8}>
-                                                <Divider />
-                                                <Text fontSize="sm" whiteSpace="nowrap">
-                                                    or continue with
-                                                </Text>
-                                                <Divider />
-                                            </HStack>
-                                            <ButtonGroup variant={"outline"} spacing={4} width={"full"}>
-                                                <Button key={"Discord"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "discord" }, { shouldCreateUser: false })}>
-                                                    <VisuallyHidden>Sign in with Discord</VisuallyHidden>
-                                                    <FaDiscord size={"22px"} />
-                                                </Button>
-                                                <Button key={"Github"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "github" }, { shouldCreateUser: false })}>
-                                                    <VisuallyHidden>Sign in with Github</VisuallyHidden>
-                                                    <FaGithub size={"22px"} />
-                                                </Button>
-                                                <Button key={"Spotify"} isFullWidth onClick={() => supabase.auth.signIn({ provider: "spotify" }, { shouldCreateUser: false })}>
-                                                    <VisuallyHidden>Sign in with Spotify</VisuallyHidden>
-                                                    <FaSpotify size={"22px"} />
-                                                </Button>
-                                            </ButtonGroup> */}
+                      <HStack p={8}>
+                          <Divider />
+                          <Text fontSize="sm" whiteSpace="nowrap">
+                              or continue with
+                          </Text>
+                          <Divider />
+                      </HStack>
                     </Box>
                   </Center>
                 </Stack>

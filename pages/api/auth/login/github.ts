@@ -3,7 +3,7 @@ import { SignJWT } from "jose";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
-import { DiscordUser } from "../../../../types/DiscordUser";
+import { GithubUser } from "../../../../types/GithubUser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -19,29 +19,29 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.query.error) return res.status(502).json({ error: req.query.error });
     if (!req.query.code) return res.status(502).json({ error: "Missing 'code' query." });
 
-    const params = new URLSearchParams();
-    params.append('client_id', process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID);
-    params.append('client_secret', process.env.DISCORD_CLIENT_SECRET);
-    params.append('grant_type', 'authorization_code');
-    params.append('code', req.query.code as string);
-    params.append('redirect_uri', `${process.env.NEXT_PUBLIC_URL}/api/auth/link/discord`);
-    params.append('scope', 'identify%20email');
+    const client = axios.create();
 
-    const json = await (await fetch('https://discord.com/api/oauth2/token', { method: "POST", body: params })).json();
-
-    if (!json) {
-        return res.status(500).json({
-            error: "Linking failed. Please try again.",
-        });
-    }
-
-    const client = axios.create({
-        baseURL: 'https://discord.com/api/v9'
+    const json = await client.post(`https://github.com/login/oauth/access_token?client_id=${process.env.NEXT_PUBLIC_PIXEL_LINK_GITHUB_CLIENT_ID}&client_secret=${process.env.PIXEL_LINK_GITHUB_CLIENT_SECRET}&code=${req.query.code}`, undefined, {
+        headers: {
+            "Accept": "application/json",
+        },
     });
 
-    const discordUser: DiscordUser = await (await client.get(`/users/@me`, { headers: { Authorization: `Bearer ${json.access_token}` } })).data;
+    const fetchedUser = await client.get(`https://api.github.com/user`, {
+        headers: {
+            "Authorization": `token ${json.data.access_token}`,
+        },
+    });
 
-    const { data: user } = await supabaseAdmin.from("users").select("*").eq("discord->>id", discordUser.id);
+    const gitUser: GithubUser = {
+        username: fetchedUser.data.login,
+        id: fetchedUser.data.id,
+        avatar_url: fetchedUser.data.avatar_url,
+        url: fetchedUser.data.url,
+        email: fetchedUser.data.email,
+    };
+
+    const { data: user } = await supabaseAdmin.from("users").select("*").eq("github->>id", gitUser.id);
     
     // const token = await new SignJWT({
     //     role: 'authenticated',
@@ -53,7 +53,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     //     .setIssuedAt()
     //     .sign(new TextEncoder().encode(process.env.JWT_SECRET))
 
-    res.status(200).json({ data: user });
+    res.status(200).json({ data: "bruh" });
 });
 
 export default apiRoute;
