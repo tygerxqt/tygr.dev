@@ -46,5 +46,9 @@ CONTENTFUL_ACCESS_TOKEN=YOUR_CONTENTFUL_TOKEN
 CONTENTFUL_SPACE_ID=YOUR_CONTENTFUL_SPACEID
 ```
 
+# Badges
+[![CodeQL](https://github.com/tygerxqt/tygr.dev/actions/workflows/CodeQL.yml/badge.svg?branch=main)](https://github.com/tygerxqt/tygr.dev/actions/workflows/CodeQL.yml)  
+[![Dependency Review](https://github.com/tygerxqt/tygr.dev/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/tygerxqt/tygr.dev/actions/workflows/dependency-review.yml)
+
 # Help
 If more help is needed, you can contact me by [e-mail](mailto:tygerxqt@nordstud.io) or [tweet](https://twitter.com/intent/tweet?text=%40tygerxqt) to me.
