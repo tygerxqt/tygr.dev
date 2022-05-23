@@ -331,13 +331,6 @@ export default function Auth() {
                       >
                         Confirm
                       </Button>
-                      <HStack p={8}>
-                          <Divider />
-                          <Text fontSize="sm" whiteSpace="nowrap">
-                              or continue with
-                          </Text>
-                          <Divider />
-                      </HStack>
                     </Box>
                   </Center>
                 </Stack>
