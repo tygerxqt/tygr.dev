@@ -8,6 +8,9 @@ import {
   useToast,
   Spinner,
   Center,
+  Input,
+  Box,
+  Text
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -20,6 +23,8 @@ import EmailField from "./EmailField";
 import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
 import Identities from "./Identities";
+import { AiOutlineCopy } from "react-icons/ai";
+import IDField from "./IDField";
 
 function Profile() {
   const user = supabase.auth.user();
@@ -221,6 +226,7 @@ function Profile() {
             <UsernameField />
             <EmailField />
             <PasswordField />
+            <IDField />
             <Stack spacing={5} pt={16}>
               <Heading fontSize={{ base: "2xl", md: "4xl" }}>Identities</Heading>
               <Divider />
