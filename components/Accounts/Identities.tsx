@@ -129,15 +129,22 @@ function Identities() {
             {/* Discord */}
             <Box>
                 <Flex flexDirection={"row"}>
-                    <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&sredirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/link/discord"}&response_type=code&scope=identify%20email`} passHref>
-                        <Skeleton isLoaded={!loading}>
-                            <Button w="full" leftIcon={<FaDiscord />} colorScheme='blue' variant='solid' disabled={discordData ? true : false}>
-                                {discordData ? `Linked to ${discordData.username}#${discordData.discriminator}` : "Link Discord"}
+                    <Skeleton isLoaded={!loading}>
+                        {discordData ? (
+                            <Button w="full" leftIcon={<FaDiscord />} colorScheme='blue' variant='solid' onClick={DiscordModalOnOpen}>
+                                {`Linked to ${discordData.username}#${discordData.discriminator}`}
                             </Button>
-                        </Skeleton>
-                    </Link>
+                        ) : (
+                            <Link href={`https://discord.com/api/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID}&sredirect_uri=${process.env.NEXT_PUBLIC_URL + "/api/auth/link/discord"}&response_type=code&scope=identify%20email`} passHref>
+                                <Button w="full" leftIcon={<FaDiscord />} colorScheme='blue' variant='outline'>
+                                    {"Link Discord"}
+                                </Button>
+                            </Link>
+                        )}
+                    </Skeleton>
+
                     {discordData ? (
-                        <Flex pl={4} display={{ base: "none", sm: "block" }}>
+                        <Flex pl={4}>
                             {DiscordUnlinkConfirm ? (
                                 // Confirm button
                                 <Button onClick={() => destroyDiscordLink()} colorScheme={"red"} disabled={loading}>
@@ -152,9 +159,6 @@ function Identities() {
                     ) : <div />}
                     {discordData ? (
                         <Flex pl={4}>
-                            <Button onClick={DiscordModalOnOpen}>
-                                <AiOutlineIdcard />
-                            </Button>
                             <Modal onClose={DiscordModalOnClose} isOpen={DiscordModalIsOpen} isCentered>
                                 <ModalOverlay />
                                 <ModalContent>
@@ -265,15 +269,23 @@ function Identities() {
 
             <Box>
                 <Flex flexDirection={"row"}>
-                    <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
-                        <Skeleton isLoaded={!loading}>
-                            <Button w="full" leftIcon={<FaGithub />} variant='solid' disabled={githubData ? true : false}>
-                                {githubData ? `Linked to ${githubData.username}` : "Link GitHub"}
+
+                    <Skeleton isLoaded={!loading}>
+                        {githubData ? (
+                            <Button w="full" leftIcon={<FaGithub />} colorScheme='gray' variant='solid' onClick={GithubModalOnOpen}>
+                                {`Linked to ${githubData.username}`}
                             </Button>
-                        </Skeleton>
-                    </Link>
+                        ) : (
+                            <Link href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&scope=user%20read:email&allow_signup=false`} passHref>
+                                <Button w="full" leftIcon={<FaGithub />} colorScheme='gray' variant='outline'>
+                                    {"Link GitHub"}
+                                </Button>
+                            </Link>
+                        )}
+                    </Skeleton>
+
                     {githubData ? (
-                        <Flex pl={4} display={{ base: "none", sm: "block" }}>
+                        <Flex pl={4}>
                             {GithubUnlinkConfirm ? (
                                 // Confirm button
                                 <Button onClick={() => destroyGithubLink()} colorScheme={"red"} disabled={loading}>
@@ -288,9 +300,6 @@ function Identities() {
                     ) : <div />}
                     {githubData ? (
                         <Flex pl={4}>
-                            <Button onClick={GithubModalOnOpen}>
-                                <AiOutlineIdcard />
-                            </Button>
                             <Modal onClose={GithubModalOnClose} isOpen={GithubModalIsOpen} isCentered>
                                 <ModalOverlay />
                                 <ModalContent>
