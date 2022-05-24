@@ -117,16 +117,4 @@ const UsernameField = () => {
   );
 };
 
-export async function getServerSideProps(user: User, session: Session) {
-  const res = await axios.get(
-    `/api/users/${user.id}?token=${session.access_token}`
-  );
-
-  return {
-    props: {
-      data: res.data,
-    },
-  };
-}
-
 export default UsernameField;
