@@ -250,7 +250,8 @@ function Profile() {
   async function removeAvatar(id: string, token: string) {
     try {
       setAvatarRemoving(true);
-      await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
+      const { data } = await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
+      if (data.error) throw data.error;
 
       toast({
         title: "Success",
@@ -262,7 +263,7 @@ function Profile() {
     } catch (err) {
       toast({
         title: "Error",
-        description: err.message,
+        description: err.message ? err.message : err,
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -275,7 +276,8 @@ function Profile() {
   async function removeBanner(id: string, token: string) {
     try {
       setBannerRemoving(true);
-      await axios.put(`/api/banners/remove?id=${id}&token=${token}`);
+      const { data } = await axios.put(`/api/banners/remove?id=${id}&token=${token}`);
+      if (data.error) throw data.error;
 
       toast({
         title: "Success",
@@ -287,7 +289,7 @@ function Profile() {
     } catch (err) {
       toast({
         title: "Error",
-        description: err,
+        description: err.message ? err.message : err,
         status: "error",
         duration: 9000,
         isClosable: true,

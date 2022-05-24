@@ -38,12 +38,12 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         const deta = Deta(process.env.DETA_PROJECT_KEY);
         const drive = deta.Drive("banners");
         const list = await (await drive.list()).names;
-        if (!list || list.length > 1) {
+        if (!list || list.length < 1) {
             return res.status(200).json({ error: "You don't have an banner set." });
         }
 
         const files = list.filter((name) => name.includes(user.id));
-        if (!files || files.length > 1) {
+        if (!files || files.length < 1) {
             return res.status(200).json({ error: "You don't have an banner set." });
         }
 

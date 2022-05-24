@@ -38,22 +38,31 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     const deta = Deta(process.env.DETA_PROJECT_KEY);
     const drive = deta.Drive("avatars");
     const list = await (await drive.list()).names;
-    if (!list || list.length > 1) {
+    console.log(user.id)
+    console.log(list)
+    console.log(list.filter((name) => name.startsWith(user.id)));
+    if (!list || list.length < 1) {
       return res.status(200).json({ error: "You don't have an avatar set." });
     }
 
     const files = list.filter((name) => name.includes(user.id));
-    if (!files || files.length > 1) {
+    if (!files || files.length < 1) {
       return res.status(200).json({ error: "You don't have an avatar set." });
     }
 
-    await drive.deleteMany(files);
-    await supabase.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg` }).eq("id", user.id);
-    await supabase.auth.update({
+    files.forEach(async (file) => {
+      await drive.delete(file);
+    });
+    const { error: dbError } = await supabase.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg` }).eq("id", user.id);
+    if (dbError) return res.status(500).json({ error: dbError });
+
+    const { error: metadataError } = await supabase.auth.update({
       data: {
         avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
       }
     });
+    if (metadataError) return res.status(500).json({ error: metadataError });
+
     res.status(200).json({ data: true });
   } catch (err) {
     res.status(502).json({ error: err });
