@@ -415,7 +415,7 @@ export async function getServerSideProps({ req }) {
     const client = axios.create()
     const { user, token } = await supabase.auth.api.getUserByCookie(req);
     supabase.auth.setAuth(token);
-    const { data } = await client.get(`${process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : process.env.VERCEL_URL}/api/users/${user.id}?token=${token}`);
+    const { data } = await client.get(`${process.env.NEXT_PUBLIC_URL}/api/users/${user.id}?token=${token}`);
 
     return {
         props: {
