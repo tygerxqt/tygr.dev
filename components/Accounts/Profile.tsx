@@ -364,14 +364,8 @@ function Profile() {
                     </Stack>
                     <Image
                       src={user.user_metadata.banner}
-                      w={{
-                        base: "320px",
-                        lg: "645px",
-                      }}
-                      h={{
-                        base: "200px",
-                        lg: "200px",
-                      }}
+                      w={"1200px"}
+                      h={"200px"}
                       rounded="lg"
                       objectFit={"cover"}
                       zIndex={-1}
@@ -409,7 +403,7 @@ function Profile() {
                       <Image
                         src={user.user_metadata.banner}
                         w={"1200px"}
-                        h={"20vh"}
+                        h={"200px"}
                         objectFit="cover"
                         alt={"banner"}
                       />
@@ -425,7 +419,9 @@ function Profile() {
                           rounded="full"
                           w={"128px"}
                           h={"128px"}
-                          mt={"-15%"}
+                          mt={"-20%"}
+                          border={"2px"}
+                          borderColor={"#111111"}
                           alt={"avatar"}
                         />
                         <Badges />
