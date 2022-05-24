@@ -34,7 +34,13 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         throw githubError;
     }
 
-    res.status(200).json({ ...user, discord, github });
+    const { data: badges, error: badgesError } = await supabaseAdmin.from("users").select("badges").eq("id", user.id);
+    if (badgesError) {
+        res.status(502).json({ error: badgesError });
+        throw badgesError;
+    }
+
+    res.status(200).json({ ...user, discord, github, badges });
 });
 
 export default apiRoute;

@@ -38,7 +38,7 @@ const apiRoute = nextConnect({
   },
 });
 
-apiRoute.use(upload.single("upload"));
+apiRoute.use(upload.single("avatar"));
 apiRoute.use(cookieParser());
 
 apiRoute.post(
