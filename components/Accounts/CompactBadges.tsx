@@ -8,7 +8,7 @@ import { MdLocalPolice } from "react-icons/md";
 import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
 
-export default function Badges() {
+export default function CompactBadges() {
     const user = supabase.auth.user();
     const session = supabase.auth.session();
     const [badges, setBadges] = useState([]);
@@ -73,8 +73,7 @@ export default function Badges() {
                 <Tag
                     key={item}
                     colorScheme={getTag(item)[1]}
-                    size={'lg'}
-                    ml={2}
+                    size={'md'}
                 >
                     <TagLeftIcon as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>
                 </Tag>

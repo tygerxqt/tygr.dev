@@ -110,7 +110,8 @@ export default function Auth() {
               full_name: name,
               username: username,
               avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
-              banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`
+              banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`,
+              cutie: false
             },
           }
         );

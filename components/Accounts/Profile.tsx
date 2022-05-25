@@ -16,7 +16,9 @@ import {
   useColorMode,
   Badge,
   color,
-  Image
+  Image,
+  Spacer,
+  Skeleton
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -31,8 +33,10 @@ import UsernameField from "./UsernameField";
 import PasswordField from "./PasswordField";
 import Identities from "./Identities";
 import IDField from "./IDField";
-import Badges from "./Badges";
 import useMediaQuery from "../../hook/useMediaQuery";
+import Badges from "../../components/Accounts/Badges";
+import MiniBadges from "./MiniBadges";
+import CompactBadges from "./CompactBadges";
 
 function Profile() {
   const user = supabase.auth.user();
@@ -43,6 +47,10 @@ function Profile() {
   const [token, setToken] = useState(null);
 
   const isLargerThan850 = useMediaQuery(850);
+  const isLargerThan1215 = useMediaQuery(1215);
+  const isLargerThan1360 = useMediaQuery(1360);
+  const isLargerThan500 = useMediaQuery(500);
+  const isLargerThan400 = useMediaQuery(400);
 
   // set server cookie
   axios.post("/api/auth/cookie/set", {
@@ -398,66 +406,115 @@ function Profile() {
               </Stack>
               <Flex flexDirection={"column"}>
                 <Box border={"1px"} borderColor={"black"} rounded={"lg"} pb={4}>
-                  <Center>
-                    <VStack spacing={5}>
+                  <VStack spacing={5}>
+                    <Image
+                      src={user.user_metadata.banner}
+                      w={"1200px"}
+                      h={"200px"}
+                      objectFit="cover"
+                      alt={"banner"}
+                    />
+                    <Flex
+                      flexDirection="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      w={"full"}
+                      px={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
+                    >
                       <Image
-                        src={user.user_metadata.banner}
-                        w={"1200px"}
-                        h={"200px"}
-                        objectFit="cover"
-                        alt={"banner"}
+                        src={user.user_metadata.avatar}
+                        rounded="full"
+                        w={"128px"}
+                        h={"128px"}
+                        mt={"-20%"}
+                        border={"2px"}
+                        borderColor={"#111111"}
+                        alt={"avatar"}
                       />
-                      <Flex
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        w={"full"}
-                        px={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
-                      >
-                        <Image
-                          src={user.user_metadata.avatar}
-                          rounded="full"
-                          w={"128px"}
-                          h={"128px"}
-                          mt={"-20%"}
-                          border={"2px"}
-                          borderColor={"#111111"}
-                          alt={"avatar"}
-                        />
-                        <Badges />
-                      </Flex>
-                      <Flex
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        w={"full"}
-                        px={{ base: "1rem", md: "2.5rem", lg: "4rem" }}
-                      >
-                        <Stack spacing={0}>
-                          <Text fontSize="26px" fontWeight="bold">
-                            {user.user_metadata.username}
-                          </Text>
-                          <Text fontSize="14px">{user.email}</Text>
-                        </Stack>
-                        <div />
-                      </Flex>
-                    </VStack>
-                  </Center>
+                      {/* Mobile view */}
+                      {isLargerThan850 ? (
+                        <></>
+                      ) : (
+                        <>
+                          {isLargerThan400 ? (
+                            <>
+                              {isLargerThan500 ? (
+                                <Stack isInline spacing={2}>
+                                  <Badges />
+                                </Stack>
+                              ) : (
+                                <SimpleGrid columns={5} spacing={2}>
+                                  <MiniBadges />
+                                </SimpleGrid>
+                              )}
+                            </>
+                          ) : (
+                            <SimpleGrid columns={3} spacing={2}>
+                              <CompactBadges />
+                            </SimpleGrid>
+                          )}
+                        </>
+                      )}
+
+                      {/* Desktop view */}
+                      {isLargerThan850 ? (
+                        <>
+                          {isLargerThan1360 ? (
+                            <Stack isInline spacing={2} >
+                              <Badges />
+                            </Stack>
+                          ) : (
+                            <>
+                              {isLargerThan1215 ? (
+                                <SimpleGrid columns={5} spacing={2}>
+                                  <MiniBadges />
+                                </SimpleGrid>
+                              ) : (
+                                <SimpleGrid columns={3} spacing={2}>
+                                  <CompactBadges />
+                                </SimpleGrid>
+
+                              )}
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </Flex>
+                    <Flex
+                      flexDirection="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      w={"full"}
+                      px={{ base: "1.5rem", md: "2rem", lg: "2.5rem" }}
+                    >
+                      <Stack spacing={0}>
+                        <Text fontSize="26px" fontWeight="bold">
+                          {user.user_metadata.username}
+                          {user.user_metadata.cutie === true ? (
+                            <Badge ml='2' colorScheme='pink'>
+                              Cutie
+                            </Badge>
+                          ) : <div />}
+                        </Text>
+                        <Text fontSize="14px">{user.email}</Text>
+                      </Stack>
+                      <div />
+                    </Flex>
+                  </VStack>
                   {/* Optional Buttons */}
                   {/* <Center>
-                  <SimpleGrid
-                    columns={2}
-                    spacing={5}
-                    mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
-                  >
-                    <Button as="a" variant="solid" fontSize="16px">
-                      Button 1
-                    </Button>
-                    <Button as="a" variant="solid" fontSize="16px">
-                      Button 2
-                    </Button>
-                  </SimpleGrid>
-                </Center> */}
+                    <SimpleGrid
+                      columns={1}
+                      spacing={5}
+                      mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
+                    >
+                      <Button as="a" variant="solid" fontSize="16px">
+                        Beta Base
+                      </Button>
+                    </SimpleGrid>
+                  </Center> */}
                 </Box>
               </Flex>
             </SimpleGrid>
@@ -468,7 +525,7 @@ function Profile() {
             <Identities />
           </Flex>
         </Stack>
-      </Container>
+      </Container >
     </>
   );
 }

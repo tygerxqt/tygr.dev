@@ -18,7 +18,7 @@ export default function IDField() {
                         />
                     </Flex>
                     <Flex pl={4}>
-                        <Button onClick={() => {
+                        <Button onClick={async () => {
                             try {
                                 navigator.clipboard.writeText(supabase.auth.user().id)
                             } catch (err) {
