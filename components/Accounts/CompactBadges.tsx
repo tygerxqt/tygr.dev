@@ -1,27 +1,23 @@
-import { Skeleton, Tag, TagLeftIcon, Tooltip } from "@chakra-ui/react";
+import { Tag, TagLeftIcon, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiFillBug } from "react-icons/ai";
 import { BiDonateHeart, BiCode } from "react-icons/bi";
 import { BsTerminalFill } from "react-icons/bs";
 import { RiParkingFill } from "react-icons/ri";
 import { MdLocalPolice } from "react-icons/md";
-import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
 
 export default function CompactBadges() {
     const user = supabase.auth.user();
     const session = supabase.auth.session();
     const [badges, setBadges] = useState([]);
-    const [loading, setLoading] = useState(false)
-    const isLargerThan500 = useMediaQuery(500);
     useEffect(() => {
-        setLoading(true);
         fetch(`/api/users/${user.id}?token=${session.access_token}`)
             .then((res) => res.json())
             .then((data) => {
                 const filtered = Object.keys(data.badges[0].badges).filter((key) => data.badges[0].badges[key]);
                 setBadges(filtered);
-            }).finally(() => setLoading(false));
+            });
     }, [user, session]);
 
     const getTag = (tag) => {
