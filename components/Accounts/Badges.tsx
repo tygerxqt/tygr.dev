@@ -16,7 +16,7 @@ export default function Badges() {
         fetch(`/api/users/${user.id}?token=${session.access_token}`)
             .then((res) => res.json())
             .then((data) => {
-                const filtered = Object.keys(data.badges[0].badges).filter((key) => data.badges[0].badges[key]);
+                const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);
                 setBadges(filtered);
             });
     }, [user, session]);
@@ -73,7 +73,7 @@ export default function Badges() {
                     size={'lg'}
                     ml={2}
                 >
-                    <TagLeftIcon as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>
+                    <TagLeftIcon key={item} as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>
                 </Tag>
             </Tooltip>
         </>

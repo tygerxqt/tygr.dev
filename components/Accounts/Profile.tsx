@@ -8,20 +8,17 @@ import {
   useToast,
   Spinner,
   Center,
-  Input,
   Box,
   Text,
   SimpleGrid,
   VStack,
-  useColorMode,
   Badge,
-  color,
   Image,
-  Spacer,
+  SkeletonCircle,
   Skeleton
 } from "@chakra-ui/react";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Container from "../UI/Container";
 import supabase from "../../lib/SupabaseClient";
 import React from "react";
@@ -37,14 +34,21 @@ import useMediaQuery from "../../hook/useMediaQuery";
 import Badges from "../../components/Accounts/Badges";
 import MiniBadges from "./MiniBadges";
 import CompactBadges from "./CompactBadges";
+import { UserProfile } from "../../types/UserProfile";
 
 function Profile() {
   const user = supabase.auth.user();
+  const session = supabase.auth.session();
+  const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
+
+  const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(true);
   const toast = useToast();
 
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingBanner, setUploadingBanner] = useState(false);
   const [avatarRemoving, setAvatarRemoving] = useState(false);
   const [bannerRemoving, setBannerRemoving] = useState(false);
-  const [token, setToken] = useState(null);
 
   const isLargerThan850 = useMediaQuery(850);
   const isLargerThan1215 = useMediaQuery(1215);
@@ -58,14 +62,6 @@ function Profile() {
     session: supabase.auth.session(),
   });
 
-  useEffect(() => {
-    const value = localStorage.getItem("supabase.auth.token");
-    const token = !!value
-      ? JSON.parse(value).currentSession.access_token
-      : null;
-    setToken(token);
-  }, []);
-
   interface IProps {
     acceptedFileTypes?: string;
     allowMultipleFiles?: boolean;
@@ -76,10 +72,8 @@ function Profile() {
   const AvatarButton: React.FC<IProps> = (props) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const formRef = React.useRef<HTMLFormElement | null>(null);
-    const [uploading, setUploading] = useState(false);
 
     const onClickHandler = () => {
-      setUploading(true);
       fileInputRef.current?.click();
     };
 
@@ -107,7 +101,7 @@ function Profile() {
           colorScheme="blue"
           variant="outline"
         >
-          {uploading ? <Spinner /> : "Upload"}
+          {uploadingAvatar ? <Spinner /> : "Upload"}
         </Button>
         <input
           accept={props.acceptedFileTypes}
@@ -126,7 +120,7 @@ function Profile() {
     try {
       const response = await uploadAvatarRequest(
         user.id,
-        token,
+        session.access_token,
         formData,
         async (event) => {
           console.log(
@@ -145,14 +139,7 @@ function Profile() {
         })
         .eq("id", user.id);
       if (error) throw error;
-
-      const { error: metadataError } = await supabase.auth.update({
-        data: {
-          avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
-        },
-      });
-
-      if (metadataError) throw error;
+      setUpdate(true);
     } catch (err) {
       toast({
         title: "Error",
@@ -167,10 +154,8 @@ function Profile() {
   const BannerUpload: React.FC<IProps> = (props) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const formRef = React.useRef<HTMLFormElement | null>(null);
-    const [uploading, setUploading] = useState(false);
 
     const onClickHandler = () => {
-      setUploading(true);
       fileInputRef.current?.click();
     };
 
@@ -198,7 +183,7 @@ function Profile() {
           colorScheme="blue"
           variant="outline"
         >
-          {uploading ? <Spinner /> : "Upload"}
+          {uploadingBanner ? <Spinner /> : "Upload"}
         </Button>
         <input
           accept={props.acceptedFileTypes}
@@ -217,11 +202,11 @@ function Profile() {
     try {
       const response = await uploadBannerRequest(
         user.id,
-        token,
+        session.access_token,
         formData,
         async (event) => {
           console.log(
-            `Current progress:`,
+            `Uploading banner:`,
             Math.round((event.loaded * 100) / event.total)
           );
         }
@@ -235,15 +220,11 @@ function Profile() {
           banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/${response.data[0]}`,
         })
         .eq("id", user.id);
+
       if (error) throw error;
 
-      const { error: metadataError } = await supabase.auth.update({
-        data: {
-          banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/${response.data[0]}`,
-        },
-      });
-
-      if (metadataError) throw error;
+      setUploadingBanner(false);
+      setUpdate(true);
     } catch (err) {
       toast({
         title: "Error",
@@ -252,6 +233,7 @@ function Profile() {
         duration: 9000,
         isClosable: true,
       });
+      setUploadingBanner(false);
     }
   };
 
@@ -268,6 +250,7 @@ function Profile() {
         duration: 9000,
         isClosable: true,
       });
+      setUpdate(true);
     } catch (err) {
       toast({
         title: "Error",
@@ -294,6 +277,7 @@ function Profile() {
         duration: 9000,
         isClosable: true,
       });
+      setUpdate(true);
     } catch (err) {
       toast({
         title: "Error",
@@ -306,6 +290,20 @@ function Profile() {
       setBannerRemoving(false);
     }
   }
+
+  useEffect(() => {
+    const user = supabase.auth.user();
+    const session = supabase.auth.session();
+
+    async function fetch() {
+      const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+      setUserData(data.data as UserProfile);
+      setLoading(false);
+      setUpdate(false);
+    }
+
+    fetch();
+  }, [update]);
 
   return (
     <>
@@ -333,26 +331,31 @@ function Profile() {
                   justifyContent="center"
                   gap={{ base: 10, lg: "3rem" }}
                 >
-                  <Avatar
-                    src={user.user_metadata.avatar}
-                    w={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    h={{
-                      base: "128px",
-                      lg: "192px",
-                    }}
-                    borderRadius="50%"
-                    zIndex={-1}
-                  />
+                  {loading ? (
+                    <SkeletonCircle size='12.5vw' zIndex={-1} />
+                  ) : (
+                    <Avatar
+                      src={userData.avatar}
+                      w={{
+                        base: "128px",
+                        lg: "192px",
+                      }}
+                      h={{
+                        base: "128px",
+                        lg: "192px",
+                      }}
+                      borderRadius="50%"
+                      zIndex={-1}
+                    />
+                  )}
                   <Center>
                     <Stack spacing={5} pt={3}>
                       <AvatarButton
                         uploadFileName="avatar"
                         onChange={UploadAvatar}
+                        allowMultipleFiles={false}
                       />
-                      <Button onClick={() => removeAvatar(user.id, token)}>
+                      <Button onClick={() => removeAvatar(user.id, session.access_token)}>
                         {" "}
                         {avatarRemoving ? <Spinner /> : "Remove"}{" "}
                       </Button>
@@ -370,22 +373,34 @@ function Profile() {
                       <Heading fontSize={{ base: "xl", md: "2xl" }}>Banner</Heading>
                       <Divider />
                     </Stack>
-                    <Image
-                      src={user.user_metadata.banner}
-                      w={"1200px"}
-                      h={"200px"}
-                      rounded="lg"
-                      objectFit={"cover"}
-                      zIndex={-1}
-                      alt={"Banner"}
-                    />
+                    {loading ? (
+                      <Skeleton zIndex={-1}>
+                        <Box
+                          w={"30vw"}
+                          h={"200px"}
+                          rounded="lg"
+                          objectFit={"cover"}
+                        />
+                      </Skeleton>
+                    ) : (
+                      <Image
+                        src={userData.banner}
+                        w={"1200px"}
+                        h={"200px"}
+                        rounded="lg"
+                        objectFit={"cover"}
+                        zIndex={-1}
+                        alt={"Banner"}
+                      />
+                    )}
                     <Stack spacing={5} pt={3}>
                       <Center>
                         <BannerUpload
                           uploadFileName="banner"
                           onChange={UploadBanner}
+                          allowMultipleFiles={false}
                         />
-                        <Button ml={4} onClick={() => removeBanner(user.id, token)}>
+                        <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
                           {" "}
                           {bannerRemoving ? <Spinner /> : "Remove"}{" "}
                         </Button>
@@ -405,106 +420,110 @@ function Profile() {
                 </Stack>
               </Stack>
               <Flex flexDirection={"column"}>
-                <Box border={"1px"} borderColor={"black"} rounded={"lg"} pb={4}>
-                  <VStack spacing={5}>
-                    <Image
-                      src={user.user_metadata.banner}
-                      w={"1200px"}
-                      h={"200px"}
-                      objectFit="cover"
-                      alt={"banner"}
-                    />
-                    <Flex
-                      flexDirection="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      w={"full"}
-                      px={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
-                    >
+                {loading ? (
+                  <Skeleton zIndex={-1}>
+                    <Box pb={4} h={"35vh"} />
+                  </Skeleton>
+                ) : (
+                  <Box border={"1px"} borderColor={"black"} rounded={"lg"} pb={4}>
+                    <VStack spacing={4}>
                       <Image
-                        src={user.user_metadata.avatar}
-                        rounded="full"
-                        w={"128px"}
-                        h={"128px"}
-                        mt={"-20%"}
-                        border={"2px"}
-                        borderColor={"#111111"}
-                        alt={"avatar"}
+                        src={userData.banner}
+                        w={"1200px"}
+                        h={"200px"}
+                        objectFit="cover"
+                        alt={"banner"}
                       />
-                      {/* Mobile view */}
-                      {isLargerThan850 ? (
-                        <></>
-                      ) : (
-                        <>
-                          {isLargerThan400 ? (
-                            <>
-                              {isLargerThan500 ? (
-                                <Stack isInline spacing={2}>
-                                  <Badges />
-                                </Stack>
-                              ) : (
-                                <SimpleGrid columns={5} spacing={2}>
-                                  <MiniBadges />
-                                </SimpleGrid>
-                              )}
-                            </>
-                          ) : (
-                            <SimpleGrid columns={3} spacing={2}>
-                              <CompactBadges />
-                            </SimpleGrid>
-                          )}
-                        </>
-                      )}
+                      <Flex
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        w={"full"}
+                        px={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
+                      >
+                        <Image
+                          src={userData.avatar}
+                          rounded="full"
+                          w={"128px"}
+                          h={"128px"}
+                          mt={"-12.5%"}
+                          border={"2px"}
+                          borderColor={"#111111"}
+                          alt={"avatar"}
+                        />
+                        {/* Mobile view */}
+                        {isLargerThan850 ? (
+                          <></>
+                        ) : (
+                          <>
+                            {isLargerThan400 ? (
+                              <>
+                                {isLargerThan500 ? (
+                                  <Stack isInline spacing={2}>
+                                    <Badges />
+                                  </Stack>
+                                ) : (
+                                  <SimpleGrid columns={5} spacing={2}>
+                                    <MiniBadges />
+                                  </SimpleGrid>
+                                )}
+                              </>
+                            ) : (
+                              <SimpleGrid columns={3} spacing={2}>
+                                <CompactBadges />
+                              </SimpleGrid>
+                            )}
+                          </>
+                        )}
 
-                      {/* Desktop view */}
-                      {isLargerThan850 ? (
-                        <>
-                          {isLargerThan1360 ? (
-                            <Stack isInline spacing={2} >
-                              <Badges />
-                            </Stack>
-                          ) : (
-                            <>
-                              {isLargerThan1215 ? (
-                                <SimpleGrid columns={5} spacing={2}>
-                                  <MiniBadges />
-                                </SimpleGrid>
-                              ) : (
-                                <SimpleGrid columns={3} spacing={2}>
-                                  <CompactBadges />
-                                </SimpleGrid>
-
-                              )}
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Flex>
-                    <Flex
-                      flexDirection="row"
-                      justifyContent="space-between"
-                      alignItems="center"
-                      w={"full"}
-                      px={{ base: "1.5rem", md: "2rem", lg: "2.5rem" }}
-                    >
-                      <Stack spacing={0}>
-                        <Text fontSize="26px" fontWeight="bold">
-                          {user.user_metadata.username}
-                          {user.user_metadata.cutie === true ? (
-                            <Badge ml='2' colorScheme='pink'>
-                              Cutie
-                            </Badge>
-                          ) : <div />}
-                        </Text>
-                        <Text fontSize="14px">{user.email}</Text>
-                      </Stack>
-                      <div />
-                    </Flex>
-                  </VStack>
-                  {/* Optional Buttons */}
-                  {/* <Center>
+                        {/* Desktop view */}
+                        {isLargerThan850 ? (
+                          <>
+                            {isLargerThan1360 ? (
+                              <Stack isInline spacing={2} >
+                                <Badges />
+                              </Stack>
+                            ) : (
+                              <>
+                                {isLargerThan1215 ? (
+                                  <SimpleGrid columns={5} spacing={2}>
+                                    <MiniBadges />
+                                  </SimpleGrid>
+                                ) : (
+                                  <SimpleGrid columns={3} spacing={2}>
+                                    <CompactBadges />
+                                  </SimpleGrid>
+                                )}
+                              </>
+                            )}
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </Flex>
+                      <Flex
+                        flexDirection="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        w={"full"}
+                        px={{ base: "1.5rem", md: "2rem", lg: "2.5rem" }}
+                      >
+                        <Stack spacing={0}>
+                          <Text fontSize="26px" fontWeight="bold">
+                            {user.user_metadata.username}
+                            {userData.cutie === true ? (
+                              <Badge ml='2' colorScheme='pink'>
+                                Cutie
+                              </Badge>
+                            ) : <div />}
+                          </Text>
+                          <Text fontSize="14px">{user.email}</Text>
+                        </Stack>
+                        <div />
+                      </Flex>
+                    </VStack>
+                    {/* Optional Buttons */}
+                    {/* <Center>
                     <SimpleGrid
                       columns={1}
                       spacing={5}
@@ -515,16 +534,17 @@ function Profile() {
                       </Button>
                     </SimpleGrid>
                   </Center> */}
-                </Box>
+                  </Box>
+                )}
               </Flex>
-            </SimpleGrid>
+            </SimpleGrid >
             <Stack spacing={5} pt={16}>
               <Heading fontSize={{ base: "2xl", md: "4xl" }}>Identities</Heading>
               <Divider />
             </Stack>
             <Identities />
-          </Flex>
-        </Stack>
+          </Flex >
+        </Stack >
       </Container >
     </>
   );

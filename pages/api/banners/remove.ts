@@ -3,6 +3,7 @@ import nextConnect from "next-connect";
 import { Deta } from "deta";
 import supabase from "../../../lib/SupabaseClient";
 import cookieParser from "cookie-parser";
+import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -48,12 +49,8 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         await drive.deleteMany(files);
-        await supabase.from("users").update({ banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg` }).eq("id", user.id);
-        await supabase.auth.update({
-            data: {
-                banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`,
-            }
-        });
+        const { error: dbError } = await supabaseAdmin.from("users").update({ banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg` }).eq("id", user.id);
+        if (dbError) return res.status(500).json({ error: dbError });
         res.status(200).json({ data: true });
     } catch (err) {
         res.status(502).json({ error: err });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -31,6 +31,8 @@ import {
   Text,
   SimpleGrid,
   ModalFooter,
+  Spinner,
+  SkeletonCircle
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
@@ -38,6 +40,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs";
 import supabase from "../../lib/SupabaseClient";
 import Link from "next/link";
+import axios from "axios";
+import { UserProfile } from "../../types/UserProfile";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
@@ -53,6 +57,24 @@ export default function Navbar({ enableTransition }) {
   } = useDisclosure();
   const session = supabase.auth.session();
   const user = supabase.auth.user();
+  const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const user = supabase.auth.user();
+    const session = supabase.auth.session();
+
+    if (!user || !session) return;
+
+    async function fetch() {
+      const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+      setUserData(data.data as UserProfile);
+      setLoading(false);
+    }
+
+    fetch();
+  }, []);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -118,7 +140,7 @@ export default function Navbar({ enableTransition }) {
             <Center>
               <VStack spacing={5}>
                 <Avatar
-                  src={user.user_metadata.avatar}
+                  src={userData.avatar}
                   rounded="full"
                   size="2xl"
                 />
@@ -223,74 +245,81 @@ export default function Navbar({ enableTransition }) {
               >
                 {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
               </Button>
-              {session ? (
-                <NextLink href={"/profile"} passHref>
-                  <Menu>
-                    <MenuButton
-                      as={Avatar}
-                      ml={"3vw"}
-                      src={user.user_metadata.avatar}
-                      size="md"
-                    />
-                    <MenuList>
-                      <MenuGroup title={"Account"}>
-                        {/* <Center>
-                          <Box p={4}>
-                            <Avatar name={user.user_metadata.username} src={user.user_metadata.avatar} size="xl" />
-                          </Box>
-                        </Center> */}
-                        <Link href="/profile" passHref>
-                          <MenuItem closeOnSelect={true}>Profile</MenuItem>
-                        </Link>
-                      </MenuGroup>
-                      <MenuGroup>
-                        <MenuItem
-                          closeOnSelect={true}
-                          onClick={() => {
-                            supabase.auth.signOut();
-                            window.location.reload();
-                          }}
-                        >
-                          Sign out
-                        </MenuItem>
-                      </MenuGroup>
-                    </MenuList>
-                  </Menu>
-                </NextLink>
+              {loading ? (
+                <SkeletonCircle p="4" ml="3vw" size='12' />
               ) : (
-                <NextLink href={"/profile"} passHref>
-                  <Button
-                    variant="solid"
-                    p="4"
-                    ml="3vw"
-                    colorScheme={"blue"}
-                    fontSize={"16px"}
-                  >
-                    Log in
-                  </Button>
-                </NextLink>
+                <>
+                  {session ? (
+                    <NextLink href={"/profile"} passHref>
+                      <Menu>
+                        <MenuButton
+                          as={Avatar}
+                          ml={"3vw"}
+                          src={userData.avatar}
+                          size="md"
+                        />
+                        <MenuList>
+                          <MenuGroup title={"Account"}>
+                            <Link href="/profile" passHref>
+                              <MenuItem closeOnSelect={true}>Profile</MenuItem>
+                            </Link>
+                          </MenuGroup>
+                          <MenuGroup>
+                            <MenuItem
+                              closeOnSelect={true}
+                              onClick={() => {
+                                supabase.auth.signOut();
+                                window.location.reload();
+                              }}
+                            >
+                              Sign out
+                            </MenuItem>
+                          </MenuGroup>
+                        </MenuList>
+                      </Menu>
+                    </NextLink>
+                  ) : (
+                    <NextLink href={"/profile"} passHref>
+                      <Button
+                        variant="solid"
+                        p="4"
+                        ml="3vw"
+                        colorScheme={"blue"}
+                        fontSize={"16px"}
+                      >
+                        Log in
+                      </Button>
+                    </NextLink>
+                  )}
+                </>
               )}
             </Center>
           ) : (
             <Center>
-              {session ? (
-                <>
-                  <Button variant="unstyled" onClick={onOpenModal}>
-                    <Avatar
-                      as="a"
-                      size="sm"
-                      name={session.user.user_metadata.username}
-                      src={session.user.user_metadata.avatar}
-                    />
-                  </Button>
-                  <AccountCard />
-                </>
+              {loading ? (
+                <SkeletonCircle p="4" ml="3vw" size='6' />
               ) : (
-                <NextLink href="/profile" passHref>
-                  <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
-                    Log in
-                  </Button>
-                </NextLink>
+                <>
+                  {session ? (
+                    <>
+                      <Button variant="unstyled" onClick={onOpenModal}>
+                        <Avatar
+                          as="a"
+                          size="sm"
+
+                          src={userData.avatar}
+                        />
+                      </Button>
+                      <AccountCard />
+                    </>
+                  ) : (
+                    <NextLink href="/profile" passHref>
+                      <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
+                        Log in
+                      </Button>
+                    </NextLink>
+                  )}
+                </>
               )}
               <Button
                 variant="ghost"
