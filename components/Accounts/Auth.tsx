@@ -12,17 +12,13 @@ import {
   Image,
   Text,
   useColorMode,
-  useToast,
-  ButtonGroup,
-  Divider,
-  VisuallyHidden,
+  useToast
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
-import { FaDiscord, FaGithub } from "react-icons/fa";
 import axios from "axios";
 
 export default function Auth() {
@@ -103,15 +99,12 @@ export default function Auth() {
           throw new Error("Passwords do not match");
         if (!name) throw Error("Please provide your full name.");
         if (!username) throw Error("Please provide your username.");
-        const { user, session, error } = await supabase.auth.signUp(
+        const { error } = await supabase.auth.signUp(
           { email: email, password: password },
           {
             data: {
               full_name: name,
-              username: username,
-              avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`,
-              banner: `${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`,
-              cutie: false
+              username: username
             },
           }
         );
@@ -125,9 +118,6 @@ export default function Auth() {
           duration: 9000,
           isClosable: true,
         });
-        // // Push to their email providor automatically
-        // var domain = email.substring(email. lastIndexOf("@") +1);
-        // router.push("https://" + domain);
       } catch (error) {
         toast({
           title: "Error",

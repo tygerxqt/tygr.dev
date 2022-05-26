@@ -35,8 +35,8 @@ function Identities() {
         fetch(`/api/users/${supabase.auth.user().id}?token=${supabase.auth.session().access_token}`)
             .then((res) => res.json())
             .then((data) => {
-                data.discord[0].discord.id ? setDiscordData(data.discord[0].discord) : setDiscordData(null);
-                data.github[0].github.id ? setGithubData(data.github[0].github) : setGithubData(null);
+                data.discord.id ? setDiscordData(data.discord) : setDiscordData(null);
+                data.github.id ? setGithubData(data.github) : setGithubData(null);
                 setData(data);
             }).finally(() => {
                 setLoading(false)
