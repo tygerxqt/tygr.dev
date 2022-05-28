@@ -95,29 +95,30 @@ export default function Auth() {
     ) => {
       try {
         setLoading(true);
-        if (password !== passwordConfirm)
-          throw new Error("Passwords do not match");
-        if (!name) throw Error("Please provide your full name.");
-        if (!username) throw Error("Please provide your username.");
-        const { error } = await supabase.auth.signUp(
-          { email: email, password: password },
-          {
-            data: {
-              full_name: name,
-              username: username
-            },
-          }
-        );
-        if (error) {
-          throw error;
-        }
-        toast({
-          title: "Success!",
-          description: `Check your email to confirm registration!`,
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
+        // if (password !== passwordConfirm)
+        //   throw new Error("Passwords do not match");
+        // if (!name) throw Error("Please provide your full name.");
+        // if (!username) throw Error("Please provide your username.");
+        // const { error } = await supabase.auth.signUp(
+        //   { email: email, password: password },
+        //   {
+        //     data: {
+        //       full_name: name,
+        //       username: username
+        //     },
+        //   }
+        // );
+        // if (error) {
+        //   throw error;
+        // }
+        // toast({
+        //   title: "Success!",
+        //   description: `Check your email to confirm registration!`,
+        //   status: "success",
+        //   duration: 9000,
+        //   isClosable: true,
+        // });
+        throw new Error("Registration is currently disabled.");
       } catch (error) {
         toast({
           title: "Error",
@@ -343,14 +344,14 @@ export default function Auth() {
                 <Stack justifyContent="center">
                   <Flex flexDirection={"row"}>
                     <Flex width={"35vw"} height={"100vh"}>
-                      <Box mt={"25vh"} mx={"15%"} zIndex={2}>
+                      <Box mt={"50%"} mx={"15%"} zIndex={2}>
                         {" "}
                         <Stack mb={8} spacing={2}>
                           <Heading fontSize={{ md: "4xl", lg: "6xl" }}>
-                            Register
+                            Pixel accounts are closed.
                           </Heading>
                           <HStack spacing={1}>
-                            <Text>Have an account?</Text>
+                            <Text>Site Admin?</Text>
                             <Button
                               variant={"link"}
                               color={
@@ -364,7 +365,7 @@ export default function Auth() {
                             </Button>
                           </HStack>
                         </Stack>
-                        <Box maxW="sm">
+                        {/* <Box maxW="sm">
                           <form>
                             <FormControl>
                               <FormLabel zIndex={-1}>Name</FormLabel>
@@ -435,7 +436,7 @@ export default function Auth() {
                           }
                         >
                           Create Account
-                        </Button>
+                        </Button> */}
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>
@@ -468,13 +469,16 @@ export default function Auth() {
                   my={["10vh", "10vh", "11vh", "11vh"]}
                 >
                   <Center>
-                    <Stack spacing={2} align={"center"}>
+                    <Stack spacing={0} align={"center"}>
                       {" "}
                       <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        Register
+                        Pixel accounts
+                      </Heading>
+                      <Heading fontSize={{ base: "4xl", md: "6xl" }}>
+                        are closed.
                       </Heading>
                       <HStack spacing={1}>
-                        <Text>Have an account?</Text>
+                        <Text>Site Admin?</Text>
                         <Button
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
@@ -485,7 +489,7 @@ export default function Auth() {
                       </HStack>
                     </Stack>
                   </Center>
-                  <Center>
+                  {/* <Center>
                     <Box maxW="sm">
                       <form>
                         <FormControl>
@@ -551,7 +555,7 @@ export default function Auth() {
                         Confirm
                       </Button>
                     </Box>
-                  </Center>
+                  </Center> */}
                 </Stack>
               </Flex>
             </>
