@@ -65,7 +65,11 @@ export default function Navbar({ enableTransition }) {
     const user = supabase.auth.user();
     const session = supabase.auth.session();
 
-    if (!user || !session) return;
+    if (!user || !session) {
+      setUserData({} as UserProfile);
+      setLoading(false);
+      return;
+    }
 
     async function fetch() {
       const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
