@@ -70,6 +70,8 @@ export default function CompactBadges() {
                     key={item}
                     colorScheme={getTag(item)[1]}
                     size={'md'}
+                    ml={2}
+                    mb={2}
                 >
                     <TagLeftIcon key={item} as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>
                 </Tag>

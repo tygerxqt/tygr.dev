@@ -53,15 +53,15 @@ export default function Preview({ user, userData }) {
                                                     <Badges />
                                                 </Stack>
                                             ) : (
-                                                <SimpleGrid columns={5} spacing={2}>
+                                                <Stack isInline spacing={2}>
                                                     <MiniBadges />
-                                                </SimpleGrid>
+                                                </Stack>
                                             )}
                                         </>
                                     ) : (
-                                        <SimpleGrid columns={3} spacing={2}>
+                                        <Box>
                                             <CompactBadges />
-                                        </SimpleGrid>
+                                        </Box>
                                     )}
                                 </>
                             )}
@@ -76,13 +76,13 @@ export default function Preview({ user, userData }) {
                                     ) : (
                                         <>
                                             {isLargerThan1215 ? (
-                                                <SimpleGrid columns={5} spacing={2}>
+                                                <Stack isInline spacing={2}>
                                                     <MiniBadges />
-                                                </SimpleGrid>
+                                                </Stack>
                                             ) : (
-                                                <SimpleGrid columns={3} spacing={2}>
+                                                <Stack isInline spacing={2}>
                                                     <CompactBadges />
-                                                </SimpleGrid>
+                                                </Stack>
                                             )}
                                         </>
                                     )}
