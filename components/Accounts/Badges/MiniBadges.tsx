@@ -5,9 +5,9 @@ import { BiDonateHeart, BiCode } from "react-icons/bi";
 import { BsTerminalFill } from "react-icons/bs";
 import { RiParkingFill } from "react-icons/ri";
 import { MdLocalPolice } from "react-icons/md";
-import supabase from "../../lib/SupabaseClient";
+import supabase from "../../../lib/SupabaseClient";
 
-export default function CompactBadges() {
+export default function MiniBadges() {
     const user = supabase.auth.user();
     const session = supabase.auth.session();
     const [badges, setBadges] = useState([]);
@@ -63,13 +63,13 @@ export default function CompactBadges() {
         return values
     }
 
-    const Tags = badges.map((item) => (
+    const Tags = badges.slice(0, 5).map((item) => (
         <>
             <Tooltip hasArrow placement={"top"} label={getTag(item)[0]} key={item} >
                 <Tag
                     key={item}
                     colorScheme={getTag(item)[1]}
-                    size={'md'}
+                    size={'lg'}
                 >
                     <TagLeftIcon key={item} as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>
                 </Tag>
@@ -81,5 +81,5 @@ export default function CompactBadges() {
         <>
             {Tags}
         </>
-    );
+    )
 }

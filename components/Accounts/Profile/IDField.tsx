@@ -1,6 +1,6 @@
 import { Flex, Input, Box, Button, Text, useToast } from "@chakra-ui/react";
 import { AiOutlineCopy } from "react-icons/ai";
-import supabase from "../../lib/SupabaseClient";
+import supabase from "../../../lib/SupabaseClient";
 
 export default function IDField() {
     const toast = useToast();

@@ -5,7 +5,7 @@ import { BiDonateHeart, BiCode } from "react-icons/bi";
 import { BsTerminalFill } from "react-icons/bs";
 import { RiParkingFill } from "react-icons/ri";
 import { MdLocalPolice } from "react-icons/md";
-import supabase from "../../lib/SupabaseClient";
+import supabase from "../../../lib/SupabaseClient";
 
 export default function Badges() {
     const user = supabase.auth.user();

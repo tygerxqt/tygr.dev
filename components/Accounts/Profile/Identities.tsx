@@ -3,12 +3,12 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaDiscord, FaGithub } from "react-icons/fa";
-import supabase from "../../lib/SupabaseClient";
+import supabase from "../../../lib/SupabaseClient";
 import React from "react";
 import { BiUnlink } from "react-icons/bi";
-import { AiOutlineCheck, AiOutlineIdcard } from "react-icons/ai";
-import { DiscordUser } from "../../types/DiscordUser";
-import { GithubUser } from "../../types/GithubUser";
+import { AiOutlineCheck } from "react-icons/ai";
+import { DiscordUser } from "../../../types/DiscordUser";
+import { GithubUser } from "../../../types/GithubUser";
 
 function Identities() {
     const toast = useToast();

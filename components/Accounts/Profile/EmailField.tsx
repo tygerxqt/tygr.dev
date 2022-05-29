@@ -1,20 +1,18 @@
 import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
-import { Session, User } from "@supabase/supabase-js";
-import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
-import supabase from "../../lib/SupabaseClient";
+import supabase from "../../../lib/SupabaseClient";
 
-const UsernameField = () => {
+const EmailField = () => {
   const user = supabase.auth.user();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
-  const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
-  const [username, setUsername] = useState(user.user_metadata.username);
+  const [oldEmail, setOldEmail] = useState(user.email);
+  const [email, setEmail] = useState(user.email);
 
   const handleUpdate = async () => {
     try {
-      if (username === oldUsername)
+      if (email === oldEmail)
         return toast({
           title: "Unable to update.",
           description: "No changes were made",
@@ -23,39 +21,23 @@ const UsernameField = () => {
           isClosable: true,
         });
 
-      const { error: tableError } = await supabase
-        .from("users")
-        .update({ username: username })
-        .eq("id", user.id);
-      const { error: metadataError } = await supabase.auth.update({
-        data: {
-          username: username,
-        },
+      const { error } = await supabase.auth.update({
+        email: email,
       });
 
-      if (tableError) {
-        if (tableError.code === "23505") {
-          setUsername(oldUsername);
-          throw new Error("Username is already taken.");
-        }
-        setUsername(oldUsername);
-        throw tableError;
+      if (error) {
+        throw error;
       }
 
-      if (metadataError) {
-        throw new Error("Metadata Error: " + metadataError.message);
-      }
-
+      setOldEmail(email);
       toast({
         title: "Success",
-        description: "Username updated.",
+        description: "Check your email for a verification link.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-
-      setUsername(username);
-      setOldUsername(username);
+      await supabase.auth.signOut();
     } catch (err) {
       toast({
         title: "Error",
@@ -73,28 +55,29 @@ const UsernameField = () => {
     <>
       <Box>
         <Text size="sm" pb="1">
-          Username
+          Email
         </Text>
         {editing ? (
           <Flex flexDirection={"row"}>
             <Flex w={"95vw"}>
               <Input
                 disabled={!editing}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Flex>
             <Flex pl={4}>
-              <Button onClick={() => handleUpdate()}>
+              <Button onClick={() => handleUpdate()} colorScheme={"green"}>
                 <AiOutlineCheck />
               </Button>
             </Flex>
             <Flex pl={2}>
               <Button
                 onClick={() => {
-                  setUsername(oldUsername);
+                  setEmail(oldEmail);
                   setEditing(false);
                 }}
+                colorScheme={"red"}
               >
                 <AiOutlineClose />
               </Button>
@@ -103,7 +86,7 @@ const UsernameField = () => {
         ) : (
           <Flex flexDirection={"row"}>
             <Flex w={"95vw"}>
-              <Input disabled={!editing} value={username} />
+              <Input disabled={!editing} value={email} />
             </Flex>
             <Flex pl={4}>
               <Button onClick={() => setEditing(true)}>
@@ -117,4 +100,4 @@ const UsernameField = () => {
   );
 };
 
-export default UsernameField;
+export default EmailField;

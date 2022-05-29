@@ -42,6 +42,9 @@ import supabase from "../../lib/SupabaseClient";
 import Link from "next/link";
 import axios from "axios";
 import { UserProfile } from "../../types/UserProfile";
+import { MdAccountCircle } from "react-icons/md";
+import { AiFillIdcard } from "react-icons/ai";
+import { BiLogOut } from "react-icons/bi";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
@@ -254,34 +257,36 @@ export default function Navbar({ enableTransition }) {
               ) : (
                 <>
                   {session ? (
-                    <NextLink href={"/profile"} passHref>
-                      <Menu>
-                        <MenuButton
-                          as={Avatar}
-                          ml={"3vw"}
-                          src={userData.avatar}
-                          size="md"
-                        />
-                        <MenuList>
-                          <MenuGroup title={"Account"}>
-                            <Link href="/profile" passHref>
-                              <MenuItem closeOnSelect={true}>Profile</MenuItem>
-                            </Link>
-                          </MenuGroup>
-                          <MenuGroup>
-                            <MenuItem
-                              closeOnSelect={true}
-                              onClick={() => {
-                                supabase.auth.signOut();
-                                window.location.reload();
-                              }}
-                            >
-                              Sign out
-                            </MenuItem>
-                          </MenuGroup>
-                        </MenuList>
-                      </Menu>
-                    </NextLink>
+                    <Menu>
+                      <MenuButton
+                        as={Avatar}
+                        ml={"3vw"}
+                        src={userData.avatar}
+                        size="md"
+                      />
+                      <MenuList>
+                        <MenuGroup title={supabase.auth.user().user_metadata.username} fontSize={"xl"}>
+                          <Link href="/profile" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
+                          </Link>
+                          <Link href="/account" passHref>
+                            <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
+                          </Link>
+                        </MenuGroup>
+                        <MenuGroup>
+                          <MenuItem
+                            closeOnSelect={true}
+                            icon={<BiLogOut fontSize={"16px"} />}
+                            onClick={() => {
+                              supabase.auth.signOut();
+                              window.location.reload();
+                            }}
+                          >
+                            Sign out
+                          </MenuItem>
+                        </MenuGroup>
+                      </MenuList>
+                    </Menu>
                   ) : (
                     <NextLink href={"/profile"} passHref>
                       <Button
@@ -310,7 +315,6 @@ export default function Navbar({ enableTransition }) {
                         <Avatar
                           as="a"
                           size="sm"
-
                           src={userData.avatar}
                         />
                       </Button>
