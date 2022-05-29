@@ -12,9 +12,6 @@ import EmailField from "./Profile/EmailField";
 import IDField from "./Profile/IDField";
 import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
-import Badges from "./Badges/Badges";
-import CompactBadges from "./Badges/CompactBadges";
-import MiniBadges from "./Badges/MiniBadges";
 import Identities from "./Profile/Identities";
 import Preview from "./Profile/Preview";
 
@@ -33,11 +30,7 @@ function Profile() {
     const [bannerRemoving, setBannerRemoving] = useState(false);
 
     const isLargerThan850 = useMediaQuery(850);
-    const isLargerThan1215 = useMediaQuery(1215);
-    const isLargerThan1360 = useMediaQuery(1360);
-    const isLargerThan500 = useMediaQuery(500);
-    const isLargerThan400 = useMediaQuery(400);
-    const isLargerThan768 = useMediaQuery(768)
+    const isLargerThan768 = useMediaQuery(768);
 
     // set server cookie
     axios.post("/api/auth/cookie/set", {
@@ -274,7 +267,6 @@ function Profile() {
         }
     }
 
-
     useEffect(() => {
         const user = supabase.auth.user();
         const session = supabase.auth.session();
@@ -332,86 +324,171 @@ function Profile() {
                                 <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
                                 <Divider />
                             </Stack>
-                            <SimpleGrid columns={2} spacing={10}>
-                                <Stack spacing={4}>
+                            {isLargerThan850 ? (
+                                <>
+                                    <SimpleGrid columns={2} spacing={10}>
+                                        <Stack spacing={4}>
 
-                                    {/* Avatar */}
-                                    <Heading fontSize={{ base: "xl", md: "2xl" }}>Avatar</Heading>
-                                    <Divider />
-                                    <Flex
-                                        flexDirection={"row"}
-                                        justifyContent="center"
-                                        gap={{ base: 10, lg: "3rem" }}
-                                    >
-                                        <Avatar
-                                            src={userData.avatar}
-                                            w={{
-                                                base: "128px",
-                                                lg: "192px",
-                                            }}
-                                            h={{
-                                                base: "128px",
-                                                lg: "192px",
-                                            }}
-                                            borderRadius="50%"
-                                            zIndex={-1}
-                                        />
-                                        <Center>
-                                            <Stack spacing={5} pt={3}>
-                                                <AvatarButton
-                                                    uploadFileName="avatar"
-                                                    onChange={UploadAvatar}
-                                                    allowMultipleFiles={false}
+                                            {/* Avatar */}
+                                            <Heading fontSize={{ base: "xl", md: "2xl" }}>Avatar</Heading>
+                                            <Divider />
+                                            <Flex
+                                                flexDirection={"row"}
+                                                justifyContent="center"
+                                                gap={{ base: 10, lg: "3rem" }}
+                                            >
+                                                <Avatar
+                                                    src={userData.avatar}
+                                                    w={{
+                                                        base: "128px",
+                                                        lg: "192px",
+                                                    }}
+                                                    h={{
+                                                        base: "128px",
+                                                        lg: "192px",
+                                                    }}
+                                                    borderRadius="50%"
+                                                    zIndex={-1}
                                                 />
-                                                <Button onClick={() => removeAvatar(user.id, session.access_token)}>
-                                                    {" "}
-                                                    {avatarRemoving ? <Spinner /> : "Remove"}{" "}
-                                                </Button>
-                                            </Stack>
-                                        </Center>
-                                    </Flex>
-
-                                    {/* Banner */}
-                                    <Center>
-                                        <Flex
-                                            flexDirection={"column"}
-                                            justifyContent="center"
-                                            py={4}
-                                            gap={{ base: 10, lg: "1.5rem" }}
-                                        >
-                                            <Stack spacing={5}>
-                                                <Heading fontSize={{ base: "xl", md: "2xl" }}>Banner</Heading>
-                                                <Divider />
-                                            </Stack>
-                                            <Image
-                                                src={userData.banner}
-                                                w={"1200px"}
-                                                h={"200px"}
-                                                rounded="lg"
-                                                objectFit={"cover"}
-                                                zIndex={-1}
-                                                alt={"Banner"}
-                                            />
-                                            <Stack spacing={5} pt={3}>
                                                 <Center>
-                                                    <BannerUpload
-                                                        uploadFileName="banner"
-                                                        onChange={UploadBanner}
-                                                        allowMultipleFiles={false}
-                                                    />
-                                                    <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
-                                                        {" "}
-                                                        {bannerRemoving ? <Spinner /> : "Remove"}{" "}
-                                                    </Button>
+                                                    <Stack spacing={5} pt={3}>
+                                                        <AvatarButton
+                                                            uploadFileName="avatar"
+                                                            onChange={UploadAvatar}
+                                                            allowMultipleFiles={false}
+                                                        />
+                                                        <Button onClick={() => removeAvatar(user.id, session.access_token)}>
+                                                            {" "}
+                                                            {avatarRemoving ? <Spinner /> : "Remove"}{" "}
+                                                        </Button>
+                                                    </Stack>
                                                 </Center>
-                                            </Stack>
-                                        </Flex>
-                                    </Center>
-                                </Stack>
+                                            </Flex>
 
-                                <Preview user={user} userData={userData} />
-                            </SimpleGrid>
+                                            {/* Banner */}
+                                            <Center>
+                                                <Flex
+                                                    flexDirection={"column"}
+                                                    justifyContent="center"
+                                                    py={4}
+                                                    gap={{ base: 10, lg: "1.5rem" }}
+                                                >
+                                                    <Stack spacing={5}>
+                                                        <Heading fontSize={{ base: "xl", md: "2xl" }}>Banner</Heading>
+                                                        <Divider />
+                                                    </Stack>
+                                                    <Image
+                                                        src={userData.banner}
+                                                        w={"1200px"}
+                                                        h={"200px"}
+                                                        rounded="lg"
+                                                        objectFit={"cover"}
+                                                        zIndex={-1}
+                                                        alt={"Banner"}
+                                                    />
+                                                    <Stack spacing={5} pt={3}>
+                                                        <Center>
+                                                            <BannerUpload
+                                                                uploadFileName="banner"
+                                                                onChange={UploadBanner}
+                                                                allowMultipleFiles={false}
+                                                            />
+                                                            <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
+                                                                {" "}
+                                                                {bannerRemoving ? <Spinner /> : "Remove"}{" "}
+                                                            </Button>
+                                                        </Center>
+                                                    </Stack>
+                                                </Flex>
+                                            </Center>
+                                        </Stack>
 
+                                        <Preview user={user} userData={userData} />
+                                    </SimpleGrid>
+                                </>
+                            ) : (
+                                <>
+                                    <SimpleGrid columns={1} spacing={10}>
+                                        <Stack spacing={8}>
+
+                                            <Preview user={user} userData={userData} />
+
+                                            {/* Avatar */}
+                                            <Heading fontSize={{ base: "xl", md: "2xl" }}>Avatar</Heading>
+                                            <Divider />
+                                            <Flex
+                                                flexDirection={"row"}
+                                                justifyContent="center"
+                                                gap={{ base: 10, lg: "3rem" }}
+                                            >
+                                                <Avatar
+                                                    src={userData.avatar}
+                                                    w={{
+                                                        base: "174px",
+                                                        sm: "192px",
+                                                    }}
+                                                    h={{
+                                                        base: "174px",
+                                                        sm: "192px",
+                                                    }}
+                                                    borderRadius="50%"
+                                                    zIndex={-1}
+                                                />
+                                                <Center>
+                                                    <Stack spacing={5} pt={3}>
+                                                        <AvatarButton
+                                                            uploadFileName="avatar"
+                                                            onChange={UploadAvatar}
+                                                            allowMultipleFiles={false}
+                                                        />
+                                                        <Button onClick={() => removeAvatar(user.id, session.access_token)}>
+                                                            {" "}
+                                                            {avatarRemoving ? <Spinner /> : "Remove"}{" "}
+                                                        </Button>
+                                                    </Stack>
+                                                </Center>
+                                            </Flex>
+
+                                            {/* Banner */}
+                                            <Center>
+                                                <Flex
+                                                    flexDirection={"column"}
+                                                    justifyContent="center"
+                                                    py={4}
+                                                    gap={{ base: 10, lg: "1.5rem" }}
+                                                >
+                                                    <Stack spacing={5}>
+                                                        <Heading fontSize={{ base: "xl", md: "2xl" }}>Banner</Heading>
+                                                        <Divider />
+                                                    </Stack>
+                                                    <Image
+                                                        src={userData.banner}
+                                                        w={"1200px"}
+                                                        h={"200px"}
+                                                        rounded="lg"
+                                                        objectFit={"cover"}
+                                                        zIndex={-1}
+                                                        alt={"Banner"}
+                                                    />
+                                                    <Stack spacing={5} pt={3}>
+                                                        <Center>
+                                                            <BannerUpload
+                                                                uploadFileName="banner"
+                                                                onChange={UploadBanner}
+                                                                allowMultipleFiles={false}
+                                                            />
+                                                            <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
+                                                                {" "}
+                                                                {bannerRemoving ? <Spinner /> : "Remove"}{" "}
+                                                            </Button>
+                                                        </Center>
+                                                    </Stack>
+                                                </Flex>
+                                            </Center>
+                                        </Stack>
+                                    </SimpleGrid>
+                                </>
+                            )}
 
                             <Stack spacing={8}>
                                 <Stack spacing={2}>
