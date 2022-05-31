@@ -1,4 +1,4 @@
-import { Flex, Box, VStack, Stack, SimpleGrid, Badge, Image, Text } from "@chakra-ui/react";
+import { Flex, Box, VStack, Stack, Badge, Image, Text, chakra } from "@chakra-ui/react";
 import useMediaQuery from "../../../hook/useMediaQuery";
 import Badges from "../Badges/Badges";
 import CompactBadges from "../Badges/CompactBadges";
@@ -102,6 +102,11 @@ export default function Preview({ user, userData }) {
                             <Stack spacing={0}>
                                 <Text fontSize="26px" fontWeight="bold">
                                     {user.user_metadata.username}
+                                    <chakra.span
+                                        color={"#B9BBBE"}
+                                    >
+                                        #{user.user_metadata.tag}
+                                    </chakra.span>
                                     {userData.cutie === true ? (
                                         <Badge ml='2' colorScheme='pink'>
                                             Cutie

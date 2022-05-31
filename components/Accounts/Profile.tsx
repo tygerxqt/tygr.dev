@@ -14,6 +14,7 @@ import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
 import Identities from "./Profile/Identities";
 import Preview from "./Profile/Preview";
+import TagField from "./Profile/TagField";
 
 function Profile() {
     const user = supabase.auth.user();
@@ -497,6 +498,7 @@ function Profile() {
                                 </Stack>
                                 <Stack spacing={5}>
                                     <UsernameField />
+                                    <TagField />
                                     <EmailField />
                                     <PasswordField />
                                     <IDField />

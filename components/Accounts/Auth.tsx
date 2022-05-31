@@ -20,6 +20,7 @@ import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "./Navbar";
 import supabase from "../../lib/SupabaseClient";
 import axios from "axios";
+import supabaseAdmin from "../../lib/SupabaseAdminClient";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -95,30 +96,30 @@ export default function Auth() {
     ) => {
       try {
         setLoading(true);
-        // if (password !== passwordConfirm)
-        //   throw new Error("Passwords do not match");
-        // if (!name) throw Error("Please provide your full name.");
-        // if (!username) throw Error("Please provide your username.");
-        // const { error } = await supabase.auth.signUp(
-        //   { email: email, password: password },
-        //   {
-        //     data: {
-        //       full_name: name,
-        //       username: username
-        //     },
-        //   }
-        // );
-        // if (error) {
-        //   throw error;
-        // }
-        // toast({
-        //   title: "Success!",
-        //   description: `Check your email to confirm registration!`,
-        //   status: "success",
-        //   duration: 9000,
-        //   isClosable: true,
-        // });
-        throw new Error("Registration is currently disabled.");
+        if (password !== passwordConfirm)
+          throw new Error("Passwords do not match");
+        if (!email) throw new Error("Email is required");
+        if (!name) throw Error("Please provide your full name.");
+        if (!username) throw Error("Please provide your username.");
+
+        const { data, status } = await axios.post("/api/auth/signup", {
+          name,
+          email,
+          username,
+          password
+        });
+
+        if (status != 200) {
+          throw data.error;
+        }
+
+        toast({
+          title: "Success!",
+          description: `${data.message}`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
       } catch (error) {
         toast({
           title: "Error",
@@ -344,14 +345,14 @@ export default function Auth() {
                 <Stack justifyContent="center">
                   <Flex flexDirection={"row"}>
                     <Flex width={"35vw"} height={"100vh"}>
-                      <Box mt={"50%"} mx={"15%"} zIndex={2}>
+                      <Box my={"20vh"} mx={"15%"} zIndex={2}>
                         {" "}
                         <Stack mb={8} spacing={2}>
                           <Heading fontSize={{ md: "4xl", lg: "6xl" }}>
-                            Pixel accounts are closed.
+                            Register
                           </Heading>
                           <HStack spacing={1}>
-                            <Text>Site Admin?</Text>
+                            <Text>Already have an account?</Text>
                             <Button
                               variant={"link"}
                               color={
@@ -365,7 +366,7 @@ export default function Auth() {
                             </Button>
                           </HStack>
                         </Stack>
-                        {/* <Box maxW="sm">
+                        <Box maxW="sm">
                           <form>
                             <FormControl>
                               <FormLabel zIndex={-1}>Name</FormLabel>
@@ -378,22 +379,22 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Username</FormLabel>
-                              <Input
-                                type="text"
-                                placeholder="johndoe"
-                                onChange={(e) =>
-                                  setRegisterUsername(e.target.value)
-                                }
-                              />
-                            </FormControl>
-                            <FormControl pt={6}>
                               <FormLabel zIndex={-1}>Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="john@doe.com"
                                 onChange={(e) =>
                                   setRegisterEmail(e.target.value)
+                                }
+                              />
+                            </FormControl>
+                            <FormControl pt={6}>
+                              <FormLabel zIndex={-1}>Username</FormLabel>
+                              <Input
+                                type="text"
+                                placeholder="johndoe"
+                                onChange={(e) =>
+                                  setRegisterUsername(e.target.value)
                                 }
                               />
                             </FormControl>
@@ -436,7 +437,7 @@ export default function Auth() {
                           }
                         >
                           Create Account
-                        </Button> */}
+                        </Button>
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>
@@ -472,13 +473,10 @@ export default function Auth() {
                     <Stack spacing={0} align={"center"}>
                       {" "}
                       <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        Pixel accounts
-                      </Heading>
-                      <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        are closed.
+                        Register
                       </Heading>
                       <HStack spacing={1}>
-                        <Text>Site Admin?</Text>
+                        <Text>Already have an account?</Text>
                         <Button
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
@@ -489,7 +487,7 @@ export default function Auth() {
                       </HStack>
                     </Stack>
                   </Center>
-                  {/* <Center>
+                  <Center>
                     <Box maxW="sm">
                       <form>
                         <FormControl>
@@ -555,7 +553,7 @@ export default function Auth() {
                         Confirm
                       </Button>
                     </Box>
-                  </Center> */}
+                  </Center>
                 </Stack>
               </Flex>
             </>

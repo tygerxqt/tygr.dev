@@ -59,6 +59,13 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         }
         const banner = bannerData[0].banner;
 
+        const { data: tagData, error: tagError } = await supabaseAdmin.from("users").select("tag").eq("id", user.id);
+        if (tagError) {
+            res.status(502).json({ error: tagError });
+            throw tagError;
+        }
+        const tag = tagData[0].tag;
+
         const { data: cutieData, error: cutieError } = await supabaseAdmin.from("users").select("cutie").eq("id", user.id);
         if (cutieError) {
             res.status(502).json({ error: cutieError });
@@ -66,7 +73,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         }
         const cutie = cutieData[0].cutie;
 
-        res.status(200).json({ ...user, discord, github, badges, avatar, banner, cutie });
+        res.status(200).json({ ...user, discord, github, badges, tag, avatar, banner, cutie });
     } catch (error) {
         res.status(502).json({ error: error.message });
     }
