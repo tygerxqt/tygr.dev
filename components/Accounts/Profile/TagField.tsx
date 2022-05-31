@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, PinInput, PinInputField, Stack, Text, useToast } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../../lib/SupabaseClient";
@@ -7,63 +8,47 @@ const TagField = () => {
     const user = supabase.auth.user();
     const toast = useToast();
     const [editing, setEditing] = useState(false);
-    const [oldTag, setOldTag] = useState(user.user_metadata.tag);
-    const [tag, setTag] = useState(user.user_metadata.tag);
+    const [digit1, setDigit1] = useState(user.user_metadata.tag.substring(0, 1));
+    const [digit2, setDigit2] = useState(user.user_metadata.tag.substring(1, 2));
+    const [digit3, setDigit3] = useState(user.user_metadata.tag.substring(2, 3));
+    const [digit4, setDigit4] = useState(user.user_metadata.tag.substring(3, 4));
+
+    const [tag, setTag] = useState<string>(user.user_metadata.tag);
+    const [oldTag, setOldTag] = useState<string>(user.user_metadata.tag);
 
     const handleUpdate = async () => {
         try {
-            if (tag === oldTag) {
-                return toast({
-                    title: "Unable to update.",
-                    description: "No changes were made",
-                    status: "info",
-                    duration: 3000,
-                    isClosable: true,
-                });
+            const { data, status } = await axios.post("/api/users/update/tag", { tag: digit1 + digit2 + digit3 + digit4 });
+
+            if (status != 200) {
+                throw data.error;
             }
 
-            const { error: tableError } = await supabase
-                .from("users")
-                .update({ tag: tag })
-                .eq("id", user.id);
+            const { error } = await supabase.auth.update({ data: { tag: digit1 + digit2 + digit3 + digit4 } });
 
-            if (tableError) {
-                if (tableError.code === "23505") {
-                    setTag(oldTag);
-                    throw new Error("Tag is already taken.");
-                }
-                setTag(oldTag);
-                throw tableError;
-            }
-
-            const { error: metadataError } = await supabase.auth.update({
-                data: {
-                    tag: tag,
-                },
-            });
-
-            if (metadataError) {
-                throw new Error("Metadata Error: " + metadataError.message);
+            if (error) {
+                throw error;
             }
 
             toast({
-                title: "Success",
-                description: "Tag updated.",
+                title: "Success!",
+                description: `${data.message}`,
                 status: "success",
-                duration: 5000,
+                duration: 9000,
                 isClosable: true,
             });
 
             setTag(tag);
             setOldTag(tag);
-        } catch (err) {
+        } catch (error) {
             toast({
                 title: "Error",
-                description: err.message,
+                description: error.message,
                 status: "error",
-                duration: 5000,
+                duration: 9000,
                 isClosable: true,
             });
+            return console.log(error);
         } finally {
             setEditing(false);
         }
@@ -78,15 +63,22 @@ const TagField = () => {
                 {editing ? (
                     <Flex flexDirection={"row"}>
                         <Flex w={"95vw"}>
-                            <Input
-                                disabled={!editing}
-                                value={tag}
-                                type="number"
-                                onChange={(e) => setTag(e.target.value)}
-                            />
+                            <Stack isInline>
+                                <PinInput defaultValue={user.user_metadata.tag}>
+                                    <PinInputField onChange={(e) => setDigit1(e.target.value)} />
+                                    <PinInputField onChange={(e) => setDigit2(e.target.value)} />
+                                    <PinInputField onChange={(e) => setDigit3(e.target.value)} />
+                                    <PinInputField onChange={(e) => setDigit4(e.target.value)} />
+                                </PinInput>
+                            </Stack>
                         </Flex>
                         <Flex pl={4}>
-                            <Button onClick={() => handleUpdate()} colorScheme={"green"}>
+                            <Button
+                                onClick={() => {
+                                    handleUpdate()
+                                }}
+                                colorScheme={"green"}
+                            >
                                 <AiOutlineCheck />
                             </Button>
                         </Flex>
