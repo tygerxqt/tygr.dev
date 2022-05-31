@@ -77,76 +77,66 @@ export default function Navbar({ enableTransition }) {
   );
 
   return (
-    <Slide
-      direction="top"
-      in={true}
-      transition={
-        enableTransition
-          ? { enter: { duration: 0.5, delay: 0.01 } }
-          : { enter: { duration: 0, delay: 0 } }
-      }
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      px={"4vw"}
+      py={{ base: "1.5vh", md: "3vh" }}
+      position="static"
+      backgroundColor={colorMode === "light" ? "#FFFFFF" : "#111111"}
+      borderBottom={"1px"}
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
     >
-      <Flex
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        px={"4vw"}
-        py={{ base: "1.5vh", md: "3vh" }}
-        position="static"
-        backgroundColor={colorMode === "light" ? "#FFFFFF" : "#111111"}
-        borderBottom={"1px"}
-        borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
-      >
-        <NextLink href="/" passHref>
-          <Image
-            borderTop={"4vw"}
-            w={{ base: "32px", md: "46px" }}
-            h={{ base: "32px", md: "46px" }}
-            src={
-              colorMode === "light"
-                ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
-                : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
-            }
-            alt={"tygerxqt"}
-          />
-        </NextLink>
-        {isLargerThan768 ? (
-          <Center>
-            <NextLink href={"/projects"} passHref>
-              <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
-                Projects
-              </Button>
-            </NextLink>
-            <NextLink href={"/blog"} passHref>
-              <Button as="a" variant={"ghost"} p="4" ml="3vw" fontSize={"16px"}>
-                Blog
-              </Button>
-            </NextLink>
-            <Button
-              variant="outline"
-              p="4"
-              ml="3vw"
-              fontSize={"16px"}
-              onClick={toggleColorMode}
-            >
-              {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
+      <NextLink href="/" passHref>
+        <Image
+          borderTop={"4vw"}
+          w={{ base: "32px", md: "46px" }}
+          h={{ base: "32px", md: "46px" }}
+          src={
+            colorMode === "light"
+              ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
+              : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
+          }
+          alt={"tygerxqt"}
+        />
+      </NextLink>
+      {isLargerThan768 ? (
+        <Center>
+          <NextLink href={"/projects"} passHref>
+            <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
+              Projects
             </Button>
-          </Center>
-        ) : (
-          <Center>
-            <Button
-              variant="ghost"
-              p="4"
-              ml="3vw"
-              fontSize={"16px"}
-              onClick={onOpenDrawer}
-            >
-              <AiOutlineMenu />
+          </NextLink>
+          <NextLink href={"/blog"} passHref>
+            <Button as="a" variant={"ghost"} p="4" ml="3vw" fontSize={"16px"}>
+              Blog
             </Button>
-            <NavbarDrawer />
-          </Center>
-        )}
-      </Flex>
-    </Slide>
+          </NextLink>
+          <Button
+            variant="outline"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={toggleColorMode}
+          >
+            {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
+          </Button>
+        </Center>
+      ) : (
+        <Center>
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={onOpenDrawer}
+          >
+            <AiOutlineMenu />
+          </Button>
+          <NavbarDrawer />
+        </Center>
+      )}
+    </Flex>
   );
 }

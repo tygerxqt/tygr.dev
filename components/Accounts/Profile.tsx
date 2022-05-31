@@ -349,7 +349,7 @@ function Profile() {
                                                         lg: "192px",
                                                     }}
                                                     borderRadius="50%"
-                                                    zIndex={-1}
+
                                                 />
                                                 <Center>
                                                     <Stack spacing={5} pt={3}>
@@ -384,7 +384,7 @@ function Profile() {
                                                         h={"200px"}
                                                         rounded="lg"
                                                         objectFit={"cover"}
-                                                        zIndex={-1}
+
                                                         alt={"Banner"}
                                                     />
                                                     <Stack spacing={5} pt={3}>
@@ -433,7 +433,7 @@ function Profile() {
                                                         sm: "192px",
                                                     }}
                                                     borderRadius="50%"
-                                                    zIndex={-1}
+
                                                 />
                                                 <Center>
                                                     <Stack spacing={5} pt={3}>
@@ -468,7 +468,7 @@ function Profile() {
                                                         h={"200px"}
                                                         rounded="lg"
                                                         objectFit={"cover"}
-                                                        zIndex={-1}
+
                                                         alt={"Banner"}
                                                     />
                                                     <Stack spacing={5} pt={3}>

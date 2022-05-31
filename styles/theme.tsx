@@ -56,24 +56,6 @@ const components = {
       },
     }),
   },
-
-  Button: {
-    baseStyle: (props) => ({
-      position: "static",
-    }),
-  },
-
-  Divider: {
-    baseStyle: (props) => ({
-      zIndex: "-1",
-    }),
-  },
-
-  Input: {
-    baseStyle: (props) => ({
-      position: "static",
-    }),
-  },
 };
 ``;
 const fonts = {

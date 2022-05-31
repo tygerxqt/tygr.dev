@@ -45,7 +45,7 @@ export default function IndexBlog({ articles }) {
               This is where I share my writings on programming, tutorials, and
               my experiences.
             </Text>
-            <InputGroup maxW={"400px"} zIndex={-1}>
+            <InputGroup maxW={"400px"}  >
               <InputRightElement pointerEvents={"none"}>
                 <FaSearch />
               </InputRightElement>

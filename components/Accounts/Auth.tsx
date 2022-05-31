@@ -209,7 +209,7 @@ export default function Auth() {
                         <Box maxW="sm">
                           <form>
                             <FormControl>
-                              <FormLabel zIndex={-1}>Email</FormLabel>
+                              <FormLabel  >Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="hello@apple.com"
@@ -221,7 +221,7 @@ export default function Auth() {
                                 flexDirection={"row"}
                                 justifyContent="space-between"
                               >
-                                <FormLabel zIndex={-1}>Password</FormLabel>
+                                <FormLabel  >Password</FormLabel>
                                 {/* <Link href={"/recovery"} passHref>
                                   <Button variant={"link"} pb={2} >
                                     Forgot Password?
@@ -369,7 +369,7 @@ export default function Auth() {
                         <Box maxW="sm">
                           <form>
                             <FormControl>
-                              <FormLabel zIndex={-1}>Name</FormLabel>
+                              <FormLabel  >Name</FormLabel>
                               <Input
                                 type="text"
                                 placeholder="John Doe"
@@ -379,7 +379,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Email</FormLabel>
+                              <FormLabel  >Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="john@doe.com"
@@ -389,7 +389,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Username</FormLabel>
+                              <FormLabel  >Username</FormLabel>
                               <Input
                                 type="text"
                                 placeholder="johndoe"
@@ -399,7 +399,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Password</FormLabel>
+                              <FormLabel  >Password</FormLabel>
                               <Input
                                 type="password"
                                 placeholder="********"
@@ -409,7 +409,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>
+                              <FormLabel  >
                                 Confirm Password
                               </FormLabel>
                               <Input
@@ -491,7 +491,7 @@ export default function Auth() {
                     <Box maxW="sm">
                       <form>
                         <FormControl>
-                          <FormLabel zIndex={-1}>Name</FormLabel>
+                          <FormLabel  >Name</FormLabel>
                           <Input
                             type="text"
                             placeholder="John Doe"
@@ -499,7 +499,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Username</FormLabel>
+                          <FormLabel  >Username</FormLabel>
                           <Input
                             type="text"
                             placeholder="johndoe"
@@ -509,7 +509,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Email</FormLabel>
+                          <FormLabel  >Email</FormLabel>
                           <Input
                             type="email"
                             placeholder="john@doe.com"
@@ -517,7 +517,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Password</FormLabel>
+                          <FormLabel  >Password</FormLabel>
                           <Input
                             type="password"
                             placeholder="********"
@@ -527,7 +527,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Confirm Password</FormLabel>
+                          <FormLabel  >Confirm Password</FormLabel>
                           <Input
                             type="password"
                             placeholder="********"

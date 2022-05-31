@@ -36,7 +36,7 @@ function Post({ metadata, source }) {
                                     name="tygerxqt"
                                     size="xs"
                                     src="https://avatars.githubusercontent.com/u/59417077?v=4"
-                                    zIndex={-1}
+
                                 />
                                 <Text fontSize={["xs", "xs", "sm", "sm"]}>
                                     tygerxqt /{" "}
@@ -69,7 +69,7 @@ function Post({ metadata, source }) {
                         </Stack>
                         {colorMode === "light" ? (
                             <>
-                
+
                                 <PostContainer.light>
                                     <MDXRemote {...source} components={MDXComponents} />
                                 </PostContainer.light>

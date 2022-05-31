@@ -32,7 +32,8 @@ import {
   SimpleGrid,
   ModalFooter,
   Spinner,
-  SkeletonCircle
+  SkeletonCircle,
+  chakra
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
@@ -191,158 +192,149 @@ export default function Navbar({ enableTransition }) {
   );
 
   return (
-    <Box>
-      <Slide
-        direction="top"
-        in={true}
-        transition={
-          enableTransition
-            ? { enter: { duration: 0.5, delay: 0.01 } }
-            : { enter: { duration: 0, delay: 0 } }
-        }
-      >
-        <Flex
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          px={"4vw"}
-          py={{ base: "1.5vh", md: "3vh" }}
-          zIndex={99}
-          backgroundColor={colorMode === "light" ? "#FFFFFF" : "#121212"}
-          borderBottom={"1px"}
-          borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
-        >
-          <NextLink href="/" passHref>
-            <Image
-              borderTop={"4vw"}
-              w={{ base: "32px", md: "46px" }}
-              h={{ base: "32px", md: "46px" }}
-              src={
-                colorMode === "light"
-                  ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
-                  : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
-              }
-              alt={"tygerxqt"}
-            />
+    <Flex
+      zIndex={"99"}
+      position="fixed"
+      w="100%"
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      px={"4vw"}
+      py={{ base: "1.5vh", md: "3vh" }}
+      backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(18, 18, 18, 0.9)"}
+      backdropFilter="blur(5px)"
+      borderBottom={"1px"}
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+    >
+      <NextLink href="/" passHref>
+        <Image
+          borderTop={"4vw"}
+          w={{ base: "32px", md: "46px" }}
+          h={{ base: "32px", md: "46px" }}
+          src={
+            colorMode === "light"
+              ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
+              : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
+          }
+          alt={"tygerxqt"}
+        />
+      </NextLink>
+      {isLargerThan768 ? (
+        <Center>
+          <NextLink href={"/projects"} passHref>
+            <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
+              Projects
+            </Button>
           </NextLink>
-          {isLargerThan768 ? (
-            <Center>
-              <NextLink href={"/projects"} passHref>
-                <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
-                  Projects
-                </Button>
-              </NextLink>
-              <NextLink href={"/blog"} passHref>
-                <Button
-                  as="a"
-                  variant={"ghost"}
-                  p="4"
-                  ml="3vw"
-                  fontSize={"16px"}
-                >
-                  Blog
-                </Button>
-              </NextLink>
-              <Button
-                variant="ghost"
-                p="4"
-                ml="3vw"
-                fontSize={"16px"}
-                onClick={toggleColorMode}
-              >
-                {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
-              </Button>
-              {loading ? (
-                <SkeletonCircle p="4" ml="3vw" size='12' />
-              ) : (
-                <>
-                  {session ? (
-                    <Menu>
-                      <MenuButton
-                        as={Avatar}
-                        ml={"3vw"}
-                        src={userData.avatar}
-                        size="md"
-                      />
-                      <MenuList>
-                        <MenuGroup title={supabase.auth.user().user_metadata.username} fontSize={"xl"}>
-                          <Link href="/profile" passHref>
-                            <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
-                          </Link>
-                          <Link href="/account" passHref>
-                            <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
-                          </Link>
-                        </MenuGroup>
-                        <MenuGroup>
-                          <MenuItem
-                            closeOnSelect={true}
-                            icon={<BiLogOut fontSize={"16px"} />}
-                            onClick={() => {
-                              supabase.auth.signOut();
-                              window.location.reload();
-                            }}
-                          >
-                            Sign out
-                          </MenuItem>
-                        </MenuGroup>
-                      </MenuList>
-                    </Menu>
-                  ) : (
-                    <NextLink href={"/profile"} passHref>
-                      <Button
-                        variant="solid"
-                        p="4"
-                        ml="3vw"
-                        colorScheme={"blue"}
-                        fontSize={"16px"}
-                      >
-                        Log in
-                      </Button>
-                    </NextLink>
-                  )}
-                </>
-              )}
-            </Center>
+          <NextLink href={"/blog"} passHref>
+            <Button
+              as="a"
+              variant={"ghost"}
+              p="4"
+              ml="3vw"
+              fontSize={"16px"}
+            >
+              Blog
+            </Button>
+          </NextLink>
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={toggleColorMode}
+          >
+            {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
+          </Button>
+          {loading ? (
+            <SkeletonCircle p="4" ml="3vw" size='12' />
           ) : (
-            <Center>
-              {loading ? (
-                <SkeletonCircle p="4" ml="3vw" size='6' />
+            <>
+              {session ? (
+                <Menu>
+                  <MenuButton
+                    as={Avatar}
+                    ml={"3vw"}
+                    src={userData.avatar}
+                    size="md"
+                  />
+                  <MenuList>
+                    <MenuGroup title={supabase.auth.user().user_metadata.username} fontSize={"xl"}>
+                      <Link href="/profile" passHref>
+                        <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
+                      </Link>
+                      <Link href="/account" passHref>
+                        <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
+                      </Link>
+                    </MenuGroup>
+                    <MenuGroup>
+                      <MenuItem
+                        closeOnSelect={true}
+                        icon={<BiLogOut fontSize={"16px"} />}
+                        onClick={() => {
+                          supabase.auth.signOut();
+                          window.location.reload();
+                        }}
+                      >
+                        Sign out
+                      </MenuItem>
+                    </MenuGroup>
+                  </MenuList>
+                </Menu>
               ) : (
-                <>
-                  {session ? (
-                    <>
-                      <Button variant="unstyled" onClick={onOpenModal}>
-                        <Avatar
-                          as="a"
-                          size="sm"
-                          src={userData.avatar}
-                        />
-                      </Button>
-                      <AccountCard />
-                    </>
-                  ) : (
-                    <NextLink href="/profile" passHref>
-                      <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
-                        Log in
-                      </Button>
-                    </NextLink>
-                  )}
-                </>
+                <NextLink href={"/profile"} passHref>
+                  <Button
+                    variant="solid"
+                    p="4"
+                    ml="3vw"
+                    colorScheme={"blue"}
+                    fontSize={"16px"}
+                  >
+                    Log in
+                  </Button>
+                </NextLink>
               )}
-              <Button
-                variant="ghost"
-                p="4"
-                ml="3vw"
-                fontSize={"16px"}
-                onClick={onOpenDrawer}
-              >
-                <AiOutlineMenu />
-              </Button>
-              <NavbarDrawer />
-            </Center>
+            </>
           )}
-        </Flex>
-      </Slide>
-    </Box>
+        </Center>
+      ) : (
+        <Center>
+          {loading ? (
+            <SkeletonCircle p="4" ml="3vw" size='6' />
+          ) : (
+            <>
+              {session ? (
+                <>
+                  <Button variant="unstyled" onClick={onOpenModal}>
+                    <Avatar
+                      as="a"
+                      size="sm"
+                      src={userData.avatar}
+                    />
+                  </Button>
+                  <AccountCard />
+                </>
+              ) : (
+                <NextLink href="/profile" passHref>
+                  <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
+                    Log in
+                  </Button>
+                </NextLink>
+              )}
+            </>
+          )}
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={onOpenDrawer}
+          >
+            <AiOutlineMenu />
+          </Button>
+          <NavbarDrawer />
+        </Center>
+      )}
+    </Flex>
   );
 }
