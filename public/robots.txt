@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+User-agent: *
+Allow: /projects
+
+User-agent: *
+Allow: /blog
+
+User-agent: *
+Disallow: /accounts
+
+User-agent: *
+Disallow: /accounts
+
+User-agent: *
+Disallow: /profile
+
+User-agent: *
+Disallow: /api/*

@@ -4,6 +4,9 @@ import type { AppProps } from "next/app";
 
 import customTheme from "../styles/theme";
 
+import SEO from "../next-seo.config";
+import { DefaultSeo } from "next-seo";
+
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <>
@@ -11,6 +14,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <meta content="IE=edge" httpEquiv="X-UA-Compatible" />
         <meta content="width=device-width, initial-scale=1" name="viewport" />
       </Head>
+      <DefaultSeo {...SEO} />
       <ColorModeScript initialColorMode={customTheme.config.initialColorMode} />
       <ChakraProvider theme={customTheme}>
         <Component {...pageProps} />
