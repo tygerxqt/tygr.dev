@@ -26,6 +26,32 @@ function ProjectPage({ projects }) {
       <Container enableTransition={false}>
         <Head>
           <title>Projects</title>
+          <meta name="title" content="Projects" />
+          <meta
+            name="description"
+            content="A full list of all projects I have created or worked on."
+          />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://www.tygr.dev/projects" />
+          <meta property="og:title" content="Projects" />
+          <meta
+            property="og:description"
+            content="A full list of all projects I have created or worked on."
+          />
+          <meta property="og:image" content="https://i.imgur.com/5wzL6da.png" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://tygr.dev/projects" />
+          <meta property="twitter:title" content="Projects" />
+          <meta
+            property="twitter:description"
+            content="A full list of all projects I have created or worked on."
+          />
+          <meta
+            property="twitter:image"
+            content="https://i.imgur.com/5wzL6da.png"
+          />
         </Head>
         <Stack
           spacing={10}

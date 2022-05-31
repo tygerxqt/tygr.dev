@@ -33,6 +33,32 @@ export default function IndexBlog({ articles }) {
       <Container enableTransition={false}>
         <Head>
           <title>Blog</title>
+          <meta name="title" content="Blog" />
+          <meta
+            name="description"
+            content="Writings on programming, tutorials, and my experiences."
+          />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://tygr.dev/blog" />
+          <meta property="og:title" content="Blog." />
+          <meta
+            property="og:description"
+            content="Writings on programming, tutorials, and my experiences."
+          />
+          <meta property="og:image" content="https://i.imgur.com/7hLIhHt.png" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://tygr.dev/blog" />
+          <meta property="twitter:title" content="Blog." />
+          <meta
+            property="twitter:description"
+            content="Writings on programming, tutorials, and my experiences."
+          />
+          <meta
+            property="twitter:image"
+            content="https://i.imgur.com/7hLIhHt.png"
+          />
         </Head>
         <Stack
           spacing={10}

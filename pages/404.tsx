@@ -8,7 +8,32 @@ export default function ErrorPage() {
       <Navbar enableTransition={false} />
       <Head>
         <title>404</title>
-        <meta name="title" content="tygerxqt" />
+        <meta name="title" content="404" />
+        <meta
+          name="description"
+          content="This page doesn't exist or is currently unavailable. That's all we know."
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tygr.dev/404" />
+        <meta property="og:title" content="tygerxqt." />
+        <meta
+          property="og:description"
+          content="This page doesn't exist or is currently unavailable. That's all we know."
+        />
+        <meta property="og:image" content="https://i.imgur.com/GBBjRYu.png" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://tygr.dev/404" />
+        <meta property="twitter:title" content="tygerxqt" />
+        <meta
+          property="twitter:description"
+          content="This page doesn't exist or is currently unavailable. That's all we know."
+        />
+        <meta
+          property="twitter:image"
+          content="https://i.imgur.com/GBBjRYu.png"
+        />
       </Head>
       <Stack
         as="main"
