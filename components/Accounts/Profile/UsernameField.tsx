@@ -25,11 +25,6 @@ const UsernameField = () => {
         .from("users")
         .update({ username: username })
         .eq("id", user.id);
-      const { error: metadataError } = await supabase.auth.update({
-        data: {
-          username: username,
-        },
-      });
 
       if (tableError) {
         if (tableError.code === "23505") {
@@ -39,6 +34,12 @@ const UsernameField = () => {
         setUsername(oldUsername);
         throw tableError;
       }
+
+      const { error: metadataError } = await supabase.auth.update({
+        data: {
+          username: username,
+        },
+      });
 
       if (metadataError) {
         throw new Error("Metadata Error: " + metadataError.message);
