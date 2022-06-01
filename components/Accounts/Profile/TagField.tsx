@@ -20,7 +20,7 @@ const TagField = () => {
             const { data, status } = await axios.post("/api/users/update/tag", { tag: digit1 + digit2 + digit3 + digit4 });
 
             if (status != 200) {
-                throw data.error;
+                throw data.error.message;
             }
 
             const { error } = await supabase.auth.update({ data: { tag: digit1 + digit2 + digit3 + digit4 } });
