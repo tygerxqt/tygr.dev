@@ -13,7 +13,6 @@ const TagField = () => {
     const [digit3, setDigit3] = useState(user.user_metadata.tag.substring(2, 3));
     const [digit4, setDigit4] = useState(user.user_metadata.tag.substring(3, 4));
 
-    const [tag, setTag] = useState<string>(user.user_metadata.tag);
     const [oldTag, setOldTag] = useState<string>(user.user_metadata.tag);
 
     const handleUpdate = async () => {
@@ -38,8 +37,7 @@ const TagField = () => {
                 isClosable: true,
             });
 
-            setTag(tag);
-            setOldTag(tag);
+            setOldTag(digit1 + digit2 + digit3 + digit4);
         } catch (error) {
             toast({
                 title: "Error",
@@ -85,7 +83,10 @@ const TagField = () => {
                         <Flex pl={2}>
                             <Button
                                 onClick={() => {
-                                    setTag(oldTag);
+                                    setDigit1(oldTag.substring(0, 1));
+                                    setDigit2(oldTag.substring(1, 2));
+                                    setDigit3(oldTag.substring(2, 3));
+                                    setDigit4(oldTag.substring(3, 4));
                                     setEditing(false);
                                 }}
                                 colorScheme={"red"}
@@ -97,7 +98,7 @@ const TagField = () => {
                 ) : (
                     <Flex flexDirection={"row"}>
                         <Flex w={"95vw"}>
-                            <Input disabled={!editing} value={tag} />
+                            <Input disabled={!editing} value={user.user_metadata.tag} />
                         </Flex>
                         <Flex pl={4}>
                             <Button onClick={() => setEditing(true)}>
