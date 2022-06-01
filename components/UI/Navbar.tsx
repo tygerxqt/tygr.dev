@@ -154,7 +154,7 @@ export default function Navbar({ enableTransition }) {
                 />
                 <VStack>
                   <Text fontSize="26px" fontWeight="bold">
-                    {user.user_metadata.username}
+                    {user.user_metadata.username}#{user.user_metadata.tag}
                   </Text>
                   <Text fontSize="14px">{user.email}</Text>
                 </VStack>
@@ -259,7 +259,7 @@ export default function Navbar({ enableTransition }) {
                     size="md"
                   />
                   <MenuList>
-                    <MenuGroup title={supabase.auth.user().user_metadata.username} fontSize={"xl"}>
+                    <MenuGroup title={`${supabase.auth.user().user_metadata.username}#${user.user_metadata.tag}`} fontSize={"xl"}>
                       <Link href="/profile" passHref>
                         <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
                       </Link>
@@ -334,7 +334,8 @@ export default function Navbar({ enableTransition }) {
           </Button>
           <NavbarDrawer />
         </Center>
-      )}
-    </Flex>
+      )
+      }
+    </Flex >
   );
 }
