@@ -12,6 +12,7 @@ const apiRoute = nextConnect({
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body.tag) return res.status(502).json({ error: "Tag is required." });
     if (req.body.tag.length !== 4) return res.status(502).json({ error: "Tag must be exactly 4 characters." });
+    if (req.body.tag === "0000") return res.status(502).json({ error: "Tag cannot be 0000." });
 
     const cookie = await supabase.auth.api.getUserByCookie(req);
     if (!cookie) {
