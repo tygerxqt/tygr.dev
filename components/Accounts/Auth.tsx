@@ -17,7 +17,7 @@ import {
 import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
-import Navbar from "./Navbar";
+import Navbar from "../UI/Navbar";
 import supabase from "../../lib/SupabaseClient";
 import axios from "axios";
 import supabaseAdmin from "../../lib/SupabaseAdminClient";
