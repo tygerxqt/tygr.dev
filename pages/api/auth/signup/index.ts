@@ -26,7 +26,6 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         return tagPadded;
     }
 
-    // generate a random tag and see if someone has the username and tag already, if so then generate a new one
     let tag = generateTag();
 
     while (userData.find(user => user.username === req.body.username && user.tag.toString().substring(0, 4) === tag)) {
