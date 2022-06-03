@@ -46,6 +46,7 @@ import { UserProfile } from "../../types/UserProfile";
 import { MdAccountCircle } from "react-icons/md";
 import { AiFillIdcard } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
+import { RiParkingFill } from "react-icons/ri";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
@@ -265,6 +266,9 @@ export default function Navbar({ enableTransition }) {
                       </Link>
                       <Link href="/account" passHref>
                         <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
+                      </Link>
+                      <Link href="/pixels" passHref>
+                        <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
                       </Link>
                     </MenuGroup>
                     <MenuGroup>

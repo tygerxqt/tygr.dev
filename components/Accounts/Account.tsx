@@ -1,17 +1,21 @@
-import { Button, Center, Heading, Stack, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Center, Heading, Stack, Flex, Spinner, Text, Divider } from "@chakra-ui/react";
 import axios from "axios";
 import Head from "next/head";
-import Link from "next/link";
+import React from "react";
 import { useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
 import { UserProfile } from "../../types/UserProfile";
+import Container from "../UI/Container";
 import Navbar from "../UI/Navbar";
+import Removal from "./Account/Removal";
+import Billing from "./Account/Billing";
+import Identities from "./Account/Identities";
 
 function Account() {
+  const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState(true);
-  const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
 
   useEffect(() => {
     const user = supabase.auth.user();
@@ -57,76 +61,23 @@ function Account() {
         </Flex>
       ) : (
         <>
-          {userData.badges.admin ? (
-            <Flex
-              as="main"
-              justifyContent="center"
-              px={isLargerThan768 ? "15vw" : "8vw"}
-              py={isLargerThan768 ? "4vw" : "8vw"}
-            >
-              <Head>
-                <title>Account</title>
-              </Head>
-              <Center>
-                <Stack
-                  spacing={10}
-                  justifyContent="center"
-                  my={["20vh", "20vh", "30vh", "30vh"]}
-                >
-                  <Stack spacing={10}>
-                    {" "}
-                    <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                      Your profile has moved!
-                    </Heading>
-                    <Center>
-                      <Link href="/profile" passHref>
-                        <Button w="md" variant={"solid"} colorScheme={"blue"}>
-                          Profile
-                        </Button>
-                      </Link>
-                    </Center>
-                  </Stack>
-                </Stack>
-              </Center>
-            </Flex>
-          ) : (
-            <>
-              <Navbar enableTransition={false} />
-              <Flex
-                as="main"
-                justifyContent="center"
-                px={isLargerThan768 ? "15vw" : "8vw"}
-                py={isLargerThan768 ? "4vw" : "8vw"}
-              >
-                <Head>
-                  <title>Account</title>
-                </Head>
-                <Center>
-                  <Stack
-                    spacing={10}
-                    justifyContent="center"
-                    my={["20vh", "20vh", "30vh", "30vh"]}
-                  >
-                    <Stack spacing={10}>
-                      {" "}
-                      <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        Pixel accounts are closed for now.
-                      </Heading>
-                      <Center>
-                        <Link href="https://github.com/tygerxqt/tygr.dev/issues/12" passHref>
-                          <Button w="md" variant={"solid"} colorScheme={"blue"}>
-                            Track progress
-                          </Button>
-                        </Link>
-                      </Center>
-                    </Stack>
-                  </Stack>
-                </Center>
-              </Flex>
-            </>
-          )}
+          <Container enableTransition={false}>
+            <Head>
+              <title>Account</title>
+            </Head>
+            <Stack spacing={16} justifyContent="center" my={["10vh", "10vh", "15vh", "15vh"]}>
+              <Stack spacing={5}>
+                <Heading fontSize={{ base: "4xl", md: "6xl" }}>Account</Heading>
+                <Divider />
+              </Stack>
+              <Identities />
+              <Billing userData={userData} />
+              <Removal />
+            </Stack>
+          </Container>
         </>
-      )}
+      )
+      }
     </>
   );
 }

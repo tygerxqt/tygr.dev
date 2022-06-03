@@ -1,4 +1,4 @@
-import { useToast, Button, Spinner, Center, Flex, Stack, Text, Divider, Heading, SimpleGrid, Avatar, Image, Badge, Box, VStack } from "@chakra-ui/react";
+import { useToast, Button, Spinner, Center, Flex, Stack, Text, Divider, Heading, SimpleGrid, Avatar, Image, Badge, Box, VStack, ButtonGroup } from "@chakra-ui/react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -12,9 +12,10 @@ import EmailField from "./Profile/EmailField";
 import IDField from "./Profile/IDField";
 import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
-import Identities from "./Profile/Identities";
 import Preview from "./Profile/Preview";
 import TagField from "./Profile/TagField";
+import Link from "next/link";
+import TokenField from "./Profile/TokenField";
 
 function Profile() {
     const user = supabase.auth.user();
@@ -491,7 +492,7 @@ function Profile() {
                                 </>
                             )}
 
-                            <Stack spacing={8}>
+                            <Stack spacing={10}>
                                 <Stack spacing={2}>
                                     <Heading fontSize={{ base: "xl", md: "2xl" }}>Info</Heading>
                                     <Divider />
@@ -502,13 +503,23 @@ function Profile() {
                                     <EmailField />
                                     <PasswordField />
                                     <IDField />
-                                </Stack>
-                                <Stack spacing={2}>
-                                    <Heading fontSize={{ base: "xl", md: "2xl" }}>Identities</Heading>
-                                    <Divider />
+                                    {userData.badges.admin ? <TokenField /> : null}
                                 </Stack>
                                 <Stack spacing={5}>
-                                    <Identities />
+                                    <Heading fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
+                                        Identities
+                                    </Heading>
+                                    <Divider />
+                                    <Text fontSize={{ base: "md", md: "lg" }}>
+                                        Note: Identities have been moved to the account page. Use the button below to navigate there.
+                                    </Text>
+                                    <ButtonGroup spacing={5}>
+                                        <Link href={"/account"} passHref>
+                                            <Button>
+                                                My Account
+                                            </Button>
+                                        </Link>
+                                    </ButtonGroup>
                                 </Stack>
                             </Stack>
                         </Stack>
