@@ -34,11 +34,11 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { error } = await supabase.auth.signUp({ email: req.body.email, password: req.body.password }, { data: { full_name: req.body.name, username: req.body.username, tag: tag } });
     if (error) {
-        return res.status(500).json({ error: error });
+        return res.status(500).json({ error: error.message });
     }
 
     res.status(200).json({
-        message: `Please check your email for a verification link.`,
+        data: `Please check your email for a verification link.`,
     });
 });
 

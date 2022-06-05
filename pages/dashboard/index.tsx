@@ -38,7 +38,7 @@ export default function Dashboard() {
     }, [update]);
 
     const loadPortal = async () => {
-        await axios.get(`/api/billing/portal?token=${session.access_token}`).then(res => {
+        await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=dashboard`).then(res => {
             router.push(res.data.data);
         }).catch(err => {
             console.log(err.response.data.error);
@@ -120,17 +120,26 @@ export default function Dashboard() {
                                             Welcome to your dashboard. Here you can view your account information, and manage your subscription.
                                         </Text>
                                     </Stack>
-                                    {/* <Stack spacing={5}>
+                                    <Stack spacing={5}>
                                         <Heading fontSize={{ base: "2xl", md: "4xl" }}>Rewards</Heading>
                                         <Text fontSize={{ base: "md", md: "lg" }}>
                                             Manage and claim your rewards here.
                                         </Text>
-                                        <ButtonGroup>
-                                            <Button colorScheme="blue" variant="outline">
-                                                Manage Subscription
+                                        <ButtonGroup spacing={5}>
+                                            <Button>
+                                                Early access
+                                            </Button>
+                                            <Button>
+                                                Project vault
+                                            </Button>
+                                            <Button>
+                                                Photograhy library
+                                            </Button>
+                                            <Button>
+                                                Github repos
                                             </Button>
                                         </ButtonGroup>
-                                    </Stack> */}
+                                    </Stack>
                                     <Stack spacing={5}>
                                         <Heading fontSize={{ base: "2xl", md: "4xl" }}>Account</Heading>
                                         <Text fontSize={{ base: "md", md: "lg" }}>
@@ -140,9 +149,6 @@ export default function Dashboard() {
                                             <Button onClick={() => loadPortal()}>
                                                 Manage Subscription
                                             </Button>
-                                            <Button>
-                                                Edit customer
-                                            </Button>
                                         </ButtonGroup>
                                     </Stack>
                                 </Stack>
@@ -150,7 +156,8 @@ export default function Dashboard() {
                         </>
                     )}
                 </>
-            )}
+            )
+            }
         </>
     );
 }

@@ -14,6 +14,7 @@ const apiRoute = nextConnect({
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) return res.status(500).json({ error: "No query provided." });
+    if (!req.query.redirect) return res.status(500).json({ error: "Redirect is required." });
     if (!req.query.token) return res.status(500).json({ error: "Token is required." });
 
     const user = await supabaseAdmin.auth.api.getUser(req.query.token as string);
@@ -34,7 +35,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const session = await stripe.billingPortal.sessions.create({
         customer: data[0].customer.id,
-        return_url: `${process.env.NEXT_PUBLIC_URL}/account`,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/${req.query.redirect}`,
     });
 
     res.send({ data: session.url });

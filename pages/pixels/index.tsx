@@ -29,7 +29,7 @@ export default function Pricing({ plans }) {
     const [newCustomerEmail, setNewCustomerEmail] = useState(customer ? customer.email : "");
 
     const loadPortal = async () => {
-        await axios.get(`/api/billing/portal?token=${session.access_token}`).then(res => {
+        await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=pixels`).then(res => {
             router.push(res.data.data);
         }).catch(err => {
             console.log(err.response.data.error);

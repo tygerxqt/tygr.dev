@@ -22,7 +22,12 @@ const UsernameField = () => {
         isClosable: true,
       });
 
-    await axios.put(`/api/users/update?token=${session.access_token}`, { tag: user.user_metadata.tag, username: username }).then(response => {
+    await axios.put(`/api/users/update?token=${session.access_token}`, { tag: user.user_metadata.tag, username: username }).then(async response => {
+      await supabase.auth.update({
+        data: {
+          username: username,
+        }
+      });
       toast({
         title: "Success",
         description: response.data.data,

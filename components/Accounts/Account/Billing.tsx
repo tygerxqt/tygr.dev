@@ -24,7 +24,7 @@ export default function Billing() {
         setLoading(true);
         const session = supabase.auth.session();
 
-        const { data, status } = await axios.post(`api/billing/customers/create?token=${session.access_token}`, {
+        const { data, status } = await axios.post(`/api/billing/customers/create?token=${session.access_token}`, {
             email: newCustomerEmail,
             name: newCustomerName,
         });
@@ -36,7 +36,7 @@ export default function Billing() {
     }
 
     const loadPortal = async () => {
-        const { data } = await axios.get(`/api/billing/portal?token=${session.access_token}`);
+        const { data } = await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=account`);
         router.push(data.data);
     }
 

@@ -1,6 +1,8 @@
+import axios from "axios";
 import { Deta } from "deta";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
+import stripe from "../../../lib/Stripe";
 import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 
 const apiRoute = nextConnect({
@@ -59,6 +61,17 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
             await drive.delete(file);
         });
     }
+
+    const { error: customerError, data: customerData } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
+    if (customerError) {
+        return res.status(500).json({ error: customerError.message });
+    }
+
+    if (!customerData || !customerData[0] || !customerData[0].customer || !customerData[0].customer.id) {
+        return res.status(200).json({ error: "No customer exists." });
+    }
+
+    const customer = await stripe.customers.del(customerData[0].customer.id);
 
     const { error: tableErr } = await supabaseAdmin.from("users").delete().match({ id: user.user.id });
     if (tableErr) {

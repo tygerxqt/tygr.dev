@@ -117,44 +117,47 @@ export default function Auth() {
       password: string,
       passwordConfirm: string
     ) => {
+      setLoading(true);
       try {
-        setLoading(true);
         if (password !== passwordConfirm)
           throw new Error("Passwords do not match");
         if (!email) throw new Error("Email is required");
         if (!name) throw Error("Please provide your full name.");
         if (!username) throw Error("Please provide your username.");
-
-        const { data, status } = await axios.post("/api/auth/signup", {
-          name,
-          email,
-          username,
-          password
-        });
-
-        if (status != 200) {
-          throw data.error;
-        }
-
-        toast({
-          title: "Success!",
-          description: `${data.message}`,
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-      } catch (error) {
+      } catch (err) {
         toast({
           title: "Error",
-          description: error.message,
+          description: err.message,
           status: "error",
           duration: 9000,
           isClosable: true,
         });
-        return console.log(error);
-      } finally {
-        setLoading(false);
       }
+
+      await axios.post("/api/auth/signup", {
+        name,
+        email,
+        username,
+        password
+      }).then(response => {
+        toast({
+          title: "Success",
+          description: `${response.data.data}`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }).catch(error => {
+        toast({
+          title: "Error",
+          description: error.response.data.error,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+
+      setLoading(false);
     },
     [toast]
   );
