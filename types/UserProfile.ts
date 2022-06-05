@@ -7,7 +7,6 @@ interface Badges {
     bug: boolean;
     contributor: boolean;
     donator: boolean;
-    pixel: boolean;
 }
 
 export interface UserProfile {
@@ -19,6 +18,7 @@ export interface UserProfile {
     email: string;
     id: string;
     cutie: boolean;
+    pixel: boolean;
     phone: string;
     user_metadata: {
         username: string;

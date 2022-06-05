@@ -27,15 +27,13 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (!data[0]) {
-        if (!data[0].customer) {
+        if (!data[0].customer.id) {
             return res.status(500).json({ error: "No customer found." });
         }
     }
 
-    const encoded = JSON.parse(data[0].customer);
-
     const session = await stripe.billingPortal.sessions.create({
-        customer: encoded.id,
+        customer: data[0].customer.id,
         return_url: `${process.env.NEXT_PUBLIC_URL}/account`,
     });
 

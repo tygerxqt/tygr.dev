@@ -35,9 +35,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         }
     }
 
-    const encoded = JSON.parse(data[0].customer);
-
-    const customer = await stripe.customers.update(encoded.id, {
+    const customer = await stripe.customers.update(data[0].customer.id, {
         name: req.body.name,
         email: req.body.email,
     });

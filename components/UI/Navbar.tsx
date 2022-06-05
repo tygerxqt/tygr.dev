@@ -180,7 +180,7 @@ export default function Navbar({ enableTransition }) {
                 </NextLink>
 
 
-                {userData.badges.pixel ? (
+                {userData.pixel ? (
                   <>
                     <NextLink href="/dashboard" passHref>
                       <Button as="a" variant="solid" fontSize="16px">
@@ -292,7 +292,7 @@ export default function Navbar({ enableTransition }) {
                       <Link href="/account" passHref>
                         <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
                       </Link>
-                      {userData.badges.pixel ? (
+                      {userData.pixel ? (
                         <>
                           <Link href="/dashboard" passHref>
                             <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>

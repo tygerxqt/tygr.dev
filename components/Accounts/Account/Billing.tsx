@@ -80,7 +80,7 @@ export default function Billing() {
                     <>
                         {customer ? (
                             <>
-                                {userData.badges.pixel ? (
+                                {userData.pixel ? (
                                     <>
                                         <Text fontSize={{ base: "md", md: "lg" }}>
                                             You are subscribed.
@@ -108,7 +108,7 @@ export default function Billing() {
                     </>
                 ) : (
                     <>
-                        {userData.badges.pixel ? (
+                        {userData.pixel ? (
                             <>
                                 <ButtonGroup spacing={5}>
                                     <Link href="/dashboard" passHref>

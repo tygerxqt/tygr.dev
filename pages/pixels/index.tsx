@@ -25,8 +25,8 @@ export default function Pricing({ plans }) {
 
     const [selectedPlan, setSelectedPlan] = useState("price_1L7E5lCvkEhaRfsbUYDWXUVF");
 
-    const [newCustomerName, setNewCustomerName] = useState(customer.name);
-    const [newCustomerEmail, setNewCustomerEmail] = useState(customer.email);
+    const [newCustomerName, setNewCustomerName] = useState(customer ? customer.name : "");
+    const [newCustomerEmail, setNewCustomerEmail] = useState(customer ? customer.email : "");
 
     const loadPortal = async () => {
         await axios.get(`/api/billing/portal?token=${session.access_token}`).then(res => {
@@ -175,22 +175,8 @@ export default function Pricing({ plans }) {
                                                         <Stack>
                                                             <Heading fontSize={["xl", "xl", "lg", "lg"]}>Customer</Heading>
                                                             <Text fontSize={{ base: "md", md: "lg" }}>
-                                                                These details are used to contact you for anything regarding billing.
+                                                                The button below will redirect you to your billing portal where you can update your billing information.
                                                             </Text>
-                                                        </Stack>
-                                                        <Stack>
-                                                            <Heading fontSize={["xl", "xl", "lg", "lg"]}>Name</Heading>
-                                                            <Input
-                                                                defaultValue={newCustomerName}
-                                                                disabled={true}
-                                                            ></Input>
-                                                        </Stack>
-                                                        <Stack>
-                                                            <Heading fontSize={["xl", "xl", "lg", "lg"]}>Email</Heading>
-                                                            <Input
-                                                                value={newCustomerEmail}
-                                                                disabled={true}
-                                                            ></Input>
                                                         </Stack>
                                                         <Stack>
                                                             <ButtonGroup>
@@ -336,7 +322,7 @@ export default function Pricing({ plans }) {
                 <>
                     {session ? (
                         <>
-                            {userData.badges.pixel ? (
+                            {userData.pixel ? (
                                 <>
                                     <Dashboard />
                                 </>

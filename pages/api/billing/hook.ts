@@ -28,25 +28,21 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     switch (event.type) {
-        case "customer.subscription.updated":
+        case "customer.subscription.updated": {
             await supabaseAdmin.from("users").update({
-                badges: {
-                    pixel: true
-                }
+                pixel: true
             }).eq("customer->>id", event.data.object.customer);
+        }
             break;
 
-        case "customer.subscription.deleted":
+        case "customer.subscription.deleted": {
             await supabaseAdmin.from("users").update({
-                badges: {
-                    pixel: false
-                }
+                pixel: false,
             }).eq("customer->>id", event.data.object.customer);
+        }
             break;
 
     }
-
-    console.log({ event });
     res.send({ data: true });
 });
 

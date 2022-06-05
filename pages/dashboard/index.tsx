@@ -76,7 +76,7 @@ export default function Dashboard() {
                 </>
             ) : (
                 <>
-                    {!userData.badges.pixel ? (
+                    {!userData.pixel ? (
                         <>
                             <Navbar enableTransition={false} />
                             <Flex

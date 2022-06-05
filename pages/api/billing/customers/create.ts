@@ -29,7 +29,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: fetchError.message });
     }
 
-    if (data[0].customer) return res.status(200).json({ error: "Customer already exists." });
+    if (data[0].customer.id) return res.status(200).json({ error: "Customer already exists." });
 
     const customer = await stripe.customers.create({
         name: req.body.name,

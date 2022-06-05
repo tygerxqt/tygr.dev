@@ -26,13 +26,11 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: error.message });
     }
 
-    const encoded = JSON.parse(data[0].customer);
-
-    if (!data || !data[0] || !data[0].customer) {
+    if (!data || !data[0] || !data[0].customer || !data[0].customer.id) {
         return res.status(200).json({ data: null });
     }
 
-    const customer = await stripe.customers.retrieve(encoded.id);
+    const customer = await stripe.customers.retrieve(data[0].customer.id);
 
     res.send({ data: customer });
 });

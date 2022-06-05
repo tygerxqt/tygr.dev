@@ -26,11 +26,9 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: error.message });
     }
 
-    if (!data || !data[0] || !data[0].customer) {
+    if (!data || !data[0] || !data[0].customer.id) {
         return res.status(500).json({ error: "No customer found." });
     }
-
-    const encoded = JSON.parse(data[0].customer);
 
     const { priceId } = req.query;
 
@@ -40,7 +38,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     }];
 
     const session = await stripe.checkout.sessions.create({
-        customer: encoded.id as string,
+        customer: data[0].customer.id as string,
         mode: "subscription",
         payment_method_types: ["card"],
         line_items: lineItems,

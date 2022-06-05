@@ -73,7 +73,14 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         }
         const cutie = cutieData[0].cutie;
 
-        res.status(200).json({ ...user, discord, github, badges, tag, avatar, banner, cutie });
+        const { data: pixelData, error: pixelError } = await supabaseAdmin.from("users").select("pixel").eq("id", user.id);
+        if (pixelError) {
+            res.status(500).json({ error: pixelError });
+            throw pixelError;
+        }
+        const pixel = pixelData[0].pixel;
+
+        res.status(200).json({ ...user, discord, github, badges, tag, avatar, banner, cutie, pixel });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
