@@ -11,12 +11,10 @@ const apiRoute = nextConnect({
     },
 });
 
-apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-
-
+apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
     const customer = await stripe.customers.del(req.query.id as string);
 
-    res.send({ message: `Deleted stripe customer: ${customer.id}` });
+    res.send({ data: `Deleted stripe customer: ${customer.id}` });
 });
 
 export default apiRoute;

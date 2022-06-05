@@ -56,7 +56,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ data: true });
   } catch (err) {
-    res.status(502).json({ error: err });
+    res.status(500).json({ error: err });
   }
 });
 

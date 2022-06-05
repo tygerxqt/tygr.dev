@@ -43,7 +43,7 @@ import supabase from "../../lib/SupabaseClient";
 import Link from "next/link";
 import axios from "axios";
 import { UserProfile } from "../../types/UserProfile";
-import { MdAccountCircle } from "react-icons/md";
+import { MdAccountCircle, MdDashboard } from "react-icons/md";
 import { AiFillIdcard } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { RiParkingFill } from "react-icons/ri";
@@ -173,6 +173,31 @@ export default function Navbar({ enableTransition }) {
                   </Button>
                 </NextLink>
 
+                <NextLink href="/account" passHref>
+                  <Button as="a" variant="solid" fontSize="16px">
+                    Account
+                  </Button>
+                </NextLink>
+
+
+                {userData.badges.pixel ? (
+                  <>
+                    <NextLink href="/dashboard" passHref>
+                      <Button as="a" variant="solid" fontSize="16px">
+                        Dashboard
+                      </Button>
+                    </NextLink>
+                  </>
+                ) : (
+                  <>
+                    <NextLink href="/pixels" passHref>
+                      <Button as="a" variant="solid" fontSize="16px">
+                        Pixel
+                      </Button>
+                    </NextLink>
+                  </>
+                )}
+
                 <Button
                   as="a"
                   variant="solid"
@@ -267,9 +292,19 @@ export default function Navbar({ enableTransition }) {
                       <Link href="/account" passHref>
                         <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
                       </Link>
-                      <Link href="/pixels" passHref>
-                        <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
-                      </Link>
+                      {userData.badges.pixel ? (
+                        <>
+                          <Link href="/dashboard" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link href="/pixels" passHref>
+                            <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
+                          </Link>
+                        </>
+                      )}
                     </MenuGroup>
                     <MenuGroup>
                       <MenuItem

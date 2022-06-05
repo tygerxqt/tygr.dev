@@ -1,10 +1,11 @@
-import { Box, Button, Flex, Input, PinInput, PinInputField, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, PinInput, PinInputField, Stack, Tag, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../../lib/SupabaseClient";
 
 const TagField = () => {
+    const session = supabase.auth.session();
     const user = supabase.auth.user();
     const toast = useToast();
     const [editing, setEditing] = useState(false);
@@ -16,40 +17,43 @@ const TagField = () => {
     const [oldTag, setOldTag] = useState<string>(user.user_metadata.tag);
 
     const handleUpdate = async () => {
-        try {
-            const { data, status } = await axios.post("/api/users/update/tag", { tag: digit1 + digit2 + digit3 + digit4 });
-
-            if (status != 200) {
-                throw data.error.message;
-            }
-
-            const { error } = await supabase.auth.update({ data: { tag: digit1 + digit2 + digit3 + digit4 } });
-
-            if (error) {
-                throw error;
-            }
-
-            toast({
-                title: "Success!",
-                description: `${data.message}`,
-                status: "success",
-                duration: 9000,
+        const newTag = digit1 + digit2 + digit3 + digit4;
+        if (oldTag.toString() === newTag.toString()) {
+            return toast({
+                title: "Unable to update.",
+                description: "No changes were made",
+                status: "info",
+                duration: 3000,
                 isClosable: true,
             });
-
-            setOldTag(digit1 + digit2 + digit3 + digit4);
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: error.message,
-                status: "error",
-                duration: 9000,
-                isClosable: true,
-            });
-            return console.log(error);
-        } finally {
-            setEditing(false);
         }
+
+        axios.put(`/api/users/update?token=${session.access_token}`, { tag: digit1 + digit2 + digit3 + digit4, username: user.user_metadata.username }).then(async response => {
+            await supabase.auth.update({
+                data: {
+                    tag: newTag,
+                }
+            });
+            toast({
+                title: "Success",
+                description: response.data.data,
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            });
+        }).catch(err => {
+            console.log(JSON.stringify(err))
+            return toast({
+                title: "Unable to update.",
+                description: err.response.data.error,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        });
+
+        setOldTag(digit1 + digit2 + digit3 + digit4);
+        setEditing(false);
     };
 
     return (

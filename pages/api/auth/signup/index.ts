@@ -10,14 +10,14 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.body.name) return res.status(502).json({ error: "Full name is required." });
-    if (!req.body.email) return res.status(502).json({ error: "Email is required." });
-    if (!req.body.username) return res.status(502).json({ error: "Username is required." });
-    if (!req.body.password) return res.status(502).json({ error: "Password is required." });
+    if (!req.body.name) return res.status(500).json({ error: "Full name is required." });
+    if (!req.body.email) return res.status(500).json({ error: "Email is required." });
+    if (!req.body.username) return res.status(500).json({ error: "Username is required." });
+    if (!req.body.password) return res.status(500).json({ error: "Password is required." });
 
     const { data: userData, error: userError } = await supabaseAdmin.from("users").select("username, tag");
     if (userError) {
-        return res.status(502).json({ error: userError });
+        return res.status(500).json({ error: userError });
     }
 
     function generateTag() {
@@ -34,7 +34,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { error } = await supabase.auth.signUp({ email: req.body.email, password: req.body.password }, { data: { full_name: req.body.name, username: req.body.username, tag: tag } });
     if (error) {
-        return res.status(502).json({ error: error });
+        return res.status(500).json({ error: error });
     }
 
     res.status(200).json({

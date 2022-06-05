@@ -31,7 +31,7 @@ export default function Removal() {
 
             toast({
                 title: "Account deleted",
-                description: data.message,
+                description: data.data,
                 status: "success",
                 duration: 9000,
                 isClosable: true,
@@ -40,7 +40,7 @@ export default function Removal() {
         } catch (error) {
             toast({
                 title: "Error",
-                description: error.message,
+                description: error.data,
                 status: "error",
                 duration: 9000,
                 isClosable: true,

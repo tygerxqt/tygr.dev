@@ -13,7 +13,7 @@ const apiRoute = nextConnect({
     },
 });
 
-apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
+apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body) return res.status(500).json({ error: "No body provided." });
     if (!req.query.token) return res.status(500).json({ error: "Token is required." });
     if (!req.body.name) return res.status(500).json({ error: "Name is required." });
@@ -29,9 +29,15 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: fetchError.message });
     }
 
-    if (data[0].customer) return res.status(200).json({ error: "Customer already exists." });
+    if (!data[0]) {
+        if (!data[0].customer) {
+            return res.status(200).json({ error: "Customer doesn't exist." });
+        }
+    }
 
-    const customer = await stripe.customers.create({
+    const encoded = JSON.parse(data[0].customer);
+
+    const customer = await stripe.customers.update(encoded.id, {
         name: req.body.name,
         email: req.body.email,
     });

@@ -44,7 +44,7 @@ apiRoute.use(cookieParser());
 apiRoute.post(
     async (req: NextConnectApiRequest, res: NextApiResponse<ResponseData>) => {
         if (!req.file) {
-            res.status(400).json({ error: "Invalid file type!" });
+            res.status(500).json({ error: "Invalid file type!" });
         }
 
         if (!req.query || !req.query.id)

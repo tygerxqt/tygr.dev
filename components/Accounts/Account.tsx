@@ -22,8 +22,8 @@ function Account() {
     const session = supabase.auth.session();
 
     async function fetch() {
-      const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-      setUserData(data.data as UserProfile);
+      const { data } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+      setUserData(data as UserProfile);
       setLoading(false);
       setUpdate(false);
     }
@@ -71,7 +71,7 @@ function Account() {
                 <Divider />
               </Stack>
               <Identities />
-              <Billing userData={userData} />
+              <Billing />
               <Removal />
             </Stack>
           </Container>

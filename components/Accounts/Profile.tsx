@@ -505,22 +505,6 @@ function Profile() {
                                     <IDField />
                                     {userData.badges.admin ? <TokenField /> : null}
                                 </Stack>
-                                <Stack spacing={5}>
-                                    <Heading fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
-                                        Identities
-                                    </Heading>
-                                    <Divider />
-                                    <Text fontSize={{ base: "md", md: "lg" }}>
-                                        Note: Identities have been moved to the account page. Use the button below to navigate there.
-                                    </Text>
-                                    <ButtonGroup spacing={5}>
-                                        <Link href={"/account"} passHref>
-                                            <Button>
-                                                My Account
-                                            </Button>
-                                        </Link>
-                                    </ButtonGroup>
-                                </Stack>
                             </Stack>
                         </Stack>
                     </Container>

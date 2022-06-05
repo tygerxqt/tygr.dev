@@ -13,7 +13,7 @@ const apiRoute = nextConnect({
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body) {
-        return res.status(502).json({ error: "You need to provide a 'token' query." });
+        return res.status(500).json({ error: "You need to provide a 'token' query." });
     }
 
     const cookie = await supabase.auth.api.getUserByCookie(req);

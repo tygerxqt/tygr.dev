@@ -1,9 +1,11 @@
 import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
+import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../../lib/SupabaseClient";
 
 const UsernameField = () => {
+  const session = supabase.auth.session();
   const user = supabase.auth.user();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
@@ -11,61 +13,36 @@ const UsernameField = () => {
   const [username, setUsername] = useState(user.user_metadata.username);
 
   const handleUpdate = async () => {
-    try {
-      if (username === oldUsername)
-        return toast({
-          title: "Unable to update.",
-          description: "No changes were made",
-          status: "info",
-          duration: 3000,
-          isClosable: true,
-        });
-
-      const { error: tableError } = await supabase
-        .from("users")
-        .update({ username: username })
-        .eq("id", user.id);
-
-      if (tableError) {
-        if (tableError.code === "23505") {
-          setUsername(oldUsername);
-          throw new Error("Username is already taken.");
-        }
-        setUsername(oldUsername);
-        throw tableError;
-      }
-
-      const { error: metadataError } = await supabase.auth.update({
-        data: {
-          username: username,
-        },
+    if (username === oldUsername)
+      return toast({
+        title: "Unable to update.",
+        description: "No changes were made",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
       });
 
-      if (metadataError) {
-        throw new Error("Metadata Error: " + metadataError.message);
-      }
-
+    await axios.put(`/api/users/update?token=${session.access_token}`, { tag: user.user_metadata.tag, username: username }).then(response => {
       toast({
         title: "Success",
-        description: "Username updated.",
+        description: response.data.data,
         status: "success",
         duration: 5000,
         isClosable: true,
       });
-
-      setUsername(username);
-      setOldUsername(username);
-    } catch (err) {
+    }).catch(err => {
       toast({
-        title: "Error",
-        description: err.message,
+        title: "Unable to update.",
+        description: err.response.data.error,
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
-    } finally {
-      setEditing(false);
-    }
+    });
+
+    setUsername(username);
+    setOldUsername(username);
+    setEditing(false);
   };
 
   return (

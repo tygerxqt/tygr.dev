@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import stripe from "../../../../lib/Stripe";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
+import stripe from "../../../lib/Stripe";
+import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -21,20 +21,25 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: "Unauthorized." });
     }
 
-    const { error, data } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
+    const { data, error } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
     if (error) {
         return res.status(500).json({ error: error.message });
     }
 
-    const encoded = JSON.parse(data[0].customer);
-
-    if (!data || !data[0] || !data[0].customer) {
-        return res.status(200).json({ data: null });
+    if (!data[0]) {
+        if (!data[0].customer) {
+            return res.status(500).json({ error: "No customer found." });
+        }
     }
 
-    const customer = await stripe.customers.retrieve(encoded.id);
+    const encoded = JSON.parse(data[0].customer);
 
-    res.send({ data: customer });
+    const session = await stripe.billingPortal.sessions.create({
+        customer: encoded.id,
+        return_url: `${process.env.NEXT_PUBLIC_URL}/account`,
+    });
+
+    res.send({ data: session.url });
 });
 
 export default apiRoute;

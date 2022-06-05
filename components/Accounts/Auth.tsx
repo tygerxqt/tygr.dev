@@ -20,7 +20,6 @@ import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "../UI/Navbar";
 import supabase from "../../lib/SupabaseClient";
 import axios from "axios";
-import supabaseAdmin from "../../lib/SupabaseAdminClient";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
@@ -38,6 +37,30 @@ export default function Auth() {
   const isLargerThan768 = useMediaQuery(768);
   const { colorMode } = useColorMode();
   const toast = useToast();
+
+  const setModeToLoginMobile = async () => {
+    // @ts-ignore
+    document.getElementById("register-mobile").reset();
+    setMode("login");
+  };
+
+  const setModeToRegisterMobile = async () => {
+    // @ts-ignore
+    document.getElementById("login-mobile").reset();
+    setMode("register");
+  };
+
+  const setModeToLoginDesktop = async () => {
+    // @ts-ignore
+    document.getElementById("register-desktop").reset();
+    setMode("login");
+  };
+
+  const setModeToRegisterDesktop = async () => {
+    // @ts-ignore
+    document.getElementById("login-desktop").reset();
+    setMode("register");
+  };
 
   const handleLogin = useCallback(
     async (email: string, password: string) => {
@@ -199,7 +222,7 @@ export default function Auth() {
                                 colorMode === "light" ? "#A7C7E7" : "#90CDF4"
                               }
                               onClick={() => {
-                                setMode("register");
+                                setModeToRegisterDesktop();
                               }}
                             >
                               Sign Up
@@ -207,9 +230,9 @@ export default function Auth() {
                           </HStack>
                         </Stack>
                         <Box maxW="sm">
-                          <form>
+                          <form id="login-desktop">
                             <FormControl>
-                              <FormLabel  >Email</FormLabel>
+                              <FormLabel>Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="hello@apple.com"
@@ -221,7 +244,7 @@ export default function Auth() {
                                 flexDirection={"row"}
                                 justifyContent="space-between"
                               >
-                                <FormLabel  >Password</FormLabel>
+                                <FormLabel>Password</FormLabel>
                                 {/* <Link href={"/recovery"} passHref>
                                   <Button variant={"link"} pb={2} >
                                     Forgot Password?
@@ -289,7 +312,7 @@ export default function Auth() {
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
                           onClick={() => {
-                            setMode("register");
+                            setModeToRegisterMobile();
                           }}
                         >
                           Sign Up
@@ -299,7 +322,7 @@ export default function Auth() {
                   </Center>
                   <Center>
                     <Box maxW="sm">
-                      <form>
+                      <form id="login-mobile">
                         <FormControl>
                           <FormLabel>Email</FormLabel>
                           <Input
@@ -359,7 +382,7 @@ export default function Auth() {
                                 colorMode === "light" ? "#A7C7E7" : "#90CDF4"
                               }
                               onClick={() => {
-                                setMode("login");
+                                setModeToLoginDesktop();
                               }}
                             >
                               Log in
@@ -367,7 +390,7 @@ export default function Auth() {
                           </HStack>
                         </Stack>
                         <Box maxW="sm">
-                          <form>
+                          <form id="register-desktop">
                             <FormControl>
                               <FormLabel  >Name</FormLabel>
                               <Input
@@ -480,7 +503,7 @@ export default function Auth() {
                         <Button
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
-                          onClick={() => setMode("login")}
+                          onClick={() => setModeToLoginMobile()}
                         >
                           Log in
                         </Button>
@@ -489,9 +512,9 @@ export default function Auth() {
                   </Center>
                   <Center>
                     <Box maxW="sm">
-                      <form>
+                      <form id="register-mobile">
                         <FormControl>
-                          <FormLabel  >Name</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <Input
                             type="text"
                             placeholder="John Doe"
@@ -499,7 +522,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel  >Username</FormLabel>
+                          <FormLabel>Username</FormLabel>
                           <Input
                             type="text"
                             placeholder="johndoe"

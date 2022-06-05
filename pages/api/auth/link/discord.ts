@@ -14,12 +14,13 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query) return res.status(502).json({ error: "You need to provide a 'code' query." });
+    if (!req.query) return res.status(500).json({ error: "You need to provide a 'code' query." });
+    console.log(req.query)
     if (req.query.error) {
-        if (req.query.error === "access_denied") return res.status(500).redirect("/account");
-        else return res.status(502).json({ error: req.query.error });
+        if (req.query.error === `{"error":"access_denied"}`) return res.status(500).redirect("/account");
+        else return res.status(500).json({ error: req.query.error });
     }
-    if (!req.query.code) return res.status(502).json({ error: "Missing 'code' query." });
+    if (!req.query.code) return res.status(500).json({ error: "Missing 'code' query." });
 
     const params = new URLSearchParams();
     params.append('client_id', process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID);
