@@ -14,7 +14,6 @@ import {
   useColorMode,
   useToast
 } from "@chakra-ui/react";
-import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "../UI/Navbar";
@@ -202,9 +201,6 @@ export default function Auth() {
       {mode === "login" ? (
         <>
           <Navbar enableTransition={false} />
-          <Head>
-            <title>Log in</title>
-          </Head>
           {isLargerThan768 ? (
             <>
               <Flex as="main" justifyContent="center" flexDirection="column">
@@ -362,9 +358,6 @@ export default function Auth() {
         <>
           {/* Register - Desktop */}
           <Navbar enableTransition={false} />
-          <Head>
-            <title>Register</title>
-          </Head>
           {isLargerThan768 ? (
             <>
               <Flex as="main" justifyContent="center" flexDirection="column">

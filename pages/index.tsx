@@ -27,7 +27,7 @@ function IndexPage({ projects }) {
             property="og:description"
             content="tygerxqt, a self-taught Web/IOT Developer"
           />
-          <meta property="og:image" content="https://i.imgur.com/5wzL6da.png" />
+          <meta property="og:image" content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png" />
 
           <meta property="twitter:card" content="summary_large_image" />
           <meta property="twitter:url" content="https://tygr.dev/" />
@@ -38,7 +38,7 @@ function IndexPage({ projects }) {
           />
           <meta
             property="twitter:image"
-            content="https://i.imgur.com/5wzL6da.png"
+            content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png"
           />
         </Head>
         <Stack

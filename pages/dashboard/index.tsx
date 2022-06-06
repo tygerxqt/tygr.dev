@@ -47,6 +47,34 @@ export default function Dashboard() {
 
     return (
         <>
+            <Head>
+                <meta name="title" content="Log in" />
+                <meta
+                    name="description"
+                    content="Log in to your Pixel account to see this page."
+                />
+
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://www.tygr.dev/profile" />
+                <meta property="og:title" content="tygerxqt" />
+                <meta
+                    property="og:description"
+                    content="Log in to your Pixel account to see this page."
+                />
+                <meta property="og:image" content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png" />
+
+                <meta property="twitter:card" content="summary_large_image" />
+                <meta property="twitter:url" content="https://tygr.dev/profile" />
+                <meta property="twitter:title" content="tygerxqt" />
+                <meta
+                    property="twitter:description"
+                    content="Log in to your Pixel account to see this page."
+                />
+                <meta
+                    property="twitter:image"
+                    content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png"
+                />
+            </Head>
             {loading ? (
                 <>
                     <Navbar enableTransition={false} />
@@ -109,9 +137,6 @@ export default function Dashboard() {
                     ) : (
                         <>
                             <Container enableTransition={false}>
-                                <Head>
-                                    <title>Dashboard</title>
-                                </Head>
                                 <Stack spacing={10} justifyContent="center" my={["10vh", "10vh", "15vh", "15vh"]}>
                                     <Stack spacing={5}>
                                         <Heading fontSize={{ base: "4xl", md: "6xl" }}>Dashboard</Heading>
