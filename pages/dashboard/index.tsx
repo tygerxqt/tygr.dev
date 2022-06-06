@@ -1,42 +1,15 @@
-import { Button, ButtonGroup, Center, Divider, Flex, Heading, Spinner, Stack, Text, VisuallyHidden } from "@chakra-ui/react";
+import { Button, ButtonGroup, Divider, Heading, Stack, Text, SimpleGrid, Box, Avatar } from "@chakra-ui/react";
 import axios from "axios";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import Container from "../../components/UI/Container";
-import Navbar from "../../components/UI/Navbar";
-import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { createClient } from "contentful";
+import PremiumContainer from "../../components/Accounts/PremiumContainer";
+import PostCard from "../../components/Accounts/Feed/PostCard";
 
-export default function Dashboard() {
+export default function Dashboard({ posts }) {
     const session = supabase.auth.session();
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
-
-    const isLargerThan768 = useMediaQuery(768);
     const router = useRouter();
-
-    useEffect(() => {
-        const user = supabase.auth.user();
-        const session = supabase.auth.session();
-
-        async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-            if (dataStatus != 200) throw new Error(data.message);
-            setUserData(data as UserProfile);
-            setLoading(false);
-            setUpdate(false);
-        }
-
-        if (session) {
-            fetch();
-        } else {
-            setLoading(false);
-        }
-    }, [update]);
-
     const loadPortal = async () => {
         await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=dashboard`).then(res => {
             router.push(res.data.data);
@@ -47,142 +20,90 @@ export default function Dashboard() {
 
     return (
         <>
-            <Head>
-                <meta name="title" content="Log in" />
-                <meta
-                    name="description"
-                    content="Log in to your Pixel account to see this page."
-                />
+            <PremiumContainer>
+                <SimpleGrid columns={[1, 1, 2, 2]} spacing={20} my={["10vh", "10vh", "15vh", "15vh"]}>
+                    <Stack spacing={10}>
+                        <Stack spacing={5}>
+                            <Heading fontSize={{ base: "4xl", md: "6xl" }}>Dashboard</Heading>
+                            <Divider />
+                            <Text fontSize={{ base: "md", md: "lg" }}>
+                                Welcome to your dashboard. Here you can view your account information, and manage your subscription.
+                            </Text>
+                        </Stack>
+                        <Stack spacing={5}>
+                            <Heading fontSize={{ base: "2xl", md: "4xl" }}>Rewards</Heading>
+                            <Text fontSize={{ base: "md", md: "lg" }}>
+                                Manage and claim your rewards here.
+                            </Text>
+                            <ButtonGroup spacing={5} >
+                                <Button>
+                                    Early access
+                                </Button>
+                                <Button>
+                                    Project vault
+                                </Button>
+                            </ButtonGroup>
+                            <ButtonGroup spacing={5}>
+                                <Button>
+                                    Photograhy library
+                                </Button>
+                                <Button>
+                                    Github repos
+                                </Button>
+                            </ButtonGroup>
+                        </Stack>
+                        <Stack spacing={5}>
+                            <Heading fontSize={{ base: "2xl", md: "4xl" }}>Account</Heading>
+                            <Text fontSize={{ base: "md", md: "lg" }}>
+                                Manage your customer and subscription information here.
+                            </Text>
+                            <ButtonGroup spacing={5}>
+                                <Button onClick={() => loadPortal()}>
+                                    Manage Subscription
+                                </Button>
+                            </ButtonGroup>
+                        </Stack>
+                    </Stack>
+                    <Stack spacing={10}>
+                        <Stack spacing={5}>
+                            <Heading fontSize={{ base: "4xl", md: "6xl" }}>Feed</Heading>
+                            <Divider />
+                            <Text fontSize={{ base: "md", md: "lg" }}>
+                                Updates on projects, and other Pixel related news.
+                            </Text>
+                        </Stack>
+                        <Stack spacing={5}>
+                            {posts.map((post) => (
+                                <>
+                                    <PostCard post={post} />
+                                </>
+                            ))}
 
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content="https://www.tygr.dev/profile" />
-                <meta property="og:title" content="tygerxqt" />
-                <meta
-                    property="og:description"
-                    content="Log in to your Pixel account to see this page."
-                />
-                <meta property="og:image" content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png" />
-
-                <meta property="twitter:card" content="summary_large_image" />
-                <meta property="twitter:url" content="https://tygr.dev/profile" />
-                <meta property="twitter:title" content="tygerxqt" />
-                <meta
-                    property="twitter:description"
-                    content="Log in to your Pixel account to see this page."
-                />
-                <meta
-                    property="twitter:image"
-                    content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png"
-                />
-            </Head>
-            {loading ? (
-                <>
-                    <Navbar enableTransition={false} />
-                    <Flex
-                        as="main"
-                        justifyContent="center"
-                        px={isLargerThan768 ? "15vw" : "8vw"}
-                        py={isLargerThan768 ? "4vw" : "8vw"}
-                    >
-                        <Center>
-                            <Stack
-                                spacing={10}
-                                justifyContent="center"
-                                my={["20vh", "20vh", "30vh", "30vh"]}
-                            >
-                                <Center>
-                                    <Spinner size={"xl"} />
-                                </Center>
-                                <Center>
-                                    <Text fontSize="xl" fontWeight="bold">
-                                        Checking subscription status...
-                                    </Text>
-                                </Center>
-                            </Stack>
-                        </Center>
-                    </Flex>
-                </>
-            ) : (
-                <>
-                    {!userData.pixel ? (
-                        <>
-                            <Navbar enableTransition={false} />
-                            <Flex
-                                as="main"
-                                justifyContent="center"
-                                px={isLargerThan768 ? "15vw" : "8vw"}
-                                py={isLargerThan768 ? "4vw" : "8vw"}
-                            >
-                                <Center>
-                                    <Stack
-                                        spacing={10}
-                                        justifyContent="center"
-                                        my={["20vh", "20vh", "30vh", "30vh"]}
-                                    >
-                                        <Center>
-                                            <Spinner size={"xl"} />
-                                        </Center>
-                                        <Center>
-                                            <Text fontSize="xl" fontWeight="bold">
-                                                Redirecting...
-                                            </Text>
-                                            <VisuallyHidden>
-                                                {window.location.href = "/pixels"}
-                                            </VisuallyHidden>
-                                        </Center>
-                                    </Stack>
-                                </Center>
-                            </Flex>
-                        </>
-                    ) : (
-                        <>
-                            <Container enableTransition={false}>
-                                <Stack spacing={10} justifyContent="center" my={["10vh", "10vh", "15vh", "15vh"]}>
-                                    <Stack spacing={5}>
-                                        <Heading fontSize={{ base: "4xl", md: "6xl" }}>Dashboard</Heading>
-                                        <Divider />
-                                        <Text fontSize={{ base: "md", md: "lg" }}>
-                                            Welcome to your dashboard. Here you can view your account information, and manage your subscription.
-                                        </Text>
-                                    </Stack>
-                                    <Stack spacing={5}>
-                                        <Heading fontSize={{ base: "2xl", md: "4xl" }}>Rewards</Heading>
-                                        <Text fontSize={{ base: "md", md: "lg" }}>
-                                            Manage and claim your rewards here.
-                                        </Text>
-                                        <ButtonGroup spacing={5}>
-                                            <Button>
-                                                Early access
-                                            </Button>
-                                            <Button>
-                                                Project vault
-                                            </Button>
-                                            <Button>
-                                                Photograhy library
-                                            </Button>
-                                            <Button>
-                                                Github repos
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Stack>
-                                    <Stack spacing={5}>
-                                        <Heading fontSize={{ base: "2xl", md: "4xl" }}>Account</Heading>
-                                        <Text fontSize={{ base: "md", md: "lg" }}>
-                                            Manage your customer and subscription information here.
-                                        </Text>
-                                        <ButtonGroup spacing={5}>
-                                            <Button onClick={() => loadPortal()}>
-                                                Manage Subscription
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Stack>
-                                </Stack>
-                            </Container>
-                        </>
-                    )}
-                </>
-            )
-            }
+                        </Stack>
+                    </Stack>
+                </SimpleGrid>
+            </PremiumContainer>
         </>
-    );
+    )
+}
+
+
+const client = createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+});
+
+export async function getStaticProps() {
+    let data = await client.getEntries({
+        content_type: "feedPost",
+        limit: 3,
+        order: "sys.createdAt",
+        "fields.archived": false,
+    });
+
+    return {
+        props: {
+            posts: data.items.reverse(),
+        },
+    };
 }

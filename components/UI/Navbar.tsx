@@ -33,7 +33,9 @@ import {
   ModalFooter,
   Spinner,
   SkeletonCircle,
-  chakra
+  chakra,
+  Divider,
+  MenuDivider
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
@@ -43,9 +45,9 @@ import supabase from "../../lib/SupabaseClient";
 import Link from "next/link";
 import axios from "axios";
 import { UserProfile } from "../../types/UserProfile";
-import { MdAccountCircle, MdDashboard } from "react-icons/md";
+import { MdAccountCircle, MdDashboard, MdFeedback } from "react-icons/md";
 import { AiFillIdcard } from "react-icons/ai";
-import { BiLogOut } from "react-icons/bi";
+import { BiCamera, BiLogOut } from "react-icons/bi";
 import { RiParkingFill } from "react-icons/ri";
 
 export default function Navbar({ enableTransition }) {
@@ -182,6 +184,11 @@ export default function Navbar({ enableTransition }) {
 
                 {userData.pixel ? (
                   <>
+                    <NextLink href="/feed" passHref>
+                      <Button as="a" variant="solid" fontSize="16px">
+                        Feed
+                      </Button>
+                    </NextLink>
                     <NextLink href="/dashboard" passHref>
                       <Button as="a" variant="solid" fontSize="16px">
                         Dashboard
@@ -294,9 +301,18 @@ export default function Navbar({ enableTransition }) {
                       </Link>
                       {userData.pixel ? (
                         <>
-                          <Link href="/dashboard" passHref>
-                            <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
-                          </Link>
+                          <MenuDivider />
+                          <MenuGroup title="Pixel" fontSize={"lg"}>
+                            <Link href="/dashboard" passHref>
+                              <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
+                            </Link>
+                            <Link href="/feed" passHref>
+                              <MenuItem closeOnSelect={true} icon={<MdFeedback fontSize={"16px"} />}>Feed</MenuItem>
+                            </Link>
+                            <Link href="/photography" passHref>
+                              <MenuItem closeOnSelect={true} icon={<BiCamera fontSize={"16px"} />}>Photograhy</MenuItem>
+                            </Link>
+                          </MenuGroup>
                         </>
                       ) : (
                         <>
@@ -307,6 +323,7 @@ export default function Navbar({ enableTransition }) {
                       )}
                     </MenuGroup>
                     <MenuGroup>
+                      <MenuDivider />
                       <MenuItem
                         closeOnSelect={true}
                         icon={<BiLogOut fontSize={"16px"} />}

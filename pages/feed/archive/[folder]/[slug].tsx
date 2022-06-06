@@ -1,42 +1,18 @@
-import Container from "../../components/UI/Container";
-import Head from "next/head";
 import readingTime from "reading-time";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
-import PostContainer from "../../components/Blog/PostContainer";
-import MDXComponents from "../../components/Blog/MDXComponents";
-import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
+import PostContainer from "../../../../components/Blog/PostContainer";
+import MDXComponents from "../../../../components/Blog/MDXComponents";
+import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
+import PremiumContainer from "../../../../components/Accounts/PremiumContainer";
 
-function Post({ metadata, source }) {
+export default function FeedPost({ metadata, source }) {
     const { colorMode } = useColorMode();
+
     return (
         <>
-            <Container enableTransition={false}>
-                <Head>
-                    <title>{metadata.title}</title>
-                    <meta name="title" content={metadata.title} />
-                    <meta property="og:site_name" content="tygr.dev" />
-                    <meta name="description" content={metadata.summary} />
-
-                    <meta property="og:type" content="website" />
-                    <meta
-                        property="og:url"
-                        content={`https://tygr.dev/blog/${metadata.slug}`}
-                    />
-                    <meta property="og:title" content={metadata.title} />
-                    <meta property="og:description" content={metadata.summary} />
-                    <meta property="og:image" content={metadata.image} />
-
-                    <meta property="twitter:card" content="summary_large_image" />
-                    <meta
-                        property="twitter:url"
-                        content={`https://tygr.dev/blog/${metadata.slug}`}
-                    />
-                    <meta property="twitter:title" content={metadata.title} />
-                    <meta property="twitter:description" content={metadata.summary} />
-                    <meta property="twitter:image" content={metadata.image} />
-                </Head>
+            <PremiumContainer>
                 <Stack my="15vh" justifyContent="center" alignItems="center">
                     <Stack
                         w={["100vw", "95vw"]}
@@ -47,7 +23,7 @@ function Post({ metadata, source }) {
                             {metadata.title}
                         </Heading>
                         <Stack
-                            py={4}
+                            py={2}
                             direction={{ base: "column", md: "row" }}
                             alignItems="baseline"
                             justifyContent={"space-between"}
@@ -76,11 +52,10 @@ function Post({ metadata, source }) {
                             borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
                         >
                             <Image
-                                src={"https:" + metadata.image.fields.file.url}
+                                src={"https:" + metadata.hero.fields.file.url}
                                 borderRadius="10px"
                                 width={1366}
                                 height={892}
-                                placeholder="blur"
                                 w="auto"
                                 h="auto"
                                 mx="auto"
@@ -103,9 +78,9 @@ function Post({ metadata, source }) {
                         )}
                     </Stack>
                 </Stack>
-            </Container>
+            </PremiumContainer>
         </>
-    )
+    );
 }
 
 let client = require("contentful").createClient({
@@ -115,20 +90,25 @@ let client = require("contentful").createClient({
 
 export async function getStaticPaths() {
     let data = await client.getEntries({
-        content_type: "post"
+        content_type: "feedPost"
     });
     return {
         paths: data.items.map((item) => ({
-            params: { slug: item.fields.slug }
+            params: {
+                folder: item.fields.folder,
+                slug: item.fields.slug
+            }
         })),
         fallback: false
     };
 }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
     let data = await client.getEntries({
-        content_type: "post",
-        "fields.slug": params.slug
+        content_type: "feedPost",
+        "fields.folder": params.folder,
+        "fields.slug": params.slug,
+        "fields.archived": true,
     });
 
     const article = data.items[0].fields;
@@ -143,5 +123,3 @@ export async function getStaticProps({ params }) {
         }
     }
 }
-
-export default Post;

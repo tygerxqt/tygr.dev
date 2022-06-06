@@ -23,5 +23,6 @@ export interface UserProfile {
     user_metadata: {
         username: string;
         full_name: string;
+        tag: string;
     }
 }
