@@ -20,6 +20,15 @@ const styles = {
       color: mode("#111111", "#FFFFFF")(props),
       bg: mode("#FFFFFF", "#111111")(props),
     },
+
+    "::-webkit-scrollbar": {
+      width: "8px",
+      background: mode("#FFFFFF", "#111111")(props),
+    },
+    "::-webkit-scrollbar-thumb": {
+      background: mode("#111111", "#FFFFFF")(props),
+      borderadius: "8px",
+    },
   }),
 };
 

@@ -20,7 +20,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import Container from "../../components/UI/Container";
-import ProjectCard from "../../components/UI/ProjectCard";
+import ProjectCard from "../../components/Projects/ProjectCard";
 import supabase from "../../lib/SupabaseClient";
 import { UserProfile } from "../../types/UserProfile";
 import Navbar from "../../components/UI/Navbar";

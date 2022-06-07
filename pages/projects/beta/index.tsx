@@ -18,10 +18,11 @@ import Link from "next/link";
 import { Children, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import PremiumContainer from "../../../components/Accounts/PremiumContainer";
-import ProjectCard from "../../../components/UI/ProjectCard";
+import ProjectCard from "../../../components/Projects/ProjectCard";
 import supabase from "../../../lib/SupabaseClient";
 import { UserProfile } from "../../../types/UserProfile";
 import React from "react";
+import BetaProjectCard from "../../../components/Projects/BetaProjectCard";
 
 function ProjectPage({ projects }) {
     const [query, setQuery] = useState("");
@@ -84,7 +85,7 @@ function ProjectPage({ projects }) {
                                         .includes(query.toLowerCase())
                             )
                             .map((project) => (
-                                <ProjectCard
+                                <BetaProjectCard
                                     key={project.fields.title}
                                     title={project.fields.title}
                                     description={project.fields.description}

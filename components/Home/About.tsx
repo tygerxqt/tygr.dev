@@ -9,8 +9,8 @@ import {
   PopoverBody,
   PopoverArrow,
 } from "@chakra-ui/react";
-import useMediaQuery from "../hook/useMediaQuery";
-import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
+import useMediaQuery from "../../hook/useMediaQuery";
+import SlideUpWhenVisible from "../../hook/slideUpWhenVisable";
 import { useColorMode } from "@chakra-ui/react";
 
 export default function AboutMe() {

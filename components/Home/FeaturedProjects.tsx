@@ -7,9 +7,9 @@ import {
   Box,
   useColorMode,
 } from "@chakra-ui/react";
-import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
+import SlideUpWhenVisible from "../../hook/slideUpWhenVisable";
 import NextLink from "next/link";
-import ProjectCard from "./UI/ProjectCard";
+import FeaturedProjectCard from "../Projects/FeaturedProjectCard";
 
 export default function FeaturedProjects({ projects }) {
   const { colorMode } = useColorMode();
@@ -60,7 +60,7 @@ export default function FeaturedProjects({ projects }) {
             </Stack>
           </SlideUpWhenVisible>
           <SlideUpWhenVisible threshold={undefined}>
-            <ProjectCard
+            <FeaturedProjectCard
               title={projects[0].fields.title}
               description={projects[0].fields.description}
               image={"https:" + projects[0].fields.image.fields.file.url}
@@ -71,7 +71,7 @@ export default function FeaturedProjects({ projects }) {
           </SlideUpWhenVisible>
           <SlideUpWhenVisible threshold={undefined}>
             <Box mt={{ md: "-50%" }}>
-              <ProjectCard
+              <FeaturedProjectCard
                 title={projects[1].fields.title}
                 description={projects[1].fields.description}
                 image={"https:" + projects[1].fields.image.fields.file.url}
@@ -82,7 +82,7 @@ export default function FeaturedProjects({ projects }) {
             </Box>
           </SlideUpWhenVisible>
           <SlideUpWhenVisible threshold={undefined}>
-            <ProjectCard
+            <FeaturedProjectCard
               title={projects[2].fields.title}
               description={projects[2].fields.description}
               image={"https:" + projects[2].fields.image.fields.file.url}

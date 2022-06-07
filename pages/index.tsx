@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { Stack } from "@chakra-ui/react";
-import Introduction from "../components/Introduction";
-import AboutMe from "../components/About";
-import Contact from "../components/Contact";
-import FeaturedProjects from "../components/FeaturedProjects";
+import Introduction from "../components/Home/Introduction";
+import AboutMe from "../components/Home/About";
+import Contact from "../components/Home/Contact";
+import FeaturedProjects from "../components/Home/FeaturedProjects";
 import Container from "../components/UI/Container";
 import { createClient } from "contentful";
 

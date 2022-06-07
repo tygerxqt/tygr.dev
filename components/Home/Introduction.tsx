@@ -14,7 +14,7 @@ import {
 import { type ButtonProps } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FaGithub, FaDiscord, FaTwitter } from "react-icons/fa";
-import useMediaQuery from "../hook/useMediaQuery";
+import useMediaQuery from "../../hook/useMediaQuery";
 
 export const MotionButton = motion<ButtonProps>(Button);
 

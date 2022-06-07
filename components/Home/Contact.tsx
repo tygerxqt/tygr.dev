@@ -16,8 +16,8 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import SlideUpWhenVisible from "../hook/slideUpWhenVisable";
-import useMediaQuery from "../hook/useMediaQuery";
+import SlideUpWhenVisible from "../../hook/slideUpWhenVisable";
+import useMediaQuery from "../../hook/useMediaQuery";
 
 export default function Contact() {
   const { colorMode } = useColorMode();

@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import PremiumContainer from "../../../components/Accounts/PremiumContainer";
-import ProjectCard from "../../../components/UI/ProjectCard";
+import ProjectCard from "../../../components/Projects/ProjectCard";
 import React from "react";
 
 function ProjectPage({ projects }) {
