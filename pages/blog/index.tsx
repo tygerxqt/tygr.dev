@@ -94,7 +94,10 @@ export default function IndexBlog({ articles }) {
                   direction={isLargerThan1024 ? "row" : "column"}
                   alignItems="flex-start"
                   justifyContent="flex-start"
-                  pb={4}
+                  border={"1px"}
+                  borderColor={"#242424"}
+                  rounded={"xl"}
+                  p={4}
                 >
                   <Flex flexDirection="column">
                     <Text fontSize="sm">

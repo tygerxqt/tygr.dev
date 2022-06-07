@@ -16,6 +16,9 @@ export default function CompactBadges() {
             .then((res) => res.json())
             .then((data) => {
                 const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);
+                if (data.pixel === true) {
+                    filtered.push("pixel");
+                }
                 setBadges(filtered);
             });
     }, [user, session]);

@@ -6,6 +6,8 @@ import MDXComponents from "../../../../components/Blog/MDXComponents";
 import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
 import PremiumContainer from "../../../../components/Accounts/PremiumContainer";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function FeedPost({ metadata, source }) {
     const { colorMode } = useColorMode();
@@ -13,6 +15,9 @@ export default function FeedPost({ metadata, source }) {
     return (
         <>
             <PremiumContainer>
+                <Head>
+                    <title>Feed / Archive / {metadata.title}</title>
+                </Head>
                 <Stack my="15vh" justifyContent="center" alignItems="center">
                     <Stack
                         w={["100vw", "95vw"]}
@@ -103,13 +108,21 @@ export async function getStaticPaths() {
     };
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
     let data = await client.getEntries({
         content_type: "feedPost",
         "fields.folder": params.folder,
         "fields.slug": params.slug,
         "fields.archived": true,
     });
+
+    if (data.items.length === 0) {
+        return {
+            redirect: {
+                destination: "/404",
+            },
+        }
+    }
 
     const article = data.items[0].fields;
     const source = article.body;

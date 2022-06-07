@@ -6,6 +6,7 @@ import Link from "next/link";
 import { createClient } from "contentful";
 import PremiumContainer from "../../components/Accounts/PremiumContainer";
 import PostCard from "../../components/Accounts/Feed/PostCard";
+import Head from "next/head";
 
 export default function Dashboard({ posts }) {
     const session = supabase.auth.session();
@@ -21,6 +22,9 @@ export default function Dashboard({ posts }) {
     return (
         <>
             <PremiumContainer>
+                <Head>
+                    <title>Dashboard</title>
+                </Head>
                 <SimpleGrid columns={[1, 1, 2, 2]} spacing={20} my={["10vh", "10vh", "15vh", "15vh"]}>
                     <Stack spacing={10}>
                         <Stack spacing={5}>

@@ -4,6 +4,7 @@ import PremiumContainer from "../../components/Accounts/PremiumContainer";
 import FileSaver from "file-saver";
 import { useState } from "react";
 import { BiDownload } from "react-icons/bi";
+import Head from "next/head";
 
 export default function PhotographyPage({ images }) {
     const [hover, setHover] = useState(false);
@@ -11,6 +12,9 @@ export default function PhotographyPage({ images }) {
     return (
         <>
             <PremiumContainer>
+                <Head>
+                    <title>Photography</title>
+                </Head>
                 <Stack spacing={10} my={["10vh", "10vh", "15vh", "15vh"]}>
                     <Stack spacing={5}>
                         <Heading fontSize={{ base: "4xl", md: "6xl" }}>Photograhy</Heading>
@@ -54,7 +58,6 @@ export default function PhotographyPage({ images }) {
                                                                 }} />
                                                             </>
                                                         )}
-
                                                     </Box>
                                                 </>
                                             )

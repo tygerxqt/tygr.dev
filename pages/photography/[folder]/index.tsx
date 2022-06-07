@@ -3,12 +3,16 @@ import { createClient } from "contentful";
 import PremiumContainer from "../../../components/Accounts/PremiumContainer";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function PhotograhyFolder({ images }) {
     const router = useRouter();
     return (
         <>
             <PremiumContainer>
+                <Head>
+                    <title>Photography / {router.query.folder}</title>
+                </Head>
                 <Stack spacing={10} my={["10vh", "10vh", "15vh", "15vh"]}>
                     <Stack spacing={5}>
                         <Heading fontSize={{ base: "4xl", md: "6xl" }}>Photograhy / {router.query.folder}</Heading>

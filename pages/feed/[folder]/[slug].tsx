@@ -6,13 +6,16 @@ import MDXComponents from "../../../components/Blog/MDXComponents";
 import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
 import PremiumContainer from "../../../components/Accounts/PremiumContainer";
+import Head from "next/head";
 
 export default function FeedPost({ metadata, source }) {
     const { colorMode } = useColorMode();
-
     return (
         <>
             <PremiumContainer>
+                <Head>
+                    <title>Feed / {metadata.title}</title>
+                </Head>
                 <Stack my="15vh" justifyContent="center" alignItems="center">
                     <Stack
                         w={["100vw", "95vw"]}
@@ -112,6 +115,14 @@ export async function getStaticProps({ params }) {
         "fields.folder": params.folder,
         "fields.archived": false
     });
+
+    if (data.items.length === 0) {
+        return {
+            redirect: {
+                destination: "/404",
+            },
+        }
+    }
 
     const article = data.items[0].fields;
     const source = article.body;

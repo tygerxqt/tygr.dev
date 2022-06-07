@@ -1,4 +1,4 @@
-import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode } from "@chakra-ui/react"
+import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode, Badge } from "@chakra-ui/react"
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
@@ -11,6 +11,9 @@ export default function ProjectCard({
     githubLink,
     deployLink,
     tags,
+    beta,
+    published,
+    archived
 }) {
     const getTag = (tag) => {
         let values = []
@@ -118,6 +121,21 @@ export default function ProjectCard({
                     <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
                         <Text fontFamily="Ubuntu" fontSize={"2xl"}>
                             {title}
+                            {beta === true ? (
+                                <Badge colorScheme='blue' fontWeight={"thin"} variant="outline" ml="2">
+                                    Beta
+                                </Badge>
+                            ) : <div />}
+                            {published === false ? (
+                                <Badge colorScheme='red' fontWeight={"thin"} variant="outline" ml="2">
+                                    Private
+                                </Badge>
+                            ) : <div />}
+                            {archived === true ? (
+                                <Badge colorScheme='green' fontWeight={"thin"} variant="outline" ml="2">
+                                    Archived
+                                </Badge>
+                            ) : <div />}
                         </Text>
                         <Stack
                             isInline
