@@ -123,6 +123,7 @@ export default function Pricing({ plans }) {
                                 w={["100vw", "95vw"]}
                                 maxW="680px"
                                 spacing={5}
+                                p={4}
                             >
                                 <Text fontSize={{ base: "md", md: "lg" }} mt={"3vh"}>
                                     Pixels is a subscription service provided by tygerxqt that starts at a minimum of $1 a month. Pixel was created to provide a way for people to support tygerxqt and gain rewards and perks in return. <br /><br /> Being a Pixel subscriber grants you access to the following perks and rewards:
