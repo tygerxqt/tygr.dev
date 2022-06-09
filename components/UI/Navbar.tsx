@@ -47,11 +47,17 @@ import axios from "axios";
 import { UserProfile } from "../../types/UserProfile";
 import { MdAccountCircle, MdDashboard, MdFeedback } from "react-icons/md";
 import { AiFillIdcard } from "react-icons/ai";
-import { BiCamera, BiLogOut } from "react-icons/bi";
+import { BiCamera, BiCode, BiLogOut } from "react-icons/bi";
 import { RiParkingFill } from "react-icons/ri";
+import Badges from "../Accounts/Badges/Badges";
+import CompactBadges from "../Accounts/Badges/CompactBadges";
+import MiniBadges from "../Accounts/Badges/MiniBadges";
+import UserMenu from "./UserMenu";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
+  const isLargerThan400 = useMediaQuery(400);
+  const isLargerThan500 = useMediaQuery(500);
   const {
     isOpen: isOpenDrawer,
     onOpen: onOpenDrawer,
@@ -283,60 +289,8 @@ export default function Navbar({ enableTransition }) {
             <SkeletonCircle p="4" ml="3vw" size='12' />
           ) : (
             <>
-              {session ? (
-                <Menu>
-                  <MenuButton
-                    as={Avatar}
-                    ml={"3vw"}
-                    src={userData.avatar}
-                    size="md"
-                  />
-                  <MenuList>
-                    <MenuGroup title={`${supabase.auth.user().user_metadata.username}#${user.user_metadata.tag}`} fontSize={"xl"}>
-                      <Link href="/profile" passHref>
-                        <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
-                      </Link>
-                      <Link href="/account" passHref>
-                        <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
-                      </Link>
-                      {userData.pixel ? (
-                        <>
-                          <MenuDivider />
-                          <MenuGroup title="Pixel" fontSize={"lg"}>
-                            <Link href="/dashboard" passHref>
-                              <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
-                            </Link>
-                            <Link href="/feed" passHref>
-                              <MenuItem closeOnSelect={true} icon={<MdFeedback fontSize={"16px"} />}>Feed</MenuItem>
-                            </Link>
-                            <Link href="/photography" passHref>
-                              <MenuItem closeOnSelect={true} icon={<BiCamera fontSize={"16px"} />}>Photograhy</MenuItem>
-                            </Link>
-                          </MenuGroup>
-                        </>
-                      ) : (
-                        <>
-                          <Link href="/pixels" passHref>
-                            <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
-                          </Link>
-                        </>
-                      )}
-                    </MenuGroup>
-                    <MenuGroup>
-                      <MenuDivider />
-                      <MenuItem
-                        closeOnSelect={true}
-                        icon={<BiLogOut fontSize={"16px"} />}
-                        onClick={() => {
-                          supabase.auth.signOut();
-                          window.location.reload();
-                        }}
-                      >
-                        Sign out
-                      </MenuItem>
-                    </MenuGroup>
-                  </MenuList>
-                </Menu>
+              {session && userData ? (
+                <UserMenu avatar={userData.avatar} banner={userData.banner} pixel={userData.pixel} />
               ) : (
                 <NextLink href={"/profile"} passHref>
                   <Button
