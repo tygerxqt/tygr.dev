@@ -350,7 +350,7 @@ function Profile() {
                                                         lg: "192px",
                                                     }}
                                                     borderRadius="50%"
-
+                                                    placeholder={`${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`}
                                                 />
                                                 <Center>
                                                     <Stack spacing={5} pt={3}>
@@ -385,7 +385,7 @@ function Profile() {
                                                         h={"200px"}
                                                         rounded="lg"
                                                         objectFit={"cover"}
-
+                                                        fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`}
                                                         alt={"Banner"}
                                                     />
                                                     <Stack spacing={5} pt={3}>

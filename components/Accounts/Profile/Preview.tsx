@@ -22,6 +22,7 @@ export default function Preview({ user, userData }) {
                             h={"200px"}
                             objectFit="cover"
                             alt={"banner"}
+                            fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`}
                         />
                         <Flex
                             flexDirection="row"
@@ -39,6 +40,7 @@ export default function Preview({ user, userData }) {
                                 border={"2px"}
                                 borderColor={"#111111"}
                                 alt={"avatar"}
+                                fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`}
                             />
 
                             {/* Mobile view */}
