@@ -35,7 +35,7 @@ export default function Billing() {
     }
 
     const loadPortal = async () => {
-        const { data } = await axios.get(`/api/billing/portal&redirect=account`);
+        const { data } = await axios.get(`/api/billing/portal?redirect=account`);
         router.push(data.data);
     }
 

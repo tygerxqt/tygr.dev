@@ -13,7 +13,6 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query) return res.status(500).json({ error: "No query provided." });
     if (!req.query.redirect) return res.status(500).json({ error: "Redirect is required." });
 
     const cookie = await supabase.auth.api.getUserByCookie(req);
