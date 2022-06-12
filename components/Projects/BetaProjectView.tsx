@@ -3,7 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import useMediaQuery from "../../hook/useMediaQuery";
-import supabase from "../../lib/SupabaseClient";
 import dateFormat from "dateformat";
 
 export default function ProjectView({
@@ -168,29 +167,62 @@ export default function ProjectView({
                                 </Text>
                             </Stack>
                             <Stack>
-                                <ButtonGroup spacing={4}>
-                                    {githubLink && (
-                                        <Link href={githubLink} isExternal>
-                                            <Button>
-                                                Source Code
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    {deployLink && (
-                                        <Link href={deployLink} isExternal>
-                                            <Button>
-                                                Project site
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    {githubLink && (
-                                        <Link href={githubLink + "/issues/new"} isExternal>
-                                            <Button>
-                                                Report a bug
-                                            </Button>
-                                        </Link>
-                                    )}
-                                </ButtonGroup>
+                                {isLargerThan480 ? (
+                                    <>
+                                        <ButtonGroup spacing={4} >
+                                            {githubLink && (
+                                                <Link href={githubLink} isExternal>
+                                                    <Button>
+                                                        Source Code
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {deployLink && (
+                                                <Link href={deployLink} isExternal>
+                                                    <Button>
+                                                        Project site
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {githubLink && (
+                                                <Link href={githubLink + "/issues/new"} isExternal>
+                                                    <Button>
+                                                        Report a bug
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ButtonGroup spacing={4}>
+                                            {githubLink && (
+                                                <Link href={githubLink} isExternal>
+                                                    <Button>
+                                                        Source Code
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {deployLink && (
+                                                <Link href={deployLink} isExternal>
+                                                    <Button>
+                                                        Project site
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                        <ButtonGroup spacing={4}>
+                                            {githubLink && (
+                                                <Link href={githubLink + "/issues/new"} isExternal>
+                                                    <Button mt={2}>
+                                                        Report a bug
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                    </>
+                                )}
+
                             </Stack>
                             <Stack spacing={5}>
                                 <Stack>

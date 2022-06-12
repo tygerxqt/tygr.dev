@@ -353,11 +353,11 @@ export default function ProjectCard({
                                     </Stack>
                                 </Stack>
                                 {isLargerThan480 ? (
-                                    <Stack isInline>{tags}</Stack>
+                                    <Stack isInline>{Tags}</Stack>
                                 ) : (
                                     <Stack isInline>
                                         <Box>
-                                            {tags}
+                                            {Tags}
                                         </Box>
                                     </Stack>
                                 )}
@@ -367,29 +367,61 @@ export default function ProjectCard({
                                 </Text>
                             </Stack>
                             <Stack>
-                                <ButtonGroup spacing={4}>
-                                    {githubLink && (
-                                        <Link href={githubLink} isExternal>
-                                            <Button>
-                                                Source Code
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    {deployLink && (
-                                        <Link href={deployLink} isExternal>
-                                            <Button>
-                                                Project site
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    {githubLink && (
-                                        <Link href={githubLink + "/issues/new"} isExternal>
-                                            <Button>
-                                                Report a bug
-                                            </Button>
-                                        </Link>
-                                    )}
-                                </ButtonGroup>
+                                {isLargerThan480 ? (
+                                    <>
+                                        <ButtonGroup spacing={4} >
+                                            {githubLink && (
+                                                <Link href={githubLink} isExternal>
+                                                    <Button>
+                                                        Source Code
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {deployLink && (
+                                                <Link href={deployLink} isExternal>
+                                                    <Button>
+                                                        Project site
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {githubLink && (
+                                                <Link href={githubLink + "/issues/new"} isExternal>
+                                                    <Button>
+                                                        Report a bug
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ButtonGroup spacing={4}>
+                                            {githubLink && (
+                                                <Link href={githubLink} isExternal>
+                                                    <Button>
+                                                        Source Code
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                            {deployLink && (
+                                                <Link href={deployLink} isExternal>
+                                                    <Button>
+                                                        Project site
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                        <ButtonGroup spacing={4}>
+                                            {githubLink && (
+                                                <Link href={githubLink + "/issues/new"} isExternal>
+                                                    <Button mt={2}>
+                                                        Report a bug
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </ButtonGroup>
+                                    </>
+                                )}
                             </Stack>
                             <Stack spacing={5}>
                                 <Stack>

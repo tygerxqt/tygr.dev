@@ -222,7 +222,6 @@ export default function BetaProjectCard({
                                 title={title}
                                 image={image}
                                 id={id}
-                                userData={userData}
                             />
                         </ButtonGroup>
                     </ModalFooter>
