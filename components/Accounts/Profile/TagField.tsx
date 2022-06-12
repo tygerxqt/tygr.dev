@@ -42,7 +42,6 @@ const TagField = () => {
                 isClosable: true,
             });
         }).catch(err => {
-            console.log(JSON.stringify(err))
             return toast({
                 title: "Unable to update.",
                 description: err.response.data.error,

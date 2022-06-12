@@ -99,7 +99,7 @@ function Profile() {
                 formData,
                 async (event) => {
                     console.log(
-                        `Current progress:`,
+                        `Uploading avatar:`,
                         Math.round((event.loaded * 100) / event.total)
                     );
                 }
@@ -273,7 +273,7 @@ function Profile() {
         async function fetch() {
             try {
                 await axios.get(`/api/users/${user.id}`).then(response => {
-                    setUserData(response.data.data as UserProfile);
+                    setUserData(response.data as UserProfile);
                 }).catch(err => {
                     throw new Error(err);
                 });

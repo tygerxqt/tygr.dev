@@ -19,7 +19,7 @@ export default function BetaView({
 
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/projects/beta/fetch&project=${id}&user=${supabase.auth.user().id}`).then(response => {
+            await axios.get(`/api/projects/beta/fetch?project=${id}&user=${supabase.auth.user().id}`).then(response => {
                 setRequest(response.data.data);
                 setLoading(false);
             }).catch(error => {
