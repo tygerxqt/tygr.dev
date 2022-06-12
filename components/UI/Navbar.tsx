@@ -42,11 +42,6 @@ export default function Navbar({ enableTransition }) {
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
-  const {
-    isOpen: isOpenModal,
-    onOpen: onOpenModal,
-    onClose: onCloseModal,
-  } = useDisclosure();
   const session = supabase.auth.session();
   const user = supabase.auth.user();
   const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
@@ -119,95 +114,95 @@ export default function Navbar({ enableTransition }) {
     </>
   );
 
-  const AccountCard = () => (
-    <>
-      <Modal
-        onClose={onCloseModal}
-        isOpen={isOpenModal}
-        isCentered
-        motionPreset="slideInBottom"
-        size={"sm"}
-      >
-        <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="5px" />
-        <ModalContent>
-          <ModalHeader />
-          <ModalCloseButton />
-          <ModalBody>
-            <Center>
-              <VStack spacing={5}>
-                <Avatar
-                  src={userData.avatar}
-                  rounded="full"
-                  size="2xl"
-                />
-                <VStack>
-                  <Text fontSize="26px" fontWeight="bold">
-                    {user.user_metadata.username}#{user.user_metadata.tag}
-                  </Text>
-                  <Text fontSize="14px">{user.email}</Text>
-                </VStack>
-              </VStack>
-            </Center>
-            <Center>
-              <SimpleGrid
-                columns={2}
-                spacing={5}
-                mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
-              >
-                <NextLink href="/profile" passHref>
-                  <Button as="a" variant="solid" fontSize="16px">
-                    Profile
-                  </Button>
-                </NextLink>
+  // const AccountCard = () => (
+  //   <>
+  //     <Modal
+  //       onClose={onCloseModal}
+  //       isOpen={isOpenModal}
+  //       isCentered
+  //       motionPreset="slideInBottom"
+  //       size={"sm"}
+  //     >
+  //       <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="5px" />
+  //       <ModalContent>
+  //         <ModalHeader />
+  //         <ModalCloseButton />
+  //         <ModalBody>
+  //           <Center>
+  //             <VStack spacing={5}>
+  //               <Avatar
+  //                 src={userData.avatar}
+  //                 rounded="full"
+  //                 size="2xl"
+  //               />
+  //               <VStack>
+  //                 <Text fontSize="26px" fontWeight="bold">
+  //                   {user.user_metadata.username}#{user.user_metadata.tag}
+  //                 </Text>
+  //                 <Text fontSize="14px">{user.email}</Text>
+  //               </VStack>
+  //             </VStack>
+  //           </Center>
+  //           <Center>
+  //             <SimpleGrid
+  //               columns={2}
+  //               spacing={5}
+  //               mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
+  //             >
+  //               <NextLink href="/profile" passHref>
+  //                 <Button as="a" variant="solid" fontSize="16px">
+  //                   Profile
+  //                 </Button>
+  //               </NextLink>
 
-                <NextLink href="/account" passHref>
-                  <Button as="a" variant="solid" fontSize="16px">
-                    Account
-                  </Button>
-                </NextLink>
+  //               <NextLink href="/account" passHref>
+  //                 <Button as="a" variant="solid" fontSize="16px">
+  //                   Account
+  //                 </Button>
+  //               </NextLink>
 
 
-                {userData.pixel ? (
-                  <>
-                    <NextLink href="/feed" passHref>
-                      <Button as="a" variant="solid" fontSize="16px">
-                        Feed
-                      </Button>
-                    </NextLink>
-                    <NextLink href="/dashboard" passHref>
-                      <Button as="a" variant="solid" fontSize="16px">
-                        Dashboard
-                      </Button>
-                    </NextLink>
-                  </>
-                ) : (
-                  <>
-                    <NextLink href="/pixels" passHref>
-                      <Button as="a" variant="solid" fontSize="16px">
-                        Pixel
-                      </Button>
-                    </NextLink>
-                  </>
-                )}
+  //               {userData.pixel ? (
+  //                 <>
+  //                   <NextLink href="/feed" passHref>
+  //                     <Button as="a" variant="solid" fontSize="16px">
+  //                       Feed
+  //                     </Button>
+  //                   </NextLink>
+  //                   <NextLink href="/dashboard" passHref>
+  //                     <Button as="a" variant="solid" fontSize="16px">
+  //                       Dashboard
+  //                     </Button>
+  //                   </NextLink>
+  //                 </>
+  //               ) : (
+  //                 <>
+  //                   <NextLink href="/pixels" passHref>
+  //                     <Button as="a" variant="solid" fontSize="16px">
+  //                       Pixel
+  //                     </Button>
+  //                   </NextLink>
+  //                 </>
+  //               )}
 
-                <Button
-                  as="a"
-                  variant="solid"
-                  fontSize="16px"
-                  onClick={() => supabase.auth.signOut()}
-                >
-                  Log out
-                </Button>
-              </SimpleGrid>
-            </Center>
-          </ModalBody>
-          <Center>
-            <ModalFooter />
-          </Center>
-        </ModalContent>
-      </Modal>
-    </>
-  );
+  //               <Button
+  //                 as="a"
+  //                 variant="solid"
+  //                 fontSize="16px"
+  //                 onClick={() => supabase.auth.signOut()}
+  //               >
+  //                 Log out
+  //               </Button>
+  //             </SimpleGrid>
+  //           </Center>
+  //         </ModalBody>
+  //         <Center>
+  //           <ModalFooter />
+  //         </Center>
+  //       </ModalContent>
+  //     </Modal>
+  //   </>
+  // );
 
   return (
     <Flex
@@ -269,7 +264,7 @@ export default function Navbar({ enableTransition }) {
           ) : (
             <>
               {session && userData ? (
-                <UserMenu avatar={userData.avatar} banner={userData.banner} pixel={userData.pixel} notifications={userData.notifications} />
+                <UserMenu avatar={userData.avatar} banner={userData.banner} pixel={userData.pixel} notifications={userData.notifications} mobile={false} />
               ) : (
                 <NextLink href={"/profile"} passHref>
                   <Button
@@ -294,14 +289,7 @@ export default function Navbar({ enableTransition }) {
             <>
               {session ? (
                 <>
-                  <Button variant="unstyled" onClick={onOpenModal}>
-                    <Avatar
-                      as="a"
-                      size="sm"
-                      src={userData.avatar}
-                    />
-                  </Button>
-                  <AccountCard />
+                  <UserMenu avatar={userData.avatar} banner={userData.banner} mobile={true} notifications={userData.notifications} pixel={userData.pixel} />
                 </>
               ) : (
                 <NextLink href="/profile" passHref>

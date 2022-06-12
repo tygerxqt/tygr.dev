@@ -8,7 +8,7 @@ import supabase from "../../lib/SupabaseClient";
 import CompactBadges from "../Accounts/Badges/CompactBadges";
 import Notifications from "./Notifications";
 
-export default function UserMenu({ avatar, banner, pixel, notifications }) {
+export default function UserMenu({ avatar, banner, pixel, notifications, mobile }) {
     return (
         <>
             <Menu>
@@ -16,7 +16,7 @@ export default function UserMenu({ avatar, banner, pixel, notifications }) {
                     as={Avatar}
                     ml={"3vw"}
                     src={avatar}
-                    size="md"
+                    size={mobile ? "sm" : "md"}
                 >
                     {notifications.length === 0 ? null : (
                         <>
@@ -43,10 +43,11 @@ export default function UserMenu({ avatar, banner, pixel, notifications }) {
                         alt={"banner"}
                         borderRadius="5px 5px 0px 0px"
                         fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`}
+                        display={mobile ? "none" : "block"}
                     />
                     <Flex
                         flexDirection="row"
-                        justifyContent="space-between"
+                        justifyContent={mobile ? "center" : "space-between"}
                         alignItems="center"
                         w={"full"}
                         px={"10px"}
@@ -57,17 +58,17 @@ export default function UserMenu({ avatar, banner, pixel, notifications }) {
                             rounded="full"
                             w={"96px"}
                             h={"96px"}
-                            mt={"-15%"}
+                            mt={mobile ? "" : "-15%"}
                             border={"2px"}
                             borderColor={"#111111"}
                             alt={"avatar"}
                             fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`}
                         />
-                        <Box>
+                        <Box display={mobile ? "none" : "block"}>
                             <CompactBadges />
                         </Box>
                     </Flex>
-                    <MenuGroup title={`${supabase.auth.user().user_metadata.username}#${supabase.auth.user().user_metadata.tag}`} p={0} fontSize={"xl"}>
+                    <MenuGroup title={`${supabase.auth.user().user_metadata.username}#${supabase.auth.user().user_metadata.tag}`} textAlign={mobile ? "center" : null} p={0} fontSize={"xl"}>
                         <MenuDivider />
                         <Link href="/profile" passHref>
                             <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
