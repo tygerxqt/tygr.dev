@@ -72,7 +72,7 @@ export default function MiniBadges() {
                 <Tag
                     key={item}
                     colorScheme={getTag(item)[1]}
-                    size={'lg'}
+                    size={'md'}
                     ml={2}
                 >
                     <TagLeftIcon key={item} as={getTag(item)[2]} marginEnd={0}></TagLeftIcon>

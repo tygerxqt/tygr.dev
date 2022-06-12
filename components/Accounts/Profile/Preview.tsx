@@ -5,9 +5,9 @@ import CompactBadges from "../Badges/CompactBadges";
 import MiniBadges from "../Badges/MiniBadges";
 
 export default function Preview({ user, userData }) {
-    const isLargerThan850 = useMediaQuery(850);
+    const isLargerThan1200 = useMediaQuery(1200);
     const isLargerThan400 = useMediaQuery(400);
-    const isLargerThan500 = useMediaQuery(500);
+    const isLargerThan600 = useMediaQuery(600);
     const isLargerThan1360 = useMediaQuery(1360);
     const isLargerThan1215 = useMediaQuery(1215);
 
@@ -45,13 +45,13 @@ export default function Preview({ user, userData }) {
                             />
 
                             {/* Mobile view */}
-                            {isLargerThan850 ? (
+                            {isLargerThan1200 ? (
                                 <></>
                             ) : (
                                 <>
                                     {isLargerThan400 ? (
                                         <>
-                                            {isLargerThan500 ? (
+                                            {isLargerThan600 ? (
                                                 <Stack isInline spacing={2}>
                                                     <Badges />
                                                 </Stack>
@@ -70,7 +70,7 @@ export default function Preview({ user, userData }) {
                             )}
 
                             {/* Desktop view */}
-                            {isLargerThan850 ? (
+                            {isLargerThan1200 ? (
                                 <>
                                     {isLargerThan1360 ? (
                                         <Stack isInline spacing={2} >

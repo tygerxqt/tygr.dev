@@ -31,7 +31,7 @@ function Profile() {
     const [avatarRemoving, setAvatarRemoving] = useState(false);
     const [bannerRemoving, setBannerRemoving] = useState(false);
 
-    const isLargerThan850 = useMediaQuery(850);
+    const isLargerThan1200 = useMediaQuery(1200);
     const isLargerThan768 = useMediaQuery(768);
 
     // set server cookie
@@ -326,7 +326,7 @@ function Profile() {
                                 <Heading fontSize={{ base: "4xl", md: "6xl" }}>Profile</Heading>
                                 <Divider />
                             </Stack>
-                            {isLargerThan850 ? (
+                            {isLargerThan1200 ? (
                                 <>
                                     <SimpleGrid columns={2} spacing={10}>
                                         <Stack spacing={4}>
