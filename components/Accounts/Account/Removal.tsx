@@ -21,22 +21,18 @@ export default function Removal() {
 
     async function deleteAccount() {
         try {
-            const { data, status } = await axios.post("/api/users/delete", {
-                token: supabase.auth.session().access_token,
+            await axios.post("/api/users/delete").then(response => {
+                toast({
+                    title: "Account deleted",
+                    description: response.data.data,
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+                supabase.auth.signOut();
+            }).catch(err => {
+                throw new Error(err.response.data.error);
             });
-
-            if (status != 200) {
-                throw data.error
-            }
-
-            toast({
-                title: "Account deleted",
-                description: data.data,
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-            });
-            supabase.auth.signOut();
         } catch (error) {
             toast({
                 title: "Error",

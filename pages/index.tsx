@@ -65,8 +65,8 @@ let client = createClient({
 
 export async function getStaticProps() {
   let data = await client.getEntries({
-    content_type: "featuredProjects",
-    order: "fields.order",
+    content_type: "project",
+    "fields.featured": true
   });
 
   return {

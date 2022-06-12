@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../../../lib/SupabaseAdminClient";
+import supabase from "../../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -12,24 +12,24 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query.token) return res.status(500).json({ error: "You need to provide a 'TOKEN' query." });
     if (!req.query.id) return res.status(500).json({ error: "You need to provide a 'ID' query." });
 
-    const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-
-    if (!user) {
-        res.status(500).json({
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { data: commentUser, error: fetchErr } = await supabaseAdmin.from("project_comments").select("user_id").eq("id", req.query.id);
+    supabase.auth.setAuth(cookie.token);
+
+    const { data: commentUser, error: fetchErr } = await supabase.from("project_comments").select("user_id").eq("id", req.query.id);
     if (fetchErr) {
         res.status(500).json({ error: fetchErr.message });
         throw fetchErr;
     }
 
-    const { data: admin, error: userFetchError } = await supabaseAdmin.from("users").select("badges->>admin").eq("id", user.id);
+    const { data: admin, error: userFetchError } = await supabase.from("users").select("badges->>admin").eq("id", cookie.user.id);
     if (userFetchError) {
         res.status(500).json({ error: userFetchError.message });
         throw userFetchError;
@@ -41,8 +41,8 @@ apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    if (admin || user.id === commentUser[0].user_id) {
-        const { error: delError } = await supabaseAdmin.from("project_comments").delete().eq("id", req.query.id);
+    if (admin || cookie.user.id === commentUser[0].user_id) {
+        const { error: delError } = await supabase.from("project_comments").delete().eq("id", req.query.id);
         if (delError) {
             res.status(500).json({ error: delError.message });
             throw delError;

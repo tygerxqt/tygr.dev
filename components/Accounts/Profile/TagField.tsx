@@ -28,7 +28,7 @@ const TagField = () => {
             });
         }
 
-        axios.put(`/api/users/update?token=${session.access_token}`, { tag: digit1 + digit2 + digit3 + digit4, username: user.user_metadata.username }).then(async response => {
+        axios.put(`/api/users/update`, { tag: digit1 + digit2 + digit3 + digit4, username: user.user_metadata.username }).then(async response => {
             await supabase.auth.update({
                 data: {
                     tag: newTag,

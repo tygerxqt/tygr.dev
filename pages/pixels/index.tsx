@@ -9,7 +9,7 @@ import Navbar from "../../components/UI/Navbar";
 import useMediaQuery from "../../hook/useMediaQuery";
 import stripe from "../../lib/Stripe"
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
+import { UserProfile } from "../../types/Account/UserProfile";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
 
@@ -29,7 +29,7 @@ export default function Pricing({ plans }) {
     const [newCustomerEmail, setNewCustomerEmail] = useState(customer ? customer.email : "");
 
     const loadPortal = async () => {
-        await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=pixels`).then(res => {
+        await axios.get(`/api/billing/portal?redirect=pixels`).then(res => {
             router.push(res.data.data);
         }).catch(err => {
             console.log(err.response.data.error);
@@ -43,9 +43,9 @@ export default function Pricing({ plans }) {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}`);
             if (dataStatus != 200) throw new Error(data.message);
-            const { data: customerData, status: customerStatus } = await axios.get(`api/billing/customers/fetch?token=${session.access_token}`);
+            const { data: customerData, status: customerStatus } = await axios.get(`api/billing/customers/fetch`);
             if (customerStatus != 200) throw new Error(customerData.message);
             setUserData(data as UserProfile);
             setCustomer(customerData.data);
@@ -66,7 +66,7 @@ export default function Pricing({ plans }) {
     async function createCustomer() {
         const session = supabase.auth.session();
 
-        const { data, status } = await axios.post(`api/billing/customers/create?token=${session.access_token}`, {
+        const { data, status } = await axios.post(`api/billing/customers/create`, {
             email: newCustomerEmail,
             name: newCustomerName,
         });
@@ -77,7 +77,7 @@ export default function Pricing({ plans }) {
     }
 
     const processSubscription = planId => async () => {
-        const { data } = await axios.get(`/api/billing/subscriptions/${planId}?token=${session.access_token}`);
+        const { data } = await axios.get(`/api/billing/subscriptions/${planId}`);
         const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
         await stripe.redirectToCheckout({ sessionId: data.data });
     }

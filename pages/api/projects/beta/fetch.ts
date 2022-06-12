@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
+import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -12,19 +12,19 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query.token) return res.status(500).json({ error: "You need to provide a 'TOKEN' query." });
     if (!req.query.project) return res.status(500).json({ error: "You need to provide a 'project' query." });
     if (!req.query.user) return res.status(500).json({ error: "You need to provide a 'user' query." });
 
-    const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-
-    if (!user) {
-        res.status(500).json({
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { data, error } = await supabaseAdmin.from("project_requests").select("*").eq("project", req.query.project).eq("user", req.query.user);
+    supabase.auth.setAuth(cookie.token);
+
+    const { data, error } = await supabase.from("project_requests").select("*").eq("project", req.query.project).eq("user", req.query.user);
 
     if (error) {
         res.status(500).json({ error: error.message });

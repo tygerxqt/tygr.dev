@@ -24,14 +24,8 @@ const upload = multer({
 });
 
 const apiRoute = nextConnect({
-    onError(
-        error,
-        req: NextConnectApiRequest,
-        res: NextApiResponse<ResponseData>
-    ) {
-        res
-            .status(501)
-            .json({ error: `Sorry something Happened! ${error.message}` });
+    onError(error, req: NextConnectApiRequest, res: NextApiResponse<ResponseData>) {
+        res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
     },
     onNoMatch(req: NextConnectApiRequest, res: NextApiResponse<ResponseData>) {
         res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
@@ -52,16 +46,14 @@ apiRoute.post(
                 error: "You need to provide the User ID.",
             });
 
-        if (!req.query || !req.query.token)
+        const cookie = await supabase.auth.api.getUserByCookie(req);
+        if (!cookie) {
             return res.status(500).json({
-                error: "You need to provide the User Token.",
+                error: "Unauthorized.",
             });
-
-        const { user } = await supabase.auth.api.getUser(req.query.token as string);
-
-        if (!user) {
-            return res.status(401).json({ error: "Unauthorized" });
         }
+
+        supabase.auth.setAuth(cookie.token);
 
         let ext = req.file.originalname.split(".").pop();
         const buffer = req.file.buffer;
@@ -80,4 +72,5 @@ export const config = {
         bodyParser: false, // Disallow body parsing, consume as stream
     },
 };
+
 export default apiRoute;

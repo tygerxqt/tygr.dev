@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../lib/SupabaseAdminClient"
 import supabase from "../../../lib/SupabaseClient"
 
 const apiRoute = nextConnect({
@@ -13,7 +12,6 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query.token) return res.status(500).send({ error: "Token is required." });
     if (!req.body.tag) return res.status(500).send({ error: "Tag is required." });
     if (req.body.tag.length !== 4) return res.status(500).send({ error: "Tag must be exactly 4 characters." });
     if (req.body.tag === "0000") return res.status(500).send({ error: "Tag cannot be 0000." });
@@ -22,21 +20,23 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body.username) return res.status(500).send({ error: "Username is required." });
     if (req.body.username.length <= 0) return res.status(500).send({ error: "Username cannot be empty." });
 
-    const cookie = await supabase.auth.api.getUser(req.query.token as string);
-    if (!cookie.user) {
-        return res.status(500).send({
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { data: userData, error: userError } = await supabaseAdmin.from("users").select("username, tag");
+    supabase.auth.setAuth(cookie.token);
+
+    const { data: userData, error: userError } = await supabase.from("users").select("username, tag");
     if (userError) {
         return res.status(500).send({ error: userError });
     }
 
     // check if the user that has the username and tag already is ourselfs
     if (userData.find(user => user.username === cookie.user.user_metadata.username && user.username === req.body.username && user.tag === cookie.user.user_metadata.tag && user.tag === req.body.tag)) {
-        const { error } = await supabaseAdmin.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
+        const { error } = await supabase.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
         if (error) {
             return res.status(500).send({ error: `Failed to update table. ${error}` });
         }
@@ -52,7 +52,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).send({ error: "Username and tag already exists." });
     }
 
-    const { error } = await supabaseAdmin.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
+    const { error } = await supabase.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
     if (error) {
         return res.status(500).send({ error: `Failed to update table. ${error}` });
     }

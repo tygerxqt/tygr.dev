@@ -1,8 +1,8 @@
-import { Button, Avatar, Spinner, Text, Flex, Box, Menu, MenuButton, MenuGroup, MenuList, Image, useMenu } from "@chakra-ui/react";
+import { Button, Avatar, Spinner, Text, Flex, Box, Menu, MenuButton, MenuGroup, MenuList, Image, useMenu, toast, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
+import { UserProfile } from "../../types/Account/UserProfile";
 import CompactBadges from "./Badges/CompactBadges";
 
 export default function UserPopout({
@@ -11,17 +11,31 @@ export default function UserPopout({
     const [update, setUpdate] = useState(false);
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
+    const toast = useToast();
 
     useEffect(() => {
         const user = supabase.auth.user();
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-            if (dataStatus != 200) throw new Error(data.message);
-            setUserData(data as UserProfile);
-            setLoading(false);
-            setUpdate(false);
+            try {
+                await axios.get(`/api/users/${user.id}`).then(response => {
+                    setUserData(response.data.data as UserProfile)
+                }).catch(err => {
+                    throw new Error(err)
+                })
+            } catch (err) {
+                toast({
+                    title: "Error",
+                    description: "An error occurred while fetching your profile",
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true
+                })
+            } finally {
+                setLoading(false);
+                setUpdate(false);
+            }
         }
 
         if (session) {
@@ -29,7 +43,7 @@ export default function UserPopout({
         } else {
             setLoading(false);
         }
-    }, [update]);
+    }, [update, toast]);
 
     switch (type) {
         default: {

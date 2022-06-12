@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
+import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -12,27 +12,27 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query.token) return res.status(500).json({ error: "You need to provide a 'TOKEN' query." });
     if (!req.body.project_id) return res.status(500).json({ error: "You need to provide a 'project_id' body." });
     if (!req.body.comment) return res.status(500).json({ error: "You need to provide a comment." });
 
-    const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-
-    if (!user) {
-        res.status(500).json({
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { data: avatar } = await supabaseAdmin.from("users").select("avatar").eq("id", user.id);
+    supabase.auth.setAuth(cookie.token);
 
-    const { data, error } = await supabaseAdmin.from("project_comments").insert({
+    const { data: avatar } = await supabase.from("users").select("avatar").eq("id", cookie.user.id);
+
+    const { data, error } = await supabase.from("project_comments").insert({
         project_id: req.body.project_id,
         body: req.body.comment,
-        username: user.user_metadata.username,
-        tag: user.user_metadata.tag,
+        username: cookie.user.user_metadata.username,
+        tag: cookie.user.user_metadata.tag,
         avatar: avatar[0].avatar,
-        user_id: user.id,
+        user_id: cookie.user.id,
     });
     if (error) {
         res.status(500).json({ error: error });

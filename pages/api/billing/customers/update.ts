@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import stripe from "../../../../lib/Stripe";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
 import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
@@ -15,16 +14,19 @@ const apiRoute = nextConnect({
 
 apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body) return res.status(500).json({ error: "No body provided." });
-    if (!req.query.token) return res.status(500).json({ error: "Token is required." });
     if (!req.body.name) return res.status(500).json({ error: "Name is required." });
     if (!req.body.email) return res.status(500).json({ error: "Email is required." });
 
-    const user = await supabase.auth.api.getUser(req.query.token as string);
-    if (!user) {
-        return res.status(500).json({ error: "Unauthorized." });
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
     }
 
-    const { error: fetchError, data } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
+    supabase.auth.setAuth(cookie.token);
+
+    const { error: fetchError, data } = await supabase.from("users").select("customer").eq("id", cookie.user.id);
     if (fetchError) {
         return res.status(500).json({ error: fetchError.message });
     }
@@ -40,7 +42,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         email: req.body.email,
     });
 
-    const { error: setError } = await supabaseAdmin.from("users").update({ customer: { id: customer.id, name: customer.name, email: customer.email } }).eq("id", user.user.id);
+    const { error: setError } = await supabase.from("users").update({ customer: { id: customer.id, name: customer.name, email: customer.email } }).eq("id", cookie.user.id);
     if (setError) {
         return res.status(500).json({ error: setError.message });
     }

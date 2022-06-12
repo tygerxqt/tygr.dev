@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { uploadAvatarRequest } from "../../domains/avatars/upload.services";
 import { uploadBannerRequest } from "../../domains/banners/upload.services";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
+import { UserProfile } from "../../types/Account/UserProfile";
 import Container from "../UI/Container";
 import Head from "next/head";
 import EmailField from "./Profile/EmailField";
@@ -14,12 +14,10 @@ import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
 import Preview from "./Profile/Preview";
 import TagField from "./Profile/TagField";
-import Link from "next/link";
 import TokenField from "./Profile/TokenField";
 
 function Profile() {
     const user = supabase.auth.user();
-    const session = supabase.auth.session();
     const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
 
     const [update, setUpdate] = useState(false);
@@ -98,7 +96,6 @@ function Profile() {
         try {
             const response = await uploadAvatarRequest(
                 user.id,
-                session.access_token,
                 formData,
                 async (event) => {
                     console.log(
@@ -180,7 +177,6 @@ function Profile() {
         try {
             const response = await uploadBannerRequest(
                 user.id,
-                session.access_token,
                 formData,
                 async (event) => {
                     console.log(
@@ -215,24 +211,25 @@ function Profile() {
         }
     };
 
-    async function removeAvatar(id: string, token: string) {
+    async function removeAvatar(id: string) {
         try {
             setAvatarRemoving(true);
-            const { data } = await axios.put(`/api/avatars/remove?id=${id}&token=${token}`);
-            if (data.error) throw data.error;
-
-            toast({
-                title: "Success",
-                description: "Avatar removed",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-            });
-            setUpdate(true);
+            await axios.put(`/api/avatars/remove?id=${id}`).then(response => {
+                toast({
+                    title: "Success",
+                    description: "Avatar removed",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+                setUpdate(true);
+            }).catch(err => {
+                throw err;
+            })
         } catch (err) {
             toast({
                 title: "Error",
-                description: err.message ? err.message : err,
+                description: err,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
@@ -242,24 +239,25 @@ function Profile() {
         }
     }
 
-    async function removeBanner(id: string, token: string) {
+    async function removeBanner(id: string) {
         try {
             setBannerRemoving(true);
-            const { data } = await axios.put(`/api/banners/remove?id=${id}&token=${token}`);
-            if (data.error) throw data.error;
-
-            toast({
-                title: "Success",
-                description: "Banner removed",
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-            });
-            setUpdate(true);
+            await axios.put(`/api/banners/remove?id=${id}`).then(response => {
+                toast({
+                    title: "Success",
+                    description: "Banner removed",
+                    status: "success",
+                    duration: 9000,
+                    isClosable: true,
+                });
+                setUpdate(true);
+            }).catch(err => {
+                throw err;
+            })
         } catch (err) {
             toast({
                 title: "Error",
-                description: err.message ? err.message : err,
+                description: err,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
@@ -271,17 +269,30 @@ function Profile() {
 
     useEffect(() => {
         const user = supabase.auth.user();
-        const session = supabase.auth.session();
 
         async function fetch() {
-            const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-            setUserData(data.data as UserProfile);
-            setLoading(false);
-            setUpdate(false);
+            try {
+                await axios.get(`/api/users/${user.id}`).then(response => {
+                    setUserData(response.data.data as UserProfile);
+                }).catch(err => {
+                    throw new Error(err);
+                });
+            } catch (err) {
+                toast({
+                    title: "Error",
+                    description: err,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+            } finally {
+                setLoading(false);
+                setUpdate(false);
+            }
         }
 
         fetch();
-    }, [update]);
+    }, [update, toast]);
 
     return (
         <>
@@ -359,7 +370,7 @@ function Profile() {
                                                             onChange={UploadAvatar}
                                                             allowMultipleFiles={false}
                                                         />
-                                                        <Button onClick={() => removeAvatar(user.id, session.access_token)}>
+                                                        <Button onClick={() => removeAvatar(user.id)}>
                                                             {" "}
                                                             {avatarRemoving ? <Spinner /> : "Remove"}{" "}
                                                         </Button>
@@ -395,7 +406,7 @@ function Profile() {
                                                                 onChange={UploadBanner}
                                                                 allowMultipleFiles={false}
                                                             />
-                                                            <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
+                                                            <Button ml={4} onClick={() => removeBanner(user.id)}>
                                                                 {" "}
                                                                 {bannerRemoving ? <Spinner /> : "Remove"}{" "}
                                                             </Button>
@@ -443,7 +454,7 @@ function Profile() {
                                                             onChange={UploadAvatar}
                                                             allowMultipleFiles={false}
                                                         />
-                                                        <Button onClick={() => removeAvatar(user.id, session.access_token)}>
+                                                        <Button onClick={() => removeAvatar(user.id)}>
                                                             {" "}
                                                             {avatarRemoving ? <Spinner /> : "Remove"}{" "}
                                                         </Button>
@@ -479,7 +490,7 @@ function Profile() {
                                                                 onChange={UploadBanner}
                                                                 allowMultipleFiles={false}
                                                             />
-                                                            <Button ml={4} onClick={() => removeBanner(user.id, session.access_token)}>
+                                                            <Button ml={4} onClick={() => removeBanner(user.id)}>
                                                                 {" "}
                                                                 {bannerRemoving ? <Spinner /> : "Remove"}{" "}
                                                             </Button>

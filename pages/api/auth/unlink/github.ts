@@ -22,7 +22,8 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
             error: "Unauthorized.",
         });
     }
-    await supabase.auth.setAuth(cookie.token);
+
+    supabase.auth.setAuth(cookie.token);
 
     const { data: userData } = await supabase.from("users").select("github").eq("id", cookie.user.id);
     if (!userData[0].github.id) {

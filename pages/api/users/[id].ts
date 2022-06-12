@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../lib/SupabaseAdminClient";
+import supabase from "../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -13,17 +13,18 @@ const apiRoute = nextConnect({
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        if (!req.query || !req.query.token || req.query.token === null) return res.status(500).json({ error: "You need to provide a 'TOKEN' query." });
-
-        const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-
-        if (!user) {
-            res.status(500).json({
+        const cookie = await supabase.auth.api.getUserByCookie(req);
+        if (!cookie) {
+            return res.status(500).json({
                 error: "Unauthorized.",
             });
         }
 
-        const { data: discordData, error: discordError } = await supabaseAdmin.from("users").select("discord").eq("id", user.id);
+        supabase.auth.setAuth(cookie.token);
+
+        const user = cookie.user;
+
+        const { data: discordData, error: discordError } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
         if (discordError) {
             res.status(500).json({ error: discordError.message });
             throw discordError;
@@ -31,56 +32,56 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
         const discord = discordData[0].discord;
 
-        const { data: githubData, error: githubError } = await supabaseAdmin.from("users").select("github").eq("id", user.id);
+        const { data: githubData, error: githubError } = await supabase.from("users").select("github").eq("id", cookie.user.id);
         if (githubError) {
             res.status(500).json({ error: githubError.message });
             throw githubError;
         }
         const github = githubData[0].github;
 
-        const { data: badgesData, error: badgesError } = await supabaseAdmin.from("users").select("badges").eq("id", user.id);
+        const { data: badgesData, error: badgesError } = await supabase.from("users").select("badges").eq("id", cookie.user.id);
         if (badgesError) {
             res.status(500).json({ error: badgesError.message });
             throw badgesError;
         }
         const badges = badgesData[0].badges;
 
-        const { data: avatarData, error: avatarError } = await supabaseAdmin.from("users").select("avatar").eq("id", user.id);
+        const { data: avatarData, error: avatarError } = await supabase.from("users").select("avatar").eq("id", cookie.user.id);
         if (avatarError) {
             res.status(500).json({ error: avatarError.message });
             throw avatarError;
         }
         const avatar = avatarData[0].avatar;
 
-        const { data: bannerData, error: bannerError } = await supabaseAdmin.from("users").select("banner").eq("id", user.id);
+        const { data: bannerData, error: bannerError } = await supabase.from("users").select("banner").eq("id", cookie.user.id);
         if (bannerError) {
             res.status(500).json({ error: bannerError.message });
             throw bannerError;
         }
         const banner = bannerData[0].banner;
 
-        const { data: tagData, error: tagError } = await supabaseAdmin.from("users").select("tag").eq("id", user.id);
+        const { data: tagData, error: tagError } = await supabase.from("users").select("tag").eq("id", cookie.user.id);
         if (tagError) {
             res.status(500).json({ error: tagError.message });
             throw tagError;
         }
         const tag = tagData[0].tag;
 
-        const { data: cutieData, error: cutieError } = await supabaseAdmin.from("users").select("cutie").eq("id", user.id);
+        const { data: cutieData, error: cutieError } = await supabase.from("users").select("cutie").eq("id", cookie.user.id);
         if (cutieError) {
             res.status(500).json({ error: cutieError.message });
             throw cutieError;
         }
         const cutie = cutieData[0].cutie;
 
-        const { data: pixelData, error: pixelError } = await supabaseAdmin.from("users").select("pixel").eq("id", user.id);
+        const { data: pixelData, error: pixelError } = await supabase.from("users").select("pixel").eq("id", cookie.user.id);
         if (pixelError) {
             res.status(500).json({ error: pixelError.message });
             throw pixelError;
         }
         const pixel = pixelData[0].pixel;
 
-        const { data: notificationsData, error: notificationsError } = await supabaseAdmin.from("notifications").select("*").eq("user", user.id);
+        const { data: notificationsData, error: notificationsError } = await supabase.from("notifications").select("*").eq("user", cookie.user.id);
         if (notificationsError) {
             res.status(500).json({ error: notificationsError.message });
             throw notificationsError;

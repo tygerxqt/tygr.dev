@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Button,
   Flex,
-  Box,
-  Slide,
   useDisclosure,
   Drawer,
   DrawerOverlay,
@@ -16,11 +14,6 @@ import {
   Image,
   Center,
   Avatar,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuGroup,
-  MenuItem,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -31,33 +24,19 @@ import {
   Text,
   SimpleGrid,
   ModalFooter,
-  Spinner,
   SkeletonCircle,
-  chakra,
-  Divider,
-  MenuDivider
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs";
 import supabase from "../../lib/SupabaseClient";
-import Link from "next/link";
 import axios from "axios";
-import { UserProfile } from "../../types/UserProfile";
-import { MdAccountCircle, MdDashboard, MdFeedback } from "react-icons/md";
-import { AiFillIdcard } from "react-icons/ai";
-import { BiCamera, BiCode, BiLogOut } from "react-icons/bi";
-import { RiParkingFill } from "react-icons/ri";
-import Badges from "../Accounts/Badges/Badges";
-import CompactBadges from "../Accounts/Badges/CompactBadges";
-import MiniBadges from "../Accounts/Badges/MiniBadges";
+import { UserProfile } from "../../types/Account/UserProfile";
 import UserMenu from "./UserMenu";
 
 export default function Navbar({ enableTransition }) {
   const isLargerThan768 = useMediaQuery(768);
-  const isLargerThan400 = useMediaQuery(400);
-  const isLargerThan500 = useMediaQuery(500);
   const {
     isOpen: isOpenDrawer,
     onOpen: onOpenDrawer,
@@ -85,7 +64,7 @@ export default function Navbar({ enableTransition }) {
     }
 
     async function fetch() {
-      const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+      const data = await axios.get(`/api/users/${user.id}`);
       setUserData(data.data as UserProfile);
       setLoading(false);
     }

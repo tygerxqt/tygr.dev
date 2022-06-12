@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import stripe from "../../../../lib/Stripe";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
+import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -14,14 +14,17 @@ const apiRoute = nextConnect({
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) return res.status(500).json({ error: "No query provided." });
-    if (!req.query.token) return res.status(500).json({ error: "Token is required." });
 
-    const user = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-    if (!user) {
-        return res.status(500).json({ error: "Unauthorized." });
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
     }
 
-    const { error, data } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
+    supabase.auth.setAuth(cookie.token);
+
+    const { error, data } = await supabase.from("users").select("customer").eq("id", cookie.user.id);
     if (error) {
         return res.status(500).json({ error: error.message });
     }

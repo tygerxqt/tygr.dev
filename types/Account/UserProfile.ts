@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js";
-import { DiscordUser } from "./DiscordUser";
-import { GithubUser } from "./GithubUser";
+import { DiscordUser } from "../Identites/DiscordUser";
+import { GithubUser } from "../Identites/GithubUser";
 
 interface Badges {
     admin: boolean;

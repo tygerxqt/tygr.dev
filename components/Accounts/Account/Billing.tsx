@@ -4,12 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Stripe from "stripe";
 import supabase from "../../../lib/SupabaseClient";
-import { UserProfile } from "../../../types/UserProfile";
+import { UserProfile } from "../../../types/Account/UserProfile";
 import { useRouter } from "next/router";
 
 export default function Billing() {
     const user = supabase.auth.user();
-    const session = supabase.auth.session();
     const router = useRouter();
 
     const [userData, setUserData] = useState({} as UserProfile);
@@ -22,21 +21,21 @@ export default function Billing() {
 
     async function createCustomer() {
         setLoading(true);
-        const session = supabase.auth.session();
 
-        const { data, status } = await axios.post(`/api/billing/customers/create?token=${session.access_token}`, {
+        await axios.post(`/api/billing/customers/create`, {
             email: newCustomerEmail,
             name: newCustomerName,
+        }).then(response => {
+            setCustomer(response.data as Stripe.Customer);
+        }).catch(error => {
+            throw new Error(error.response.data.error);
+        }).finally(() => {
+            setLoading(false);
         });
-
-        if (status != 200) throw new Error(data.message);
-        setCustomer(data.data);
-        setUpdate(true);
-        setLoading(false);
     }
 
     const loadPortal = async () => {
-        const { data } = await axios.get(`/api/billing/portal?token=${session.access_token}&redirect=account`);
+        const { data } = await axios.get(`/api/billing/portal&redirect=account`);
         router.push(data.data);
     }
 
@@ -45,14 +44,20 @@ export default function Billing() {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-            if (dataStatus != 200) throw new Error(data.message);
-            const { data: customerData, status: customerStatus } = await axios.get(`api/billing/customers/fetch?token=${session.access_token}`);
-            if (customerStatus != 200) throw new Error(customerData.message);
-            setUserData(data as UserProfile);
-            setCustomer(customerData.data)
-            setLoading(false);
-            setUpdate(false);
+            await axios.get(`/api/users/${user.id}`).then(response => {
+                setUserData(response.data as UserProfile)
+            }).catch(error => {
+                throw new Error(error.response.data.error);
+            });
+
+            await axios.get(`api/billing/customers/fetch`).then(response => {
+                setCustomer(response.data as Stripe.Customer);
+            }).catch(error => {
+                throw new Error(error.response.data.error);
+            }).finally(() => {
+                setLoading(false);
+                setUpdate(false);
+            });
         }
 
         if (session) {

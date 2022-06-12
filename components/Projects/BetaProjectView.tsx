@@ -30,7 +30,7 @@ export default function ProjectView({
     const toast = useToast();
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/projects/comments/${id}?token=${supabase.auth.session().access_token}`).then(response => {
+            await axios.get(`/api/projects/comments/${id}`).then(response => {
                 setComments(response.data.data);
                 setLoading(false);
             }).catch(error => {
@@ -50,7 +50,7 @@ export default function ProjectView({
 
     async function handleCommentPost() {
         try {
-            await axios.post(`/api/projects/comments/post?token=${supabase.auth.session().access_token}`, {
+            await axios.post(`/api/projects/comments/post`, {
                 comment: comment,
                 project_id: id
             }).then(response => {
@@ -82,7 +82,7 @@ export default function ProjectView({
     }
 
     async function deleteComment(id) {
-        await axios.delete(`/api/projects/comments/${id}/delete?token=${supabase.auth.session().access_token}`).then(response => {
+        await axios.delete(`/api/projects/comments/${id}/delete`).then(response => {
             setLoading(true);
             toast({
                 title: "Success!",

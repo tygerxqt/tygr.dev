@@ -3,7 +3,6 @@ import { ApiResponse } from "../../types/ApiResponse";
 
 export const uploadAvatarRequest = async (
   id: string,
-  token: string,
   formData: FormData,
   progressCallback?: (progressEvent: ProgressEvent) => void
 ): Promise<ApiResponse<string[]>> => {
@@ -13,7 +12,7 @@ export const uploadAvatarRequest = async (
     validateStatus: (status) => true,
   };
   const response = await axios.post(
-    `/api/avatars/upload?id=${id}&token=${token}`,
+    `/api/avatars/upload?id=${id}`,
     formData,
     config
   );

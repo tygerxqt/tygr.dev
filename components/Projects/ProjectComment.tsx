@@ -7,7 +7,7 @@ import supabase from "../../lib/SupabaseClient";
 export default function ProjectComment({ username, tag, avatar, date, body, id, userData }) {
     const toast = useToast();
     async function deleteComment() {
-        await axios.delete(`/api/projects/comments/${id}/delete?token=${supabase.auth.session().access_token}`).then(response => {
+        await axios.delete(`/api/projects/comments/${id}/delete`).then(response => {
             toast({
                 title: "Success!",
                 description: response.data.data,

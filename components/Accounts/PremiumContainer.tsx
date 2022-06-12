@@ -4,12 +4,11 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
+import { UserProfile } from "../../types/Account/UserProfile";
 import Container from "../UI/Container";
 import Navbar from "../UI/Navbar";
 
 export default function PremiumContainer({ children }) {
-    const session = supabase.auth.session();
     const [update, setUpdate] = useState(false);
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
@@ -20,11 +19,18 @@ export default function PremiumContainer({ children }) {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-            if (dataStatus != 200) throw new Error(data.message);
-            setUserData(data as UserProfile);
-            setLoading(false);
-            setUpdate(false);
+            try {
+                await axios.get(`/api/users/${user.id}`).then(response => {
+                    setUserData(response.data as UserProfile)
+                }).catch(error => {
+                    throw new Error(error.response.data.error);
+                });
+            } catch (err) {
+                throw err;
+            } finally {
+                setLoading(false);
+                setUpdate(false);
+            }
         }
 
         if (session) {
@@ -32,6 +38,7 @@ export default function PremiumContainer({ children }) {
         } else {
             setLoading(false);
         }
+
     }, [update]);
     return (
         <>

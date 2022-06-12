@@ -12,7 +12,7 @@ export default function MiniBadges() {
     const session = supabase.auth.session();
     const [badges, setBadges] = useState([]);
     useEffect(() => {
-        fetch(`/api/users/${user.id}?token=${session.access_token}`)
+        fetch(`/api/users/${user.id}`)
             .then((res) => res.json())
             .then((data) => {
                 const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);

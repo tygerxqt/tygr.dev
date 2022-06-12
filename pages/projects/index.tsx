@@ -22,7 +22,7 @@ import { FaSearch } from "react-icons/fa";
 import Container from "../../components/UI/Container";
 import ProjectCard from "../../components/Projects/ProjectCard";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/UserProfile";
+import { UserProfile } from "../../types/Account/UserProfile";
 import Navbar from "../../components/UI/Navbar";
 import Link from "next/link";
 
@@ -42,7 +42,7 @@ function ProjectPage({ projects }) {
     const session = supabase.auth.session();
 
     async function fetch() {
-      const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+      const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}`);
       if (dataStatus != 200) throw new Error(data.message);
       setUserData(data as UserProfile);
       setLoading(false);
@@ -140,22 +140,23 @@ function ProjectPage({ projects }) {
                   />
                 </InputGroup>
                 <Divider />
-                <Text fontSize={{ base: "16px", md: "20px" }}>
-                  Here are your rewards for being subscribed:
-                </Text>
-                <ButtonGroup spacing={5}>
-                  <Link href={"/projects/beta"} passHref>
-                    <Button>
-                      Early Access
-                    </Button>
-                  </Link>
-                  <Link href={"/projects/vault"} passHref>
-                    <Button>
-                      Project Vault
-                    </Button>
-                  </Link>
-                </ButtonGroup>
-                <Divider />
+                {userData.pixel && (
+                  <>
+                    <ButtonGroup spacing={5}>
+                      <Link href={"/projects/beta"} passHref>
+                        <Button>
+                          Early Access
+                        </Button>
+                      </Link>
+                      <Link href={"/projects/vault"} passHref>
+                        <Button>
+                          Project Vault
+                        </Button>
+                      </Link>
+                    </ButtonGroup>
+                    <Divider />
+                  </>
+                )}
               </Stack>
               <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={8}>
                 {projects

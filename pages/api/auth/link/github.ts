@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabase from "../../../../lib/SupabaseClient";
-import { GithubUser } from "../../../../types/GithubUser";
+import { GithubUser } from "../../../../types/Identites/GithubUser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -21,6 +21,15 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     }
     if (!req.query.code) return res.status(500).json({ error: "Missing 'code' query." });
 
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
+    }
+
+    supabase.auth.setAuth(cookie.token);
+
     const client = axios.create();
 
     const json = await client.post(`https://github.com/login/oauth/access_token?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${req.query.code}`, undefined, {
@@ -35,21 +44,24 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         },
     });
 
+    if (!fetchedUser.data.email) {
+        return res.status(500).json({ error: "You need to have a public email address on your Github profile." });
+    }
+
+    const { data: pixelData, error: pixelError } = await supabase.from("users").select("pixel").eq("id", cookie.user.id);
+    if (pixelError) {
+        return res.status(500).json({ error: pixelError.message });
+    }
+    const pixel = pixelData[0].pixel;
+
     const gitUser: GithubUser = {
         username: fetchedUser.data.login,
         id: fetchedUser.data.id,
         avatar_url: fetchedUser.data.avatar_url,
         url: fetchedUser.data.url,
         email: fetchedUser.data.email,
+        privateAccess: pixel ? true : false,
     };
-
-    const cookie = await supabase.auth.api.getUserByCookie(req);
-    if (!cookie) {
-        return res.status(500).json({
-            error: "Unauthorized.",
-        });
-    }
-    await supabase.auth.setAuth(cookie.token);
 
     const { error } = await supabase
         .from("users")
@@ -60,6 +72,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
                 avatar_url: gitUser.avatar_url,
                 url: gitUser.url,
                 email: gitUser.email,
+                privateAccess: gitUser.privateAccess,
             },
         }).eq("id", cookie.user.id);
 

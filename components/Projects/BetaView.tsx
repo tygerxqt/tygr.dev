@@ -19,7 +19,7 @@ export default function BetaView({
 
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/projects/beta/fetch?token=${supabase.auth.session().access_token}&project=${id}&user=${supabase.auth.user().id}`).then(response => {
+            await axios.get(`/api/projects/beta/fetch&project=${id}&user=${supabase.auth.user().id}`).then(response => {
                 setRequest(response.data.data);
                 setLoading(false);
             }).catch(error => {
@@ -40,7 +40,7 @@ export default function BetaView({
     async function submitRequest() {
         try {
             setLoading(true);
-            await axios.post(`/api/projects/beta/request?token=${supabase.auth.session().access_token}`, {
+            await axios.post(`/api/projects/beta/request`, {
                 project: id,
                 user: supabase.auth.user().id
             }).then(response => {

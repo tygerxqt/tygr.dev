@@ -64,9 +64,11 @@ export default function FeaturedProjects({ projects }) {
               title={projects[0].fields.title}
               description={projects[0].fields.description}
               image={"https:" + projects[0].fields.image.fields.file.url}
-              githubLink={projects[0].fields.githuhLink}
+              githubLink={projects[0].fields.githubLink}
               deployLink={projects[0].fields.deployLink}
               tags={projects[0].fields.tags}
+              beta={projects[0].fields.beta}
+              id={projects[0].fields.id}
             />
           </SlideUpWhenVisible>
           <SlideUpWhenVisible threshold={undefined}>
@@ -75,9 +77,11 @@ export default function FeaturedProjects({ projects }) {
                 title={projects[1].fields.title}
                 description={projects[1].fields.description}
                 image={"https:" + projects[1].fields.image.fields.file.url}
-                githubLink={projects[1].fields.github_link}
-                deployLink={projects[1].fields.deploy_link}
+                githubLink={projects[1].fields.githubLink}
+                deployLink={projects[1].fields.deployLink}
                 tags={projects[1].fields.tags}
+                beta={projects[1].fields.beta}
+                id={projects[1].fields.id}
               />
             </Box>
           </SlideUpWhenVisible>
@@ -86,9 +90,11 @@ export default function FeaturedProjects({ projects }) {
               title={projects[2].fields.title}
               description={projects[2].fields.description}
               image={"https:" + projects[2].fields.image.fields.file.url}
-              githubLink={projects[2].fields.github_link}
-              deployLink={projects[2].fields.deploy_link}
+              githubLink={projects[2].fields.githubLink}
+              deployLink={projects[2].fields.deployLink}
               tags={projects[2].fields.tags}
+              beta={projects[2].fields.beta}
+              id={projects[2].fields.id}
             />
           </SlideUpWhenVisible>
         </SimpleGrid>

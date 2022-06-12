@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../../lib/SupabaseAdminClient";
 import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
@@ -15,7 +14,16 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body.username) return res.status(500).json({ error: "Username is required." });
     if (!req.body.password) return res.status(500).json({ error: "Password is required." });
 
-    const { data: userData, error: userError } = await supabaseAdmin.from("users").select("username, tag");
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
+    }
+
+    supabase.auth.setAuth(cookie.token);
+
+    const { data: userData, error: userError } = await supabase.from("users").select("username, tag");
     if (userError) {
         return res.status(500).json({ error: userError.message });
     }

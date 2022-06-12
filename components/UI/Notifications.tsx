@@ -16,7 +16,8 @@ export default function Notifications() {
 
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/users/${supabase.auth.user().id}?token=${supabase.auth.session().access_token}`).then(response => {
+            await axios.get(`/api/users/${supabase.auth.user().id}`).then(response => {
+                console.log(response.data.notifications)
                 setNotifications(response.data.notifications);
             }).catch(error => {
                 toast({
@@ -37,7 +38,7 @@ export default function Notifications() {
     async function deleteNotification(id) {
         try {
             setLoading(true);
-            await axios.delete(`/api/notifications/delete?token=${supabase.auth.session().access_token}&id=${id}`).then(response => {
+            await axios.delete(`/api/notifications/delete?id=${id}`).then(response => {
                 toast({
                     title: "Success!",
                     description: response.data.data,

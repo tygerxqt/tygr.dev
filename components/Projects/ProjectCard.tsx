@@ -35,7 +35,10 @@ export default function ProjectCard({
     const toast = useToast();
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/projects/comments/${id}?token=${supabase.auth.session().access_token}`).then(response => {
+            if (!supabase.auth.session()) {
+                return setLoading(false);
+            }
+            await axios.get(`/api/projects/comments/${id}`).then(response => {
                 setComments(response.data.data);
                 setLoading(false);
             }).catch(error => {
@@ -55,7 +58,10 @@ export default function ProjectCard({
 
     async function handleCommentPost() {
         try {
-            await axios.post(`/api/projects/comments/post?token=${supabase.auth.session().access_token}`, {
+            if (!supabase.auth.session()) {
+                throw new Error("Please login first.");
+            }
+            await axios.post(`/api/projects/comments/post`, {
                 comment: comment,
                 project_id: id
             }).then(response => {
@@ -65,7 +71,7 @@ export default function ProjectCard({
                     title: "Success",
                     description: "Comment posted successfully",
                     status: "success",
-                    duration: 9000,
+                    duration: 3000,
                     isClosable: true,
                     position: "top-left"
                 });
@@ -74,40 +80,61 @@ export default function ProjectCard({
                     title: "Error",
                     description: error.response.data.error,
                     status: "error",
-                    duration: 9000,
+                    duration: 3000,
                     isClosable: true,
                     position: "top-left"
                 });
             });
         } catch (error) {
-            console.log(error);
+            toast({
+                title: "Error",
+                description: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+                position: "top-left"
+            })
         } finally {
             setComment("");
         }
     }
 
     async function deleteComment(id) {
-        await axios.delete(`/api/projects/comments/${id}/delete?token=${supabase.auth.session().access_token}`).then(response => {
-            setLoading(true);
-            toast({
-                title: "Success!",
-                description: response.data.data,
-                status: "success",
-                duration: 2000,
-                isClosable: true,
-                position: "top-left"
-            });
+        if (!supabase.auth.session()) {
+            throw new Error("Please login first.");
         }
-        ).catch(error => {
+        try {
+            await axios.delete(`/api/projects/comments/${id}/delete`).then(response => {
+                setLoading(true);
+                toast({
+                    title: "Success!",
+                    description: response.data.data,
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top-left"
+                });
+            }
+            ).catch(error => {
+                toast({
+                    title: "Error.",
+                    description: error.response.data.error,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                    position: "top-left"
+                });
+            });
+        } catch (error) {
             toast({
                 title: "Error.",
-                description: error.response.data.error,
+                description: error.message,
                 status: "error",
-                duration: 2000,
+                duration: 3000,
                 isClosable: true,
                 position: "top-left"
-            });
-        });
+            })
+        }
     }
 
     const getTag = (tag) => {
@@ -371,9 +398,9 @@ export default function ProjectCard({
                                     </Heading>
                                 </Stack>
                                 <Stack spacing={5}>
-                                    <Textarea placeholder="Add a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                                    <Textarea placeholder={supabase.auth.session() ? "Add a comment..." : "Login to add a comment"} value={comment} onChange={(e) => setComment(e.target.value)} disabled={supabase.auth.session() ? false : true} />
                                     <ButtonGroup spacing={2}>
-                                        <Button colorScheme="blue" onClick={() => { handleCommentPost() }}>
+                                        <Button colorScheme="blue" onClick={() => { handleCommentPost() }} disabled={supabase.auth.session() ? false : true}>
                                             Send
                                         </Button>
                                     </ButtonGroup>

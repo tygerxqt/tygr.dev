@@ -23,7 +23,7 @@ import React from "react";
 import BetaProjectCard from "../../../components/Projects/BetaProjectCard";
 import axios from "axios";
 import supabase from "../../../lib/SupabaseClient";
-import { UserProfile } from "../../../types/UserProfile";
+import { UserProfile } from "../../../types/Account/UserProfile";
 import Navbar from "../../../components/UI/Navbar";
 import useMediaQuery from "../../../hook/useMediaQuery";
 
@@ -42,7 +42,7 @@ function ProjectPage({ projects }) {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
+            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}`);
             if (dataStatus != 200) throw new Error(data.message);
             setUserData(data as UserProfile);
             setLoading(false);

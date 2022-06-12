@@ -1,9 +1,9 @@
-import axios from "axios";
 import { Deta } from "deta";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import stripe from "../../../lib/Stripe";
 import supabaseAdmin from "../../../lib/SupabaseAdminClient";
+import supabase from "../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
@@ -12,16 +12,16 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.body.token) return res.status(500).json({ error: "Token is required." });
-
-    const user = await supabaseAdmin.auth.api.getUser(req.body.token);
-    if (!user) {
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
         return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { data: userData, error: userError } = await supabaseAdmin.from("users").select("avatar, banner").eq("id", user.user.id);
+    supabase.auth.setAuth(cookie.token);
+
+    const { data: userData, error: userError } = await supabase.from("users").select("avatar, banner").eq("id", cookie.user.id);
     if (userError) {
         return res.status(500).json({ error: userError });
     }
@@ -34,7 +34,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
             return console.log("Avatar not found. Skipping...");
         }
 
-        const files = list.filter((name) => name.includes(user.user.id));
+        const files = list.filter((name) => name.includes(cookie.user.id));
         if (!files || files.length < 1) {
             return console.log("Avatar not found. Skipping...");
         }
@@ -52,7 +52,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
             return console.log("Banner not found. Skipping...");
         }
 
-        const files = list.filter((name) => name.includes(user.user.id));
+        const files = list.filter((name) => name.includes(cookie.user.id));
         if (!files || files.length < 1) {
             return console.log("Banner not found. Skipping...");
         }
@@ -62,7 +62,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const { error: customerError, data: customerData } = await supabaseAdmin.from("users").select("customer").eq("id", user.user.id);
+    const { error: customerError, data: customerData } = await supabase.from("users").select("customer").eq("id", cookie.user.id);
     if (customerError) {
         return res.status(500).json({ error: customerError.message });
     }
@@ -71,14 +71,14 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(200).json({ error: "No customer exists." });
     }
 
-    const customer = await stripe.customers.del(customerData[0].customer.id);
+    await stripe.customers.del(customerData[0].customer.id);
 
-    const { error: tableErr } = await supabaseAdmin.from("users").delete().match({ id: user.user.id });
+    const { error: tableErr } = await supabase.from("users").delete().match({ id: cookie.user.id });
     if (tableErr) {
         return res.status(500).json({ error: tableErr });
     }
 
-    const { error } = await supabaseAdmin.auth.api.deleteUser(user.user.id);
+    const { error } = await supabaseAdmin.auth.api.deleteUser(cookie.user.id);
     if (error) {
         return res.status(500).json({ error: error });
     }

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import supabaseAdmin from "../../../lib/SupabaseAdminClient";
+import supabase from "../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -12,18 +12,18 @@ const apiRoute = nextConnect({
 });
 
 apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query.token) return res.status(500).json({ error: "You need to provide a 'TOKEN' query." });
     if (!req.query.id) return res.status(500).json({ error: "You need to provide a 'ID' query." });
 
-    const { user } = await supabaseAdmin.auth.api.getUser(req.query.token as string);
-
-    if (!user) {
-        res.status(500).json({
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
             error: "Unauthorized.",
         });
     }
 
-    const { error: delErr } = await supabaseAdmin.from("notifications").delete().eq("id", req.query.id);
+    supabase.auth.setAuth(cookie.token);
+
+    const { error: delErr } = await supabase.from("notifications").delete().eq("id", req.query.id);
     if (delErr) {
         res.status(500).json({ error: delErr.message });
         throw delErr;

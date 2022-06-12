@@ -4,4 +4,5 @@ export interface GithubUser {
     avatar_url: string;
     url: string;
     email: string;
+    privateAccess: boolean;
 }

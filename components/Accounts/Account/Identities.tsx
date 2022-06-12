@@ -1,14 +1,12 @@
-import { Button, Skeleton, Flex, Box, useToast, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Center, Avatar, VStack, Text, SimpleGrid, Stack, Divider, Heading, ButtonGroup } from "@chakra-ui/react";
+import { Button, Skeleton, Flex, useToast, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Center, Avatar, VStack, Text, SimpleGrid, Stack, Divider, Heading, ButtonGroup } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import supabase from "../../../lib/SupabaseClient";
 import React from "react";
-import { BiUnlink } from "react-icons/bi";
-import { AiOutlineCheck } from "react-icons/ai";
-import { DiscordUser } from "../../../types/DiscordUser";
-import { GithubUser } from "../../../types/GithubUser";
+import { DiscordUser } from "../../../types/Identites/DiscordUser";
+import { GithubUser } from "../../../types/Identites/GithubUser";
 
 function Identities() {
     const toast = useToast();
@@ -32,7 +30,7 @@ function Identities() {
 
     useEffect(() => {
         setLoading(true)
-        fetch(`/api/users/${supabase.auth.user().id}?token=${supabase.auth.session().access_token}`)
+        fetch(`/api/users/${supabase.auth.user().id}`)
             .then((res) => res.json())
             .then((data) => {
                 data.discord.id ? setDiscordData(data.discord) : setDiscordData(null);
@@ -47,9 +45,7 @@ function Identities() {
     async function destroyDiscordLink() {
         setLoading(true);
         try {
-            const res = await axios.post(`/api/auth/unlink/discord`, {
-                token: supabase.auth.session().access_token,
-            });
+            const res = await axios.post(`/api/auth/unlink/discord`);
 
             if (res.status != 200) console.log(res.data.error)
 
@@ -87,9 +83,7 @@ function Identities() {
     async function destroyGithubLink() {
         setLoading(true);
         try {
-            const res = await axios.post(`/api/auth/unlink/github`, {
-                token: supabase.auth.session().access_token,
-            });
+            const res = await axios.post(`/api/auth/unlink/github`);
 
             if (res.status != 200) console.log(res.data.error)
 
