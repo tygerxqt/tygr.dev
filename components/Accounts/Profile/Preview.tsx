@@ -14,7 +14,7 @@ export default function Preview({ user, userData }) {
     return (
         <>
             <Flex flexDirection={"column"}>
-                <Box border={"1px"} borderColor={"black"} rounded={"lg"} pb={4}>
+                <Box border={"1px"} borderColor={"black"} rounded={"xl"} pb={4}>
                     <VStack spacing={4}>
                         <Image
                             src={userData.banner}
@@ -22,6 +22,7 @@ export default function Preview({ user, userData }) {
                             h={"200px"}
                             objectFit="cover"
                             alt={"banner"}
+                            borderRadius="10px 10px 0px 0px"
                             fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`}
                         />
                         <Flex

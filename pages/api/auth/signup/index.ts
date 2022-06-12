@@ -17,7 +17,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { data: userData, error: userError } = await supabaseAdmin.from("users").select("username, tag");
     if (userError) {
-        return res.status(500).json({ error: userError });
+        return res.status(500).json({ error: userError.message });
     }
 
     function generateTag() {

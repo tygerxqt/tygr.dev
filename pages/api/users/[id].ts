@@ -25,7 +25,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { data: discordData, error: discordError } = await supabaseAdmin.from("users").select("discord").eq("id", user.id);
         if (discordError) {
-            res.status(500).json({ error: discordError });
+            res.status(500).json({ error: discordError.message });
             throw discordError;
         }
 
@@ -33,54 +33,61 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { data: githubData, error: githubError } = await supabaseAdmin.from("users").select("github").eq("id", user.id);
         if (githubError) {
-            res.status(500).json({ error: githubError });
+            res.status(500).json({ error: githubError.message });
             throw githubError;
         }
         const github = githubData[0].github;
 
         const { data: badgesData, error: badgesError } = await supabaseAdmin.from("users").select("badges").eq("id", user.id);
         if (badgesError) {
-            res.status(500).json({ error: badgesError });
+            res.status(500).json({ error: badgesError.message });
             throw badgesError;
         }
         const badges = badgesData[0].badges;
 
         const { data: avatarData, error: avatarError } = await supabaseAdmin.from("users").select("avatar").eq("id", user.id);
         if (avatarError) {
-            res.status(500).json({ error: avatarError });
+            res.status(500).json({ error: avatarError.message });
             throw avatarError;
         }
         const avatar = avatarData[0].avatar;
 
         const { data: bannerData, error: bannerError } = await supabaseAdmin.from("users").select("banner").eq("id", user.id);
         if (bannerError) {
-            res.status(500).json({ error: bannerError });
+            res.status(500).json({ error: bannerError.message });
             throw bannerError;
         }
         const banner = bannerData[0].banner;
 
         const { data: tagData, error: tagError } = await supabaseAdmin.from("users").select("tag").eq("id", user.id);
         if (tagError) {
-            res.status(500).json({ error: tagError });
+            res.status(500).json({ error: tagError.message });
             throw tagError;
         }
         const tag = tagData[0].tag;
 
         const { data: cutieData, error: cutieError } = await supabaseAdmin.from("users").select("cutie").eq("id", user.id);
         if (cutieError) {
-            res.status(500).json({ error: cutieError });
+            res.status(500).json({ error: cutieError.message });
             throw cutieError;
         }
         const cutie = cutieData[0].cutie;
 
         const { data: pixelData, error: pixelError } = await supabaseAdmin.from("users").select("pixel").eq("id", user.id);
         if (pixelError) {
-            res.status(500).json({ error: pixelError });
+            res.status(500).json({ error: pixelError.message });
             throw pixelError;
         }
         const pixel = pixelData[0].pixel;
 
-        res.status(200).json({ ...user, discord, github, badges, tag, avatar, banner, cutie, pixel });
+        const { data: notificationsData, error: notificationsError } = await supabaseAdmin.from("notifications").select("*").eq("user", user.id);
+        if (notificationsError) {
+            res.status(500).json({ error: notificationsError.message });
+            throw notificationsError;
+        }
+        const notifications = notificationsData;
+
+        res.status(200).json({ user, discord, github, badges, tag, avatar, banner, cutie, pixel, notifications });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -173,13 +173,15 @@ function ProjectPage({ projects }) {
                       key={project.fields.title}
                       title={project.fields.title}
                       description={project.fields.description}
-                      deployLink={project.fields.deployLink}
-                      githubLink={project.fields.githubLink}
                       image={"https:" + project.fields.image.fields.file.url}
-                      tags={project.fields.tags}
-                      beta={project.fields.beta}
-                      published={project.fields.published}
+                      deployLink={project.fields.deployLink}
                       archived={project.fields.archived}
+                      userData={userData}
+                      beta={project.fields.beta}
+                      githubLink={project.fields.githubLink}
+                      id={project.fields.id}
+                      published={project.fields.published}
+                      tags={project.fields.tags}
                     />
                   ))}
               </SimpleGrid>

@@ -1,4 +1,4 @@
-import { Menu, MenuButton, Avatar, MenuList, Flex, Box, MenuGroup, MenuDivider, MenuItem, Image, Text } from "@chakra-ui/react";
+import { Menu, MenuButton, Avatar, MenuList, Flex, Box, MenuGroup, MenuDivider, MenuItem, Image, Text, AvatarBadge } from "@chakra-ui/react";
 import Link from "next/link";
 import { AiFillIdcard } from "react-icons/ai";
 import { BiCamera, BiCode, BiLogOut } from "react-icons/bi";
@@ -6,8 +6,9 @@ import { MdAccountCircle, MdDashboard, MdFeedback } from "react-icons/md";
 import { RiParkingFill } from "react-icons/ri";
 import supabase from "../../lib/SupabaseClient";
 import CompactBadges from "../Accounts/Badges/CompactBadges";
+import Notifications from "./Notifications";
 
-export default function UserMenu({ avatar, banner, pixel }) {
+export default function UserMenu({ avatar, banner, pixel, notifications }) {
     return (
         <>
             <Menu>
@@ -16,7 +17,23 @@ export default function UserMenu({ avatar, banner, pixel }) {
                     ml={"3vw"}
                     src={avatar}
                     size="md"
-                />
+                >
+                    {notifications.length === 0 ? null : (
+                        <>
+                            {notifications.length > 0 || notifications.length < 9 ? (
+                                <AvatarBadge bg='#FFFFFF' boxSize={"20px"}>
+                                    <Text fontSize={"12px"}>{notifications.length}</Text>
+                                </AvatarBadge>
+                            ) : (
+                                <AvatarBadge bg='#FFFFFF' boxSize={"22px"}>
+                                    <Text fontSize={"12px"}>9+</Text>
+                                </AvatarBadge>
+                            )}
+                        </>
+                    )}
+
+
+                </MenuButton>
                 <MenuList pt={0}>
                     <Image
                         src={banner}
@@ -58,6 +75,7 @@ export default function UserMenu({ avatar, banner, pixel }) {
                         <Link href="/account" passHref>
                             <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
                         </Link>
+                        <Notifications />
                         {pixel ? (
                             <>
                                 <MenuDivider />

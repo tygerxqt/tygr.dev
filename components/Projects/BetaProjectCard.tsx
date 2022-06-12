@@ -1,9 +1,11 @@
-import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode, Badge, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, ButtonGroup } from "@chakra-ui/react"
+import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode, Badge, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, ButtonGroup, Heading } from "@chakra-ui/react"
 import { useState } from "react"
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"
 import { VscTerminalBash } from "react-icons/vsc"
 import useMediaQuery from "../../hook/useMediaQuery"
+import ProjectView from "./BetaProjectView"
+import BetaView from "./BetaView"
 
 export default function BetaProjectCard({
     title,
@@ -14,7 +16,9 @@ export default function BetaProjectCard({
     tags,
     beta,
     published,
-    archived
+    archived,
+    id,
+    userData
 }) {
     const getTag = (tag) => {
         let values = []
@@ -194,17 +198,32 @@ export default function BetaProjectCard({
             <Modal onClose={onClose} isOpen={isOpen} isCentered>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Request access</ModalHeader>
+                    <ModalHeader></ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Text fontSize={['sm', 'md']}>
-                            Are you sure you want to request access to this project?
-                        </Text>
+                        <Heading fontSize={['xl', '2xl']}>What would you like to do?</Heading>
                     </ModalBody>
                     <ModalFooter>
                         <ButtonGroup spacing={4}>
-                            <Button onClick={onClose}>Close</Button>
-                            <Button onClick={onClose} colorScheme={"blue"}>Confirm</Button>
+                            <ProjectView
+                                title={title}
+                                description={description}
+                                tags={Tags}
+                                image={image}
+                                deployLink={deployLink}
+                                githubLink={githubLink}
+                                beta={beta}
+                                archived={archived}
+                                published={published}
+                                id={id}
+                                userData={userData}
+                            />
+                            <BetaView
+                                title={title}
+                                image={image}
+                                id={id}
+                                userData={userData}
+                            />
                         </ButtonGroup>
                     </ModalFooter>
                 </ModalContent>

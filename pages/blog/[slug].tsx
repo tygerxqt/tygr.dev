@@ -5,7 +5,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
 import PostContainer from "../../components/Blog/PostContainer";
 import MDXComponents from "../../components/Blog/MDXComponents";
-import { Avatar, Heading, Stack, Text, Image, Flex, useColorMode } from "@chakra-ui/react";
+import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/react";
 import dateFormat from "dateformat"
 
 function Post({ metadata, source }) {

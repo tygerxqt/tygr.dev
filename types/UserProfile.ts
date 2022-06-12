@@ -1,3 +1,4 @@
+import { User } from "@supabase/supabase-js";
 import { DiscordUser } from "./DiscordUser";
 import { GithubUser } from "./GithubUser";
 
@@ -10,6 +11,7 @@ interface Badges {
 }
 
 export interface UserProfile {
+    user: User;
     avatar: string;
     badges: Badges;
     banner: string;
@@ -20,6 +22,13 @@ export interface UserProfile {
     cutie: boolean;
     pixel: boolean;
     phone: string;
+    notifications: Array<{
+        id: string;
+        created_at: string;
+        user: string;
+        author: string;
+        message: string;
+    }>
     user_metadata: {
         username: string;
         full_name: string;

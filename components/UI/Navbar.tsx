@@ -290,7 +290,7 @@ export default function Navbar({ enableTransition }) {
           ) : (
             <>
               {session && userData ? (
-                <UserMenu avatar={userData.avatar} banner={userData.banner} pixel={userData.pixel} />
+                <UserMenu avatar={userData.avatar} banner={userData.banner} pixel={userData.pixel} notifications={userData.notifications} />
               ) : (
                 <NextLink href={"/profile"} passHref>
                   <Button
