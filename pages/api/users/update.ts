@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabase from "../../../lib/SupabaseClient"
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -10,6 +11,8 @@ const apiRoute = nextConnect({
         res.status(501).send({ error: `Method '${req.method}' Not allowed.` })
     },
 });
+
+apiRoute.use(cookieParser());
 
 apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body.tag) return res.status(500).send({ error: "Tag is required." });

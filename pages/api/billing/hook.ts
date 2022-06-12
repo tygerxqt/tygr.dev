@@ -3,6 +3,7 @@ import nextConnect from "next-connect";
 import stripe from "../../../lib/Stripe";
 import { buffer } from "micro";
 import supabaseAdmin from "../../../lib/SupabaseAdminClient";
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -12,6 +13,8 @@ const apiRoute = nextConnect({
         res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 });
+
+apiRoute.use(cookieParser());
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const signature = req.headers["stripe-signature"] as string;

@@ -4,12 +4,15 @@ import nextConnect from "next-connect";
 import stripe from "../../../lib/Stripe";
 import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 import supabase from "../../../lib/SupabaseClient";
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
         res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 });
+
+apiRoute.use(cookieParser());
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const cookie = await supabase.auth.api.getUserByCookie(req);

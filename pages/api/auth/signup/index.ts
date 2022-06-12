@@ -1,12 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabase from "../../../../lib/SupabaseClient";
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
         res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 });
+
+apiRoute.use(cookieParser());
 
 apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.body.name) return res.status(500).json({ error: "Full name is required." });
