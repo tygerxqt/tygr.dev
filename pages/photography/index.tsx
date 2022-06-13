@@ -1,4 +1,4 @@
-import { Stack, Heading, Divider, Text, SimpleGrid, Box, Image, chakra, Tooltip } from "@chakra-ui/react";
+import { Stack, Heading, Divider, Text, SimpleGrid, Box, Image, chakra, Tooltip, Flex } from "@chakra-ui/react";
 import { createClient } from "contentful";
 import PremiumContainer from "../../components/Accounts/PremiumContainer";
 import FileSaver from "file-saver";
@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import { BiDownload } from "react-icons/bi";
 import Head from "next/head";
 import Gallery from "react-photo-gallery";
+import Carousel, { Modal, ModalGateway } from "react-images";
 
 export default function PhotographyPage({ images }) {
     const [currentImage, setCurrentImage] = useState(0);
@@ -21,11 +22,14 @@ export default function PhotographyPage({ images }) {
         setViewerIsOpen(false);
     };
 
-    const imageArray = images.map((image) => {
-        console.log(image.fields);
+    const imageArray = images[0].fields.images.map((img) => {
+        return {
+            src: img.fields.file.url,
+            download: img.fields.file.url,
+            width: img.fields.file.details.image.width,
+            height: img.fields.file.details.image.height,
+        };
     });
-
-    console.log(images)
 
     return (
         <>
@@ -47,9 +51,25 @@ export default function PhotographyPage({ images }) {
                                 <>
                                     <Heading fontSize={{ base: "2xl", md: "4xl" }}>{item.fields.title} </Heading>
                                     <Divider />
-                                    <SimpleGrid columns={[1, 1, 2, 2]} spacing={5}>
-                                        {/* <Gallery photos={imageArray} onClick={openLightbox} /> */}
-                                    </SimpleGrid>
+                                    <Gallery photos={imageArray} onClick={openLightbox} />
+                                    <ModalGateway>
+                                        {viewerIsOpen ? (
+                                            <Modal onClose={closeLightbox}>
+                                                <Carousel
+                                                    currentIndex={currentImage}
+                                                    views={imageArray}
+                                                    styles={{
+                                                        view: (base, state) => ({
+                                                            ...base,
+                                                            display: "flex ",
+                                                            alignContent: "center",
+                                                            justifyContent: "center",
+                                                        })
+                                                    }}
+                                                />
+                                            </Modal>
+                                        ) : null}
+                                    </ModalGateway>
                                 </>
                             )
                         })}

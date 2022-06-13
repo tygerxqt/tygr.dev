@@ -271,24 +271,14 @@ function Profile() {
         const user = supabase.auth.user();
 
         async function fetch() {
-            try {
-                await axios.get(`/api/users/${user.id}`).then(response => {
-                    setUserData(response.data as UserProfile);
-                }).catch(err => {
-                    throw new Error(err);
-                });
-            } catch (err) {
-                toast({
-                    title: "Error",
-                    description: err,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            } finally {
+            await axios.get(`/api/users/${user.id}`).then(response => {
+                setUserData(response.data as UserProfile);
+            }).catch(err => {
+                throw new Error(err);
+            }).finally(() => {
                 setLoading(false);
                 setUpdate(false);
-            }
+            });
         }
 
         fetch();
