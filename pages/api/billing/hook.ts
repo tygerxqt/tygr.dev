@@ -4,6 +4,8 @@ import stripe from "../../../lib/Stripe";
 import { buffer } from "micro";
 import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 import cookieParser from "cookie-parser";
+import { GithubUser } from "../../../types/Identites/GithubUser";
+import { Octokit } from "@octokit/core";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -42,6 +44,44 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
             await supabaseAdmin.from("users").update({
                 pixel: false,
             }).eq("customer->>id", event.data.object.customer);
+
+            const { data: githubData, error: githubErr } = await supabaseAdmin.from("users").select("github").eq("customer->>", event.data.object.customer);
+            if (githubErr) {
+                res.status(500).json({ error: githubErr.message });
+                throw githubErr;
+            }
+
+            const github: GithubUser = githubData[0].github;
+
+            if (!github) {
+                return;
+            }
+            const octokit = new Octokit({ auth: process.env.OCTOKIT_AUTH_KEY });
+
+            const orgMembers = await octokit.request("GET /orgs/{org}/members", {
+                org: "tygerware"
+            });
+
+            if (orgMembers.data.filter(member => member.login === github.username).length < 1) {
+                return res.status(200).json({ data: true });
+            }
+
+            const orgInvites = await octokit.request("GET /orgs/{org}/invitations", {
+                org: "tygerware"
+            });
+
+            if (orgInvites.data.filter(invite => invite.login === github.username).length >= 1) {
+                await octokit.request(`DELETE /orgs/{org}/invitations/{invitation_id}`, {
+                    org: "tygerware",
+                    invitation_id: orgInvites.data.filter(invite => invite.login === github.username)[0].id
+                });
+                return res.status(200).json({ data: `An invite has already been sent to ${github.email}. Please check your emails.` });
+            }
+
+            await octokit.request(`DELETE /orgs/{org}/members/{username}`, {
+                org: "tygerware",
+                username: github.username
+            });
         }
             break;
 

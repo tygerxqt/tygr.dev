@@ -26,22 +26,22 @@ apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
 
     supabase.auth.setAuth(cookie.token);
 
-    const { data: commentUser, error: fetchErr } = await supabase.from("project_comments").select("user_id").eq("id", req.query.id);
+    const { data: commentUser, error: fetchErr } = await supabase.from("project_comments").select("user").eq("id", req.query.id);
     if (fetchErr) {
         res.status(500).json({ error: fetchErr.message });
         throw fetchErr;
-    }
-
-    const { data: admin, error: userFetchError } = await supabase.from("users").select("badges->>admin").eq("id", cookie.user.id);
-    if (userFetchError) {
-        res.status(500).json({ error: userFetchError.message });
-        throw userFetchError;
     }
 
     if (!commentUser[0]) {
         res.status(500).json({
             error: "Comment not found.",
         });
+    }
+
+    const { data: admin, error: userFetchError } = await supabase.from("users").select("badges->>admin").eq("id", cookie.user.id);
+    if (userFetchError) {
+        res.status(500).json({ error: userFetchError.message });
+        throw userFetchError;
     }
 
     if (admin || cookie.user.id === commentUser[0].user_id) {

@@ -273,11 +273,12 @@ function Profile() {
         async function fetch() {
             await axios.get(`/api/users/${user.id}`).then(response => {
                 setUserData(response.data as UserProfile);
-            }).catch(err => {
-                throw new Error(err);
-            }).finally(() => {
                 setLoading(false);
                 setUpdate(false);
+            }).catch(err => {
+                setLoading(false);
+                setUpdate(false);
+                throw new Error(err);
             });
         }
 

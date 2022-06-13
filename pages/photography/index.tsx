@@ -1,9 +1,7 @@
-import { Stack, Heading, Divider, Text, SimpleGrid, Box, Image, chakra, Tooltip, Flex } from "@chakra-ui/react";
+import { Stack, Heading, Divider, Text } from "@chakra-ui/react";
 import { createClient } from "contentful";
 import PremiumContainer from "../../components/Accounts/PremiumContainer";
-import FileSaver from "file-saver";
 import { useCallback, useState } from "react";
-import { BiDownload } from "react-icons/bi";
 import Head from "next/head";
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";

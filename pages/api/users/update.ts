@@ -37,31 +37,31 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).send({ error: userError });
     }
 
-    // check if the user that has the username and tag already is ourselfs
-    if (userData.find(user => user.username === cookie.user.user_metadata.username && user.username === req.body.username && user.tag === cookie.user.user_metadata.tag && user.tag === req.body.tag)) {
-        const { error } = await supabase.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
-        if (error) {
-            return res.status(500).send({ error: `Failed to update table. ${error}` });
+    // check if the username and tag already exists
+    const user = userData.find(user => user.username === req.body.username && user.tag === req.body.tag);
+    if (user) {
+        if (!user.username === cookie.user.user_metadata.username && user.tag === cookie.user.user_metadata.tag) {
+            return res.status(500).send({ error: "Username and tag already exists." });
         }
-
-        res.status(200).send({
-            data: `Updated to ${req.body.username}#${req.body.tag}.`,
-        });
     }
 
-    // check if a user has the username and tag already
-    const user = userData.filter(user => user.username === req.body.username && user.tag.toString().substring(0, 4) === req.body.tag);
-    if (user.length > 0) {
-        return res.status(500).send({ error: "Username and tag already exists." });
-    }
-
-    const { error } = await supabase.from("users").update({ tag: req.body.tag }).eq("id", cookie.user.id);
+    const { error } = await supabase.from("users").update({ tag: req.body.tag, username: req.body.username }).eq("id", cookie.user.id);
     if (error) {
-        return res.status(500).send({ error: `Failed to update table. ${error}` });
+        return res.status(500).send({ error: `Failed to update table. ${error.message}` });
+    }
+
+    const { error: metadataError } = await supabase.auth.update({
+        data: {
+            username: req.body.username,
+            tag: req.body.tag,
+        }
+    });
+    if (metadataError) {
+        return res.status(500).send({ error: `Failed to update metadata. ${metadataError.message}` });
     }
 
     res.status(200).send({
-        data: `Updated to ${req.body.username}#${req.body.tag}.`,
+        data: `Successfully updated to ${req.body.username}#${req.body.tag}.`,
     });
 });
 

@@ -35,10 +35,10 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         username: cookie.user.user_metadata.username,
         tag: cookie.user.user_metadata.tag,
         avatar: avatar[0].avatar,
-        user_id: cookie.user.id,
+        user: cookie.user.id,
     });
     if (error) {
-        res.status(500).json({ error: error });
+        res.status(500).json({ error: error.message });
         throw error;
     }
 

@@ -45,19 +45,7 @@ function Identities() {
     async function destroyDiscordLink() {
         setLoading(true);
         try {
-            const res = await axios.post(`/api/auth/unlink/discord`);
-
-            if (res.status != 200) console.log(res.data.error)
-
-            if (res.status != 200) {
-                toast({
-                    title: "Error",
-                    description: "An error occured: " + res.data.error,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            } else {
+            await axios.post(`/api/auth/unlink/discord`).then(res => {
                 toast({
                     title: "Success",
                     description: "Discord account unlinked.",
@@ -65,37 +53,27 @@ function Identities() {
                     duration: 9000,
                     isClosable: true,
                 });
+            }).catch(err => {
+                throw err.response.data.error;
+            }).finally(() => {
+                setLoading(false);
                 setUpdate(true);
-            }
+            });
         } catch (err) {
             toast({
                 title: "Error",
-                description: "An unexpected error occured. " + err.message,
+                description: "An unexpected error occured. " + err,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
             });
-        } finally {
-            setLoading(false);
         }
     }
 
     async function destroyGithubLink() {
         setLoading(true);
         try {
-            const res = await axios.post(`/api/auth/unlink/github`);
-
-            if (res.status != 200) console.log(res.data.error)
-
-            if (res.status != 200) {
-                toast({
-                    title: "Error",
-                    description: "An error occured: " + res.data.error,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                });
-            } else {
+            await axios.post(`/api/auth/unlink/github`).then(res => {
                 toast({
                     title: "Success",
                     description: "GitHub account unlinked.",
@@ -103,8 +81,12 @@ function Identities() {
                     duration: 9000,
                     isClosable: true,
                 });
+            }).catch(err => {
+                throw err.response.data.error;
+            }).finally(() => {
+                setLoading(false);
                 setUpdate(true);
-            }
+            })
         } catch (err) {
             toast({
                 title: "Error",
@@ -113,8 +95,6 @@ function Identities() {
                 duration: 9000,
                 isClosable: true,
             });
-        } finally {
-            setLoading(false);
         }
     }
 
