@@ -119,14 +119,6 @@ export async function getStaticProps({ params }) {
         "fields.archived": false
     });
 
-    if (data.items.length === 0) {
-        return {
-            redirect: {
-                destination: "/404",
-            },
-        }
-    }
-
     const article = data.items[0];
     const source = article.fields.body;
     article.fields.readingTime = readingTime(source).text;
