@@ -19,7 +19,7 @@ export default function UserPopout({
 
         async function fetch() {
             try {
-                await axios.get(`/api/users/${user.id}`).then(response => {
+                await axios.get(`/api/users/@me`).then(response => {
                     setUserData(response.data as UserProfile)
                 }).catch(err => {
                     throw new Error(err)

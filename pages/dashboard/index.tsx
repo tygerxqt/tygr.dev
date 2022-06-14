@@ -58,7 +58,7 @@ export default function Dashboard({ posts }) {
             if (!supabase.auth.session()) {
                 return setLoading(false);
             }
-            await axios.get(`/api/users/${supabase.auth.user().id}`).then(response => {
+            await axios.get(`/api/users/@me`).then(response => {
                 setUserData(response.data);
                 setLoading(false);
             }).catch(error => {

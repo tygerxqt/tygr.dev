@@ -43,7 +43,7 @@ export default function Pricing({ plans }) {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}`);
+            const { data, status: dataStatus } = await axios.get(`/api/users/@me`);
             if (dataStatus != 200) throw new Error(data.message);
             const { data: customerData, status: customerStatus } = await axios.get(`api/billing/customers/fetch`);
             if (customerStatus != 200) throw new Error(customerData.message);

@@ -20,7 +20,7 @@ export default function PremiumContainer({ children }) {
 
         async function fetch() {
             try {
-                await axios.get(`/api/users/${user.id}`).then(response => {
+                await axios.get(`/api/users/@me`).then(response => {
                     setUserData(response.data as UserProfile)
                 }).catch(error => {
                     throw new Error(error.response.data.error);

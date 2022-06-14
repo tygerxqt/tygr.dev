@@ -44,14 +44,14 @@ export default function Billing() {
         const session = supabase.auth.session();
 
         async function fetch() {
-            await axios.get(`/api/users/${user.id}`).then(response => {
+            await axios.get(`/api/users/@me`).then(response => {
                 setUserData(response.data as UserProfile)
             }).catch(error => {
                 throw new Error(error.response.data.error);
             });
 
             await axios.get(`api/billing/customers/fetch`).then(response => {
-                setCustomer(response.data as Stripe.Customer);
+                setCustomer(response.data.data);
             }).catch(error => {
                 throw new Error(error.response.data.error);
             }).finally(() => {
@@ -136,7 +136,7 @@ export default function Billing() {
                                                     Subscribe
                                                 </Button>
                                             </Link>
-                                            <Button colorScheme="gray" onClick={() => loadPortal()}>
+                                            <Button onClick={() => loadPortal()}>
                                                 Edit billing information
                                             </Button>
                                         </>

@@ -59,7 +59,7 @@ export default function Navbar({ enableTransition }) {
     }
 
     async function fetch() {
-      const data = await axios.get(`/api/users/${user.id}`);
+      const data = await axios.get(`/api/users/@me`);
       setUserData(data.data as UserProfile);
       setLoading(false);
     }

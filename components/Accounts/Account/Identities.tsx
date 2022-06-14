@@ -30,7 +30,7 @@ function Identities() {
 
     useEffect(() => {
         setLoading(true)
-        fetch(`/api/users/${supabase.auth.user().id}`)
+        fetch(`/api/users/@me`)
             .then((res) => res.json())
             .then((data) => {
                 data.discord.id ? setDiscordData(data.discord) : setDiscordData(null);

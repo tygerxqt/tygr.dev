@@ -13,7 +13,7 @@ export default function Badges() {
     const [badges, setBadges] = useState([]);
 
     useEffect(() => {
-        fetch(`/api/users/${user.id}`)
+        fetch(`/api/users/@me`)
             .then((res) => res.json())
             .then((data) => {
                 const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);

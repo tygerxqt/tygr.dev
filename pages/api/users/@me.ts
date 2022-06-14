@@ -15,18 +15,17 @@ const apiRoute = nextConnect({
 apiRoute.use(cookieParser());
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie || cookie.error) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
+    }
+
+    supabase.auth.setAuth(cookie.token);
+
+    const user = cookie.user;
     try {
-        const cookie = await supabase.auth.api.getUserByCookie(req);
-        if (!cookie) {
-            return res.status(500).json({
-                error: "Unauthorized.",
-            });
-        }
-
-        supabase.auth.setAuth(cookie.token);
-
-        const user = cookie.user;
-
         const { data: discordData, error: discordError } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
         if (discordError) {
             res.status(500).json({ error: discordError.message });

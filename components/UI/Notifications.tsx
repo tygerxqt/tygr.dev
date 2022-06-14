@@ -16,7 +16,7 @@ export default function Notifications() {
 
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/users/${supabase.auth.user().id}`).then(response => {
+            await axios.get(`/api/users/@me`).then(response => {
                 setNotifications(response.data.notifications);
             }).catch(error => {
                 toast({

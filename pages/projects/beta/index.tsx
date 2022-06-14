@@ -42,7 +42,7 @@ function ProjectPage({ projects }) {
         const session = supabase.auth.session();
 
         async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/${user.id}`);
+            const { data, status: dataStatus } = await axios.get(`/api/users/@me`);
             if (dataStatus != 200) throw new Error(data.message);
             setUserData(data as UserProfile);
             setLoading(false);
@@ -151,7 +151,7 @@ function ProjectPage({ projects }) {
                                             beta={project.fields.beta}
                                             published={project.fields.published}
                                             archived={project.fields.archived}
-                                            id={project.fields.id}
+                                            id={project.sys.id}
                                             userData={userData}
                                         />
                                     ))}

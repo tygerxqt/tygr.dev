@@ -1,7 +1,6 @@
-import { Divider, Heading, Stack, Text } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect } from "react";
-import Container from "../../components/UI/Container";
 export default function Cancelled() {
     useEffect(() => {
         setTimeout(() => {
@@ -11,20 +10,23 @@ export default function Cancelled() {
 
     return (
         <>
-            <Container enableTransition={false}>
-                <Head>
-                    <title>Cancelled</title>
-                </Head>
-                <Stack spacing={10} justifyContent="center" my={["10vh", "10vh", "15vh", "15vh"]}>
-                    <Stack spacing={5}>
-                        <Heading fontSize={{ base: "4xl", md: "6xl" }}>Cancelled</Heading>
-                        <Divider />
-                    </Stack>
-                    <Text fontSize={{ base: "md", md: "lg" }}>
-                        Your payment was cancelled. You was not charged. You will be redirecting in a few seconds.
-                    </Text>
+            <Head>
+                <title>Declined</title>
+            </Head>
+            <Stack
+                as="main"
+                justifyContent="center"
+                alignItems="center"
+                px={{ base: "10vw", md: "10vw" }}
+                mt={{ base: "15vh", md: "22.5vh" }}
+            >
+                <Stack alignItems="center" mb={"27vh"}>
+                    <Heading fontSize="display">Oops!</Heading>
+                    <Heading fontSize={{ base: "md", md: "2xl", lg: "4xl" }} textAlign={"center"}>
+                        Your payment was canceled. You was not charged. You will be redirected in a few seconds.
+                    </Heading>
                 </Stack>
-            </Container>
+            </Stack>
         </>
     )
 }

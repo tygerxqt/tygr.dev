@@ -268,10 +268,8 @@ function Profile() {
     }
 
     useEffect(() => {
-        const user = supabase.auth.user();
-
         async function fetch() {
-            await axios.get(`/api/users/${user.id}`).then(response => {
+            await axios.get(`/api/users/@me`).then(response => {
                 setUserData(response.data as UserProfile);
                 setLoading(false);
                 setUpdate(false);

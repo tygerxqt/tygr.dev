@@ -7,7 +7,7 @@ import { Avatar, Heading, Stack, Text, Image, useColorMode } from "@chakra-ui/re
 import dateFormat from "dateformat"
 import PremiumContainer from "../../../../components/Accounts/PremiumContainer";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import FeedComments from "../../../../components/Accounts/Feed/FeedComments";
 
 export default function FeedPost({ metadata, source }) {
     const { colorMode } = useColorMode();
@@ -16,16 +16,16 @@ export default function FeedPost({ metadata, source }) {
         <>
             <PremiumContainer>
                 <Head>
-                    <title>Feed / Archive / {metadata.title}</title>
+                    <title>Feed / Archive / {metadata.fields.title}</title>
                 </Head>
-                <Stack my="15vh" justifyContent="center" alignItems="center">
+                <Stack mt="15vh" justifyContent="center" alignItems="center">
                     <Stack
                         w={["100vw", "95vw"]}
                         maxW="680px"
                         p={["20px", "20px", "24px", "24px"]}
                     >
                         <Heading fontSize={["3xl", "3xl", "5xl", "5xl"]}>
-                            {metadata.title}
+                            {metadata.fields.title}
                         </Heading>
                         <Stack
                             py={2}
@@ -41,12 +41,12 @@ export default function FeedPost({ metadata, source }) {
                                 />
                                 <Text fontSize={["xs", "xs", "sm", "sm"]}>
                                     tygerxqt /{" "}
-                                    {dateFormat(Date.parse(metadata.date), "mmmm d, yyyy")}
+                                    {dateFormat(Date.parse(metadata.fields.date), "mmmm d, yyyy")}
                                 </Text>
                             </Stack>
                             <Stack>
                                 <Text fontSize={["xs", "xs", "sm", "sm"]}>
-                                    {metadata.readingTime}
+                                    {metadata.fields.readingTime}
                                 </Text>
                             </Stack>
                         </Stack>
@@ -57,7 +57,7 @@ export default function FeedPost({ metadata, source }) {
                             borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
                         >
                             <Image
-                                src={"https:" + metadata.hero.fields.file.url}
+                                src={"https:" + metadata.fields.hero.fields.file.url}
                                 borderRadius="10px"
                                 width={1366}
                                 height={892}
@@ -67,20 +67,23 @@ export default function FeedPost({ metadata, source }) {
                                 alt=""
                             ></Image>
                         </Stack>
-                        {colorMode === "light" ? (
-                            <>
+                        <Stack spacing={10}>
+                            {colorMode === "light" ? (
+                                <>
 
-                                <PostContainer.light>
-                                    <MDXRemote {...source} components={MDXComponents} />
-                                </PostContainer.light>
-                            </>
-                        ) : (
-                            <>
-                                <PostContainer.dark>
-                                    <MDXRemote {...source} components={MDXComponents} />
-                                </PostContainer.dark>
-                            </>
-                        )}
+                                    <PostContainer.light>
+                                        <MDXRemote {...source} components={MDXComponents} />
+                                    </PostContainer.light>
+                                </>
+                            ) : (
+                                <>
+                                    <PostContainer.dark>
+                                        <MDXRemote {...source} components={MDXComponents} />
+                                    </PostContainer.dark>
+                                </>
+                            )}
+                        </Stack>
+                        <FeedComments metadata={metadata} />
                     </Stack>
                 </Stack>
             </PremiumContainer>
@@ -124,9 +127,9 @@ export async function getStaticProps({ params }) {
         }
     }
 
-    const article = data.items[0].fields;
-    const source = article.body;
-    article.readingTime = readingTime(source).text;
+    const article = data.items[0];
+    const source = article.fields.body;
+    article.fields.readingTime = readingTime(source).text;
     const mdxSource = await serialize(source);
 
     return {
