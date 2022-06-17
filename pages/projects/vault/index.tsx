@@ -126,7 +126,7 @@ function ProjectPage({ projects }) {
                                 {" "}
                                 <Heading fontSize={{ base: "4xl", md: "6xl" }}>Project Vault</Heading>
                                 <Text fontSize={{ base: "14px", md: "16px" }}>
-                                    The entire list (archived, privated, and public) of projects I have created or worked on.
+                                    An entire list of projects I have worked on. This list includes privated and archived projects.
                                 </Text>
                                 <InputGroup maxW={"400px"}>
                                     <InputRightElement pointerEvents={"none"}>

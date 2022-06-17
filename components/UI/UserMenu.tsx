@@ -1,4 +1,5 @@
 import { Menu, MenuButton, Avatar, MenuList, Flex, Box, MenuGroup, MenuDivider, MenuItem, Image, Text, AvatarBadge } from "@chakra-ui/react";
+import axios from "axios";
 import Link from "next/link";
 import { AiFillIdcard } from "react-icons/ai";
 import { BiCamera, BiCode, BiLogOut } from "react-icons/bi";
@@ -9,6 +10,15 @@ import CompactBadges from "../Accounts/Badges/CompactBadges";
 import Notifications from "./Notifications";
 
 export default function UserMenu({ avatar, banner, pixel, notifications, mobile }) {
+    const user = supabase.auth.user();
+    async function Logout() {
+        await axios.delete("/api/auth/cookie/remove").catch(err => {
+            console.log(err);
+            return false;
+        });
+        supabase.auth.signOut();
+        return true;
+    }
     return (
         <>
             <Menu>
@@ -91,10 +101,6 @@ export default function UserMenu({ avatar, banner, pixel, notifications, mobile 
                                         <MenuItem closeOnSelect={true} icon={<BiCamera fontSize={"16px"} />}>Photography</MenuItem>
                                     </Link>
                                 </MenuGroup>
-                                <Link href="/projects/beta" passHref>
-                                    <MenuItem closeOnSelect={true} icon={<BiCode fontSize={"16px"} />}>Early access</MenuItem>
-                                </Link>
-
                             </>
                         ) : (
                             <>
@@ -110,8 +116,11 @@ export default function UserMenu({ avatar, banner, pixel, notifications, mobile 
                             closeOnSelect={true}
                             icon={<BiLogOut fontSize={"16px"} />}
                             onClick={() => {
-                                supabase.auth.signOut();
-                                window.location.reload();
+                                Logout().then(res => {
+                                    if (res === true) {
+                                        window.location.reload();
+                                    }
+                                })
                             }}
                         >
                             Sign out

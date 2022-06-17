@@ -14,7 +14,6 @@ import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
 import Preview from "./Profile/Preview";
 import TagField from "./Profile/TagField";
-import TokenField from "./Profile/TokenField";
 
 function Profile() {
     const user = supabase.auth.user();
@@ -33,10 +32,31 @@ function Profile() {
     const isLargerThan768 = useMediaQuery(768);
 
     // set server cookie
-    axios.post("/api/auth/cookie/set", {
-        event: user ? "SIGNED_IN" : "SIGNED_OUT",
-        session: supabase.auth.session(),
-    });
+    async function setCookie() {
+        await axios.post("/api/auth/cookie/set", {
+            event: user ? "SIGNED_IN" : "SIGNED_OUT",
+            session: supabase.auth.session(),
+        });
+    }
+
+    setCookie();
+
+    useEffect(() => {
+        async function fetch() {
+            const session = supabase.auth.session();
+            await axios.get(`/api/users/@me?token=${session.access_token}`).then(response => {
+                setUserData(response.data as UserProfile);
+                setLoading(false);
+                setUpdate(false);
+            }).catch(err => {
+                setLoading(false);
+                setUpdate(false);
+                throw new Error(err);
+            });
+        }
+
+        fetch();
+    }, [update, toast]);
 
     interface IProps {
         acceptedFileTypes?: string;
@@ -267,21 +287,7 @@ function Profile() {
         }
     }
 
-    useEffect(() => {
-        async function fetch() {
-            await axios.get(`/api/users/@me`).then(response => {
-                setUserData(response.data as UserProfile);
-                setLoading(false);
-                setUpdate(false);
-            }).catch(err => {
-                setLoading(false);
-                setUpdate(false);
-                throw new Error(err);
-            });
-        }
 
-        fetch();
-    }, [update, toast]);
 
     return (
         <>
@@ -503,7 +509,6 @@ function Profile() {
                                     <EmailField />
                                     <PasswordField />
                                     <IDField />
-                                    {userData.badges.admin ? <TokenField /> : null}
                                 </Stack>
                             </Stack>
                         </Stack>

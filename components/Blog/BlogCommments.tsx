@@ -20,7 +20,7 @@ export default function BlogComment({ metadata }) {
                 setComments(response.data.data);
             }).catch(error => {
                 toast({
-                    title: "Error",
+                    title: "Failed to load comments.",
                     description: error.response.data.message,
                     status: "error",
                     duration: 9000,
@@ -34,14 +34,18 @@ export default function BlogComment({ metadata }) {
                 setUserData(response.data);
                 setLoading(false);
             }).catch(error => {
-                toast({
-                    title: "Error",
-                    description: error.response.data.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                    position: "top-left"
-                });
+                if (error.response.data.error === "Unauthorized.") {
+                    setUserData(null);
+                } else {
+                    toast({
+                        title: "Failed to get user.",
+                        description: error.response.data.error,
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                        position: "top-left"
+                    });
+                }
                 setLoading(false);
             })
         }
@@ -190,7 +194,6 @@ export default function BlogComment({ metadata }) {
                     </Stack>
                 </>
             )}
-
         </>
     )
 }

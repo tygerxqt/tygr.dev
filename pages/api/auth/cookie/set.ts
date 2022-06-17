@@ -12,7 +12,7 @@ const apiRoute = nextConnect({
         res.status(501).json({ error: `Method '${req.method}' Not allowed.` })
     },
 }).use(cookieParser()).post(async (req: NextApiRequest, res: NextApiResponse) => {
-    supabase.auth.api.setAuthCookie(req, res);
+    await supabase.auth.api.setAuthCookie(req, res);
 });
 
 export default apiRoute;

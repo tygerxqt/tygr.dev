@@ -19,13 +19,6 @@ export default function Feed({ posts }) {
                         <Text fontSize={{ base: "md", md: "lg" }}>
                             Updates on projects, and other Pixel related news.
                         </Text>
-                        <ButtonGroup>
-                            <Link href={"/feed/archive"} passHref>
-                                <Button>
-                                    Feed Archive
-                                </Button>
-                            </Link>
-                        </ButtonGroup>
                     </Stack>
                     <Stack spacing={5}>
                         {posts.map((post) => (

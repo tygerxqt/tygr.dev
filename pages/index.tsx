@@ -66,12 +66,13 @@ let client = createClient({
 export async function getStaticProps() {
   let data = await client.getEntries({
     content_type: "project",
+    order: "sys.createdAt",
     "fields.featured": true
   });
 
   return {
     props: {
-      projects: data.items,
+      projects: data.items.reverse(),
     },
   };
 }
