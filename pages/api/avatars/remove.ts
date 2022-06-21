@@ -3,13 +3,10 @@ import nextConnect from "next-connect";
 import { Deta } from "deta";
 import supabase from "../../../lib/SupabaseClient";
 import cookieParser from "cookie-parser";
-import supabaseAdmin from "../../../lib/SupabaseAdminClient";
 
 const apiRoute = nextConnect({
   onError(error, req: NextApiRequest, res: NextApiResponse) {
-    res
-      .status(501)
-      .json({ error: `Sorry something Happened! ${error.message}` });
+    res.status(501).json({ error: `Sorry something Happened! ${error.message}` });
   },
   onNoMatch(req: NextApiRequest, res: NextApiResponse) {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
@@ -24,18 +21,16 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
       error: "You need to provide the User ID.",
     });
 
-  if (!req.query || !req.query.token)
+  const cookie = await supabase.auth.api.getUserByCookie(req);
+  if (!cookie) {
     return res.status(500).json({
-      error: "You need to provide the User Token.",
+      error: "Unauthorized.",
     });
+  }
+
+  supabase.auth.setAuth(cookie.token);
 
   try {
-    const { user } = await supabase.auth.api.getUser(req.query.token as string);
-
-    if (!user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
     const deta = Deta(process.env.DETA_PROJECT_KEY);
     const drive = deta.Drive("avatars");
     const list = await (await drive.list()).names;
@@ -43,7 +38,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json({ error: "You don't have an avatar set." });
     }
 
-    const files = list.filter((name) => name.includes(user.id));
+    const files = list.filter((name) => name.includes(cookie.user.id));
     if (!files || files.length < 1) {
       return res.status(200).json({ error: "You don't have an avatar set." });
     }
@@ -51,12 +46,12 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     files.forEach(async (file) => {
       await drive.delete(file);
     });
-    const { error: dbError } = await supabaseAdmin.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg` }).eq("id", user.id);
+    const { error: dbError } = await supabase.from("users").update({ avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg` }).eq("id", cookie.user.id);
     if (dbError) return res.status(500).json({ error: dbError });
 
     res.status(200).json({ data: true });
   } catch (err) {
-    res.status(502).json({ error: err });
+    res.status(500).json({ error: err });
   }
 });
 

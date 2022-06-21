@@ -14,14 +14,15 @@ import {
   useColorMode,
   useToast
 } from "@chakra-ui/react";
-import Head from "next/head";
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
-import Navbar from "./Navbar";
-import supabase from "../../lib/SupabaseClient";
+import Navbar from "../UI/Navbar";
+import { useAuth } from "../../contexts/Auth";
 import axios from "axios";
+import supabase from "../../lib/SupabaseClient";
 
 export default function Auth() {
+  const { signIn, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("login");
 
@@ -38,33 +39,54 @@ export default function Auth() {
   const { colorMode } = useColorMode();
   const toast = useToast();
 
+  const setModeToLoginMobile = async () => {
+    // @ts-ignore
+    document.getElementById("register-mobile").reset();
+    setMode("login");
+  };
+
+  const setModeToRegisterMobile = async () => {
+    // @ts-ignore
+    document.getElementById("login-mobile").reset();
+    setMode("register");
+  };
+
+  const setModeToLoginDesktop = async () => {
+    // @ts-ignore
+    document.getElementById("register-desktop").reset();
+    setMode("login");
+  };
+
+  const setModeToRegisterDesktop = async () => {
+    // @ts-ignore
+    document.getElementById("login-desktop").reset();
+    setMode("register");
+  };
+
   const handleLogin = useCallback(
     async (email: string, password: string) => {
       try {
         setLoading(true);
-
+        if (!email || !password) {
+          return toast({
+            title: "Error",
+            description: "You need to provide an email and password.",
+            status: "error",
+            duration: 9000,
+            isClosable: true
+          });
+        }
         // set client cookie
-        const { user, error } = await supabase.auth.signIn({ email, password });
+        signIn(email, password);
 
-        // set server cookie
-        axios.post("/api/auth/cookie/set", {
+        await axios.post("/api/auth/cookie", {
           event: user ? "SIGNED_IN" : "SIGNED_OUT",
           session: supabase.auth.session(),
         });
 
-        if (error) {
-          toast({
-            title: "Error",
-            description: error.message,
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-          return console.log(error);
-        }
         toast({
           title: "Success",
-          description: `Logged in as ${user.user_metadata.username}!`,
+          description: `Logged in as ${email}!`,
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -72,7 +94,7 @@ export default function Auth() {
       } catch (error) {
         toast({
           title: "Error",
-          description: error.message,
+          description: error,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -82,7 +104,7 @@ export default function Auth() {
         setLoading(false);
       }
     },
-    [toast]
+    [toast, signIn, user]
   );
 
   const handleRegister = useCallback(
@@ -93,44 +115,47 @@ export default function Auth() {
       password: string,
       passwordConfirm: string
     ) => {
+      setLoading(true);
       try {
-        setLoading(true);
-        // if (password !== passwordConfirm)
-        //   throw new Error("Passwords do not match");
-        // if (!name) throw Error("Please provide your full name.");
-        // if (!username) throw Error("Please provide your username.");
-        // const { error } = await supabase.auth.signUp(
-        //   { email: email, password: password },
-        //   {
-        //     data: {
-        //       full_name: name,
-        //       username: username
-        //     },
-        //   }
-        // );
-        // if (error) {
-        //   throw error;
-        // }
-        // toast({
-        //   title: "Success!",
-        //   description: `Check your email to confirm registration!`,
-        //   status: "success",
-        //   duration: 9000,
-        //   isClosable: true,
-        // });
-        throw new Error("Registration is currently disabled.");
-      } catch (error) {
+        if (password !== passwordConfirm)
+          throw new Error("Passwords do not match");
+        if (!email) throw new Error("Email is required");
+        if (!name) throw Error("Please provide your full name.");
+        if (!username) throw Error("Please provide your username.");
+      } catch (err) {
         toast({
           title: "Error",
-          description: error.message,
+          description: err.message,
           status: "error",
           duration: 9000,
           isClosable: true,
         });
-        return console.log(error);
-      } finally {
-        setLoading(false);
       }
+
+      await axios.post("/api/auth/signup", {
+        name: name,
+        email: email,
+        username: username,
+        password: password,
+      }).then(async response => {
+        toast({
+          title: "Success",
+          description: `${response.data.data}`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }).catch(error => {
+        toast({
+          title: "Error",
+          description: error,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+
+      setLoading(false);
     },
     [toast]
   );
@@ -175,9 +200,6 @@ export default function Auth() {
       {mode === "login" ? (
         <>
           <Navbar enableTransition={false} />
-          <Head>
-            <title>Log in</title>
-          </Head>
           {isLargerThan768 ? (
             <>
               <Flex as="main" justifyContent="center" flexDirection="column">
@@ -198,7 +220,7 @@ export default function Auth() {
                                 colorMode === "light" ? "#A7C7E7" : "#90CDF4"
                               }
                               onClick={() => {
-                                setMode("register");
+                                setModeToRegisterDesktop();
                               }}
                             >
                               Sign Up
@@ -206,9 +228,9 @@ export default function Auth() {
                           </HStack>
                         </Stack>
                         <Box maxW="sm">
-                          <form>
+                          <form id="login-desktop">
                             <FormControl>
-                              <FormLabel zIndex={-1}>Email</FormLabel>
+                              <FormLabel>Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="hello@apple.com"
@@ -220,7 +242,7 @@ export default function Auth() {
                                 flexDirection={"row"}
                                 justifyContent="space-between"
                               >
-                                <FormLabel zIndex={-1}>Password</FormLabel>
+                                <FormLabel>Password</FormLabel>
                                 {/* <Link href={"/recovery"} passHref>
                                   <Button variant={"link"} pb={2} >
                                     Forgot Password?
@@ -288,7 +310,7 @@ export default function Auth() {
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
                           onClick={() => {
-                            setMode("register");
+                            setModeToRegisterMobile();
                           }}
                         >
                           Sign Up
@@ -298,7 +320,7 @@ export default function Auth() {
                   </Center>
                   <Center>
                     <Box maxW="sm">
-                      <form>
+                      <form id="login-mobile">
                         <FormControl>
                           <FormLabel>Email</FormLabel>
                           <Input
@@ -335,40 +357,37 @@ export default function Auth() {
         <>
           {/* Register - Desktop */}
           <Navbar enableTransition={false} />
-          <Head>
-            <title>Register</title>
-          </Head>
           {isLargerThan768 ? (
             <>
               <Flex as="main" justifyContent="center" flexDirection="column">
                 <Stack justifyContent="center">
                   <Flex flexDirection={"row"}>
                     <Flex width={"35vw"} height={"100vh"}>
-                      <Box mt={"50%"} mx={"15%"} zIndex={2}>
+                      <Box my={"20vh"} mx={"15%"} zIndex={2}>
                         {" "}
                         <Stack mb={8} spacing={2}>
                           <Heading fontSize={{ md: "4xl", lg: "6xl" }}>
-                            Pixel accounts are closed.
+                            Register
                           </Heading>
                           <HStack spacing={1}>
-                            <Text>Site Admin?</Text>
+                            <Text>Already have an account?</Text>
                             <Button
                               variant={"link"}
                               color={
                                 colorMode === "light" ? "#A7C7E7" : "#90CDF4"
                               }
                               onClick={() => {
-                                setMode("login");
+                                setModeToLoginDesktop();
                               }}
                             >
                               Log in
                             </Button>
                           </HStack>
                         </Stack>
-                        {/* <Box maxW="sm">
-                          <form>
+                        <Box maxW="sm">
+                          <form id="register-desktop">
                             <FormControl>
-                              <FormLabel zIndex={-1}>Name</FormLabel>
+                              <FormLabel  >Name</FormLabel>
                               <Input
                                 type="text"
                                 placeholder="John Doe"
@@ -378,17 +397,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Username</FormLabel>
-                              <Input
-                                type="text"
-                                placeholder="johndoe"
-                                onChange={(e) =>
-                                  setRegisterUsername(e.target.value)
-                                }
-                              />
-                            </FormControl>
-                            <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Email</FormLabel>
+                              <FormLabel  >Email</FormLabel>
                               <Input
                                 type="email"
                                 placeholder="john@doe.com"
@@ -398,7 +407,17 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>Password</FormLabel>
+                              <FormLabel  >Username</FormLabel>
+                              <Input
+                                type="text"
+                                placeholder="johndoe"
+                                onChange={(e) =>
+                                  setRegisterUsername(e.target.value)
+                                }
+                              />
+                            </FormControl>
+                            <FormControl pt={6}>
+                              <FormLabel  >Password</FormLabel>
                               <Input
                                 type="password"
                                 placeholder="********"
@@ -408,7 +427,7 @@ export default function Auth() {
                               />
                             </FormControl>
                             <FormControl pt={6}>
-                              <FormLabel zIndex={-1}>
+                              <FormLabel  >
                                 Confirm Password
                               </FormLabel>
                               <Input
@@ -436,7 +455,7 @@ export default function Auth() {
                           }
                         >
                           Create Account
-                        </Button> */}
+                        </Button>
                       </Box>
                     </Flex>
                     <Flex width={"65vw"} height={"100vh"}>
@@ -472,28 +491,25 @@ export default function Auth() {
                     <Stack spacing={0} align={"center"}>
                       {" "}
                       <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        Pixel accounts
-                      </Heading>
-                      <Heading fontSize={{ base: "4xl", md: "6xl" }}>
-                        are closed.
+                        Register
                       </Heading>
                       <HStack spacing={1}>
-                        <Text>Site Admin?</Text>
+                        <Text>Already have an account?</Text>
                         <Button
                           variant={"link"}
                           color={colorMode === "light" ? "#A7C7E7" : "#90CDF4"}
-                          onClick={() => setMode("login")}
+                          onClick={() => setModeToLoginMobile()}
                         >
                           Log in
                         </Button>
                       </HStack>
                     </Stack>
                   </Center>
-                  {/* <Center>
+                  <Center>
                     <Box maxW="sm">
-                      <form>
+                      <form id="register-mobile">
                         <FormControl>
-                          <FormLabel zIndex={-1}>Name</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <Input
                             type="text"
                             placeholder="John Doe"
@@ -501,7 +517,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Username</FormLabel>
+                          <FormLabel>Username</FormLabel>
                           <Input
                             type="text"
                             placeholder="johndoe"
@@ -511,7 +527,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Email</FormLabel>
+                          <FormLabel  >Email</FormLabel>
                           <Input
                             type="email"
                             placeholder="john@doe.com"
@@ -519,7 +535,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Password</FormLabel>
+                          <FormLabel  >Password</FormLabel>
                           <Input
                             type="password"
                             placeholder="********"
@@ -529,7 +545,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel zIndex={-1}>Confirm Password</FormLabel>
+                          <FormLabel  >Confirm Password</FormLabel>
                           <Input
                             type="password"
                             placeholder="********"
@@ -555,7 +571,7 @@ export default function Auth() {
                         Confirm
                       </Button>
                     </Box>
-                  </Center> */}
+                  </Center>
                 </Stack>
               </Flex>
             </>

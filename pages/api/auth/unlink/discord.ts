@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabase from "../../../../lib/SupabaseClient";
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -11,18 +12,17 @@ const apiRoute = nextConnect({
     },
 });
 
-apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.body) {
-        return res.status(502).json({ error: "You need to provide a 'token' query." });
-    }
+apiRoute.use(cookieParser());
 
+apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
     const cookie = await supabase.auth.api.getUserByCookie(req);
     if (!cookie) {
         return res.status(500).json({
             error: "Unauthorized.",
         });
     }
-    await supabase.auth.setAuth(cookie.token);
+
+    supabase.auth.setAuth(cookie.token);
 
     const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
     if (!userData[0].discord.id) {

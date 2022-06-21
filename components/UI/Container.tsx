@@ -20,10 +20,20 @@ export default function Container({ enableTransition, children }) {
       >
         {children}
       </Flex>
-      <Stack alignItems="center" mb={5}>
+      <Stack alignItems="center">
         <Text textAlign="center" fontSize="sm">
-          Designed and Developed by tygerxqt.
+          Designed and Developed by{" "}
+          <Link
+            href="https://twitter.com/tygerxqt"
+            isExternal
+            fontWeight={"semibold"}
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
+          >
+            @tygerxqt
+          </Link>
           <br />
+        </Text>
+        <Text textAlign="center" fontSize="sm">
           Built with{" "}
           <Link
             href="https://nextjs.org/"
@@ -49,6 +59,27 @@ export default function Container({ enableTransition, children }) {
             Vercel
           </Link>
           .
+        </Text>
+      </Stack>
+      <Stack alignItems="center" mb={5}>
+        <Text textAlign="center" fontSize="sm">
+          <Link
+            href="/privacy"
+            fontWeight="semibold"
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
+          >
+            Privacy policy
+          </Link>
+          {" "}
+          &{" "}
+          {" "}
+          <Link
+            href="/terms"
+            fontWeight="semibold"
+            color={colorMode === "light" ? "#5E81AC" : "#90CDF4"}
+          >
+            Terms of service
+          </Link>
         </Text>
       </Stack>
     </>

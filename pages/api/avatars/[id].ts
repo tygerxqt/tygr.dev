@@ -18,3 +18,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(404).send("Not found");
     }
 }
+
+export const config = {
+    api: {
+        responseLimit: '8mb',
+    },
+};

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Flex,
-  Box,
-  Slide,
   useDisclosure,
   Drawer,
   DrawerOverlay,
@@ -16,69 +14,56 @@ import {
   Image,
   Center,
   Avatar,
+  AvatarBadge,
+  Box,
   Menu,
   MenuButton,
-  MenuList,
+  MenuDivider,
   MenuGroup,
   MenuItem,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  VStack,
+  MenuList,
   Text,
-  SimpleGrid,
-  ModalFooter,
-  Spinner,
-  SkeletonCircle
+  chakra,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
-import { AiOutlineMenu } from "react-icons/ai";
+import { AiFillIdcard, AiOutlineMenu } from "react-icons/ai";
 import { BsMoonFill, BsFillSunFill } from "react-icons/bs";
+import { useAuth } from "../../contexts/Auth";
+import { BiCamera, BiLogOut } from "react-icons/bi";
+import { MdAccountCircle, MdDashboard, MdFeedback } from "react-icons/md";
+import { RiParkingFill } from "react-icons/ri";
+import CompactBadges from "../Accounts/Badges/CompactBadges";
+import Notifications from "./Notifications";
 import supabase from "../../lib/SupabaseClient";
-import Link from "next/link";
 import axios from "axios";
-import { UserProfile } from "../../types/UserProfile";
 
 export default function Navbar({ enableTransition }) {
+  const { userData, user, signOut, update } = useAuth();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      await axios.post("/api/auth/cookie", {
+        event: session?.user ? "SIGNED_IN" : "SIGNED_OUT",
+        session: session,
+      });
+    });
+  });
+
   const isLargerThan768 = useMediaQuery(768);
   const {
     isOpen: isOpenDrawer,
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
-  const {
-    isOpen: isOpenModal,
-    onOpen: onOpenModal,
-    onClose: onCloseModal,
-  } = useDisclosure();
-  const session = supabase.auth.session();
-  const user = supabase.auth.user();
-  const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
-
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const user = supabase.auth.user();
-    const session = supabase.auth.session();
-
-    if (!user || !session) {
-      setUserData({} as UserProfile);
-      setLoading(false);
-      return;
+    if (user) {
+      if (!userData) {
+        update();
+      }
     }
-
-    async function fetch() {
-      const data = await axios.get(`/api/users/${user.id}?token=${session.access_token}`);
-      setUserData(data.data as UserProfile);
-      setLoading(false);
-    }
-
-    fetch();
-  }, []);
+  }, [update, user, userData]);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -127,218 +112,297 @@ export default function Navbar({ enableTransition }) {
     </>
   );
 
-  const AccountCard = () => (
-    <>
-      <Modal
-        onClose={onCloseModal}
-        isOpen={isOpenModal}
-        isCentered
-        motionPreset="slideInBottom"
-        size={"sm"}
-      >
-        <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="5px" />
-        <ModalContent>
-          <ModalHeader />
-          <ModalCloseButton />
-          <ModalBody>
-            <Center>
-              <VStack spacing={5}>
-                <Avatar
-                  src={userData.avatar}
-                  rounded="full"
-                  size="2xl"
-                />
-                <VStack>
-                  <Text fontSize="26px" fontWeight="bold">
-                    {user.user_metadata.username}
-                  </Text>
-                  <Text fontSize="14px">{user.email}</Text>
-                </VStack>
-              </VStack>
-            </Center>
-            <Center>
-              <SimpleGrid
-                columns={2}
-                spacing={5}
-                mt={{ base: "6vw", sm: "4vw", md: "2vw" }}
-              >
-                <NextLink href="/profile" passHref>
-                  <Button as="a" variant="solid" fontSize="16px">
-                    Profile
-                  </Button>
-                </NextLink>
-
-                <Button
-                  as="a"
-                  variant="solid"
-                  fontSize="16px"
-                  onClick={() => supabase.auth.signOut()}
-                >
-                  Log out
-                </Button>
-              </SimpleGrid>
-            </Center>
-          </ModalBody>
-          <Center>
-            <ModalFooter />
-          </Center>
-        </ModalContent>
-      </Modal>
-    </>
-  );
-
   return (
-    <Box>
-      <Slide
-        direction="top"
-        in={true}
-        transition={
-          enableTransition
-            ? { enter: { duration: 0.5, delay: 0.01 } }
-            : { enter: { duration: 0, delay: 0 } }
-        }
-      >
-        <Flex
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          px={"4vw"}
-          py={{ base: "1.5vh", md: "3vh" }}
-          zIndex={99}
-          backgroundColor={colorMode === "light" ? "#FFFFFF" : "#121212"}
-          borderBottom={"1px"}
-          borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
-        >
-          <NextLink href="/" passHref>
-            <Image
-              borderTop={"4vw"}
-              w={{ base: "32px", md: "46px" }}
-              h={{ base: "32px", md: "46px" }}
-              src={
-                colorMode === "light"
-                  ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
-                  : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
-              }
-              alt={"tygerxqt"}
-            />
-          </NextLink>
-          {isLargerThan768 ? (
-            <Center>
-              <NextLink href={"/projects"} passHref>
-                <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
-                  Projects
-                </Button>
-              </NextLink>
-              <NextLink href={"/blog"} passHref>
-                <Button
-                  as="a"
-                  variant={"ghost"}
-                  p="4"
-                  ml="3vw"
-                  fontSize={"16px"}
-                >
-                  Blog
-                </Button>
-              </NextLink>
-              <Button
-                variant="ghost"
-                p="4"
-                ml="3vw"
-                fontSize={"16px"}
-                onClick={toggleColorMode}
-              >
-                {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
-              </Button>
-              {loading ? (
-                <SkeletonCircle p="4" ml="3vw" size='12' />
-              ) : (
-                <>
-                  {session ? (
-                    <NextLink href={"/profile"} passHref>
-                      <Menu>
-                        <MenuButton
-                          as={Avatar}
-                          ml={"3vw"}
-                          src={userData.avatar}
-                          size="md"
-                        />
-                        <MenuList>
-                          <MenuGroup title={"Account"}>
-                            <Link href="/profile" passHref>
-                              <MenuItem closeOnSelect={true}>Profile</MenuItem>
-                            </Link>
-                          </MenuGroup>
-                          <MenuGroup>
-                            <MenuItem
-                              closeOnSelect={true}
-                              onClick={() => {
-                                supabase.auth.signOut();
-                                window.location.reload();
-                              }}
-                            >
-                              Sign out
-                            </MenuItem>
-                          </MenuGroup>
-                        </MenuList>
-                      </Menu>
-                    </NextLink>
-                  ) : (
-                    <NextLink href={"/profile"} passHref>
-                      <Button
-                        variant="solid"
-                        p="4"
-                        ml="3vw"
-                        colorScheme={"blue"}
-                        fontSize={"16px"}
-                      >
-                        Log in
-                      </Button>
-                    </NextLink>
-                  )}
-                </>
-              )}
-            </Center>
-          ) : (
-            <Center>
-              {loading ? (
-                <SkeletonCircle p="4" ml="3vw" size='6' />
-              ) : (
-                <>
-                  {session ? (
-                    <>
-                      <Button variant="unstyled" onClick={onOpenModal}>
-                        <Avatar
-                          as="a"
-                          size="sm"
+    <Flex
+      zIndex={"99"}
+      position="fixed"
+      w="100%"
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      px={"4vw"}
+      py={{ base: "1.5vh", md: "3vh" }}
+      backgroundColor={colorMode === "light" ? "rgba(255, 255, 255, 0.9)" : "rgba(18, 18, 18, 0.9)"}
+      backdropFilter="blur(5px)"
+      borderBottom={"1px"}
+      borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
+    >
 
-                          src={userData.avatar}
-                        />
-                      </Button>
-                      <AccountCard />
+      <NextLink href="/" passHref>
+        <Image
+          borderTop={"4vw"}
+          w={{ base: "32px", md: "46px" }}
+          h={{ base: "32px", md: "46px" }}
+          src={
+            colorMode === "light"
+              ? "https://images.ctfassets.net/547zkxycwgvr/4tJraYpXGK1SnFV9P1mFxk/5c23ebf82f7dd9e4ba3a34fa1e40fb68/SOSvCdA.png"
+              : "https://images.ctfassets.net/547zkxycwgvr/5VGVSIquPU8U6jrGZdA9E8/a67b2944be87ef51b93467c51560a24d/IWlV3zu.png"
+          }
+          alt={"tygerxqt"}
+        />
+      </NextLink>
+      {isLargerThan768 ? (
+        <Center>
+          <NextLink href={"/projects"} passHref>
+            <Button as="a" variant={"ghost"} p="4" fontSize={"16px"}>
+              Projects
+            </Button>
+          </NextLink>
+          <NextLink href={"/blog"} passHref>
+            <Button
+              as="a"
+              variant={"ghost"}
+              p="4"
+              ml="3vw"
+              fontSize={"16px"}
+            >
+              Blog
+            </Button>
+          </NextLink>
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={toggleColorMode}
+          >
+            {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
+          </Button>
+
+          {/* Desktop */}
+          {userData && user ? (
+            <>
+              <Menu>
+                <MenuButton
+                  as={Avatar}
+                  ml={"3vw"}
+                  src={userData.avatar}
+                  size={"md"}
+                >
+                  {userData.notifications.length === 0 ? null : (
+                    <>
+                      {userData.notifications.length > 0 || userData.notifications.length < 9 ? (
+                        <AvatarBadge bg='#FFFFFF' boxSize={"20px"}>
+                          <Text fontSize={"12px"}>{userData.notifications.length}</Text>
+                        </AvatarBadge>
+                      ) : (
+                        <AvatarBadge bg='#FFFFFF' boxSize={"22px"}>
+                          <Text fontSize={"12px"}>9+</Text>
+                        </AvatarBadge>
+                      )}
                     </>
-                  ) : (
-                    <NextLink href="/profile" passHref>
-                      <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
-                        Log in
-                      </Button>
-                    </NextLink>
                   )}
-                </>
-              )}
+                </MenuButton>
+                <MenuList pt={0}>
+                  <Image
+                    src={userData.banner}
+                    w={"350px"}
+                    h={"150px"}
+                    objectFit="cover"
+                    alt={"banner"}
+                    borderRadius="5px 5px 0px 0px"
+                    fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/banners/default.jpg`}
+                  />
+                  <Flex
+                    flexDirection="row"
+                    justifyContent={"space-between"}
+                    alignItems="center"
+                    w={"full"}
+                    px={"10px"}
+                    pt={"8px"}
+                  >
+                    <Image
+                      src={userData.avatar}
+                      rounded="full"
+                      w={"96px"}
+                      h={"96px"}
+                      mt={"-15%"}
+                      border={"2px"}
+                      borderColor={"#111111"}
+                      alt={"avatar"}
+                      fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`}
+                    />
+                    <Box>
+                      <CompactBadges />
+                    </Box>
+                  </Flex>
+                  <MenuGroup fontSize={"xl"}>
+                    <Flex>
+                      <chakra.span fontWeight={"semibold"} fontSize={"20px"} pl={4}>{user.user_metadata.username}<chakra.span color={"#b9bbbe"}>#{user.user_metadata.tag}</chakra.span></chakra.span>
+                    </Flex>
+                    <MenuDivider />
+                    <NextLink href="/profile" passHref>
+                      <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
+                    </NextLink>
+                    <NextLink href="/account" passHref>
+                      <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
+                    </NextLink>
+                    <Notifications />
+                    {userData.pixel ? (
+                      <>
+                        <MenuDivider />
+                        <MenuGroup>
+                          <NextLink href="/dashboard" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
+                          </NextLink>
+                          <NextLink href="/feed" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdFeedback fontSize={"16px"} />}>Feed</MenuItem>
+                          </NextLink>
+                          <NextLink href="/photography" passHref>
+                            <MenuItem closeOnSelect={true} icon={<BiCamera fontSize={"16px"} />}>Photography</MenuItem>
+                          </NextLink>
+                        </MenuGroup>
+                      </>
+                    ) : (
+                      <>
+                        <NextLink href="/pixels" passHref>
+                          <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
+                        </NextLink>
+                      </>
+                    )}
+                  </MenuGroup>
+                  <MenuGroup>
+                    <MenuDivider />
+                    <MenuItem
+                      closeOnSelect={true}
+                      icon={<BiLogOut fontSize={"16px"} />}
+                      onClick={() => { signOut() }}
+                    >
+                      Sign out
+                    </MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </Menu>
+            </>
+          ) : (
+            <NextLink href={"/profile"} passHref>
               <Button
-                variant="ghost"
+                variant="solid"
                 p="4"
                 ml="3vw"
+                colorScheme={"blue"}
                 fontSize={"16px"}
-                onClick={onOpenDrawer}
               >
-                <AiOutlineMenu />
+                Log in
               </Button>
-              <NavbarDrawer />
-            </Center>
+            </NextLink>
           )}
-        </Flex>
-      </Slide>
-    </Box>
+        </Center>
+      ) : (
+        <Center>
+
+          {/* Mobile */}
+          {userData && user ? (
+            <>
+              <Menu>
+                <MenuButton
+                  as={Avatar}
+                  ml={"3vw"}
+                  src={userData.avatar}
+                  size={"sm"}
+                >
+                  {userData.notifications.length === 0 ? null : (
+                    <>
+                      {userData.notifications.length > 0 || userData.notifications.length < 9 ? (
+                        <AvatarBadge bg='#FFFFFF' boxSize={"20px"}>
+                          <Text fontSize={"12px"}>{userData.notifications.length}</Text>
+                        </AvatarBadge>
+                      ) : (
+                        <AvatarBadge bg='#FFFFFF' boxSize={"22px"}>
+                          <Text fontSize={"12px"}>9+</Text>
+                        </AvatarBadge>
+                      )}
+                    </>
+                  )}
+                </MenuButton>
+                <MenuList pt={0}>
+                  <Flex
+                    flexDirection="row"
+                    justifyContent={"center"}
+                    alignItems="center"
+                    w={"full"}
+                    px={"10px"}
+                    pt={"8px"}
+                  >
+                    <Image
+                      src={userData.avatar}
+                      rounded="full"
+                      w={"96px"}
+                      h={"96px"}
+                      border={"2px"}
+                      borderColor={"#111111"}
+                      alt={"avatar"}
+                      fallbackSrc={`${process.env.NEXT_PUBLIC_URL}/api/avatars/default.jpg`}
+                    />
+                  </Flex>
+                  <MenuGroup>
+                    <Center>
+                      <chakra.span fontWeight={"semibold"} fontSize={"20px"} pt={2}>{user.user_metadata.username}<chakra.span color={"#b9bbbe"}>#{user.user_metadata.tag}</chakra.span></chakra.span>
+                    </Center>
+                    <MenuDivider />
+                    <NextLink href="/profile" passHref>
+                      <MenuItem closeOnSelect={true} icon={<MdAccountCircle fontSize={"16px"} />}>Profile</MenuItem>
+                    </NextLink>
+                    <NextLink href="/account" passHref>
+                      <MenuItem closeOnSelect={true} icon={<AiFillIdcard fontSize={"16px"} />}>Account</MenuItem>
+                    </NextLink>
+                    <Notifications />
+                    {userData.pixel ? (
+                      <>
+                        <MenuDivider />
+                        <MenuGroup>
+                          <NextLink href="/dashboard" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdDashboard fontSize={"16px"} />}>Dashboard</MenuItem>
+                          </NextLink>
+                          <NextLink href="/feed" passHref>
+                            <MenuItem closeOnSelect={true} icon={<MdFeedback fontSize={"16px"} />}>Feed</MenuItem>
+                          </NextLink>
+                          <NextLink href="/photography" passHref>
+                            <MenuItem closeOnSelect={true} icon={<BiCamera fontSize={"16px"} />}>Photography</MenuItem>
+                          </NextLink>
+                        </MenuGroup>
+                      </>
+                    ) : (
+                      <>
+                        <NextLink href="/pixels" passHref>
+                          <MenuItem closeOnSelect={true} icon={<RiParkingFill fontSize={"16px"} />}>Pixels</MenuItem>
+                        </NextLink>
+                      </>
+                    )}
+                  </MenuGroup>
+                  <MenuGroup>
+                    <MenuDivider />
+                    <MenuItem
+                      closeOnSelect={true}
+                      icon={<BiLogOut fontSize={"16px"} />}
+                      onClick={() => { signOut() }}
+                    >
+                      Sign out
+                    </MenuItem>
+                  </MenuGroup>
+                </MenuList>
+              </Menu>
+            </>
+          ) : (
+            <NextLink href="/profile" passHref>
+              <Button variant="solid" p="4" ml="3vw" fontSize={"16px"}>
+                Log in
+              </Button>
+            </NextLink>
+          )}
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"16px"}
+            onClick={onOpenDrawer}
+          >
+            <AiOutlineMenu />
+          </Button>
+          <NavbarDrawer />
+        </Center>
+      )
+      }
+    </Flex >
   );
 }

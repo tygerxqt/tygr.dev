@@ -2,7 +2,8 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import supabase from "../../../../lib/SupabaseClient";
-import { DiscordUser } from "../../../../types/DiscordUser";
+import { DiscordUser } from "../../../../types/Identites/DiscordUser";
+import cookieParser from "cookie-parser";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
@@ -13,10 +14,24 @@ const apiRoute = nextConnect({
     },
 });
 
+apiRoute.use(cookieParser());
+
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-    if (!req.query) return res.status(502).json({ error: "You need to provide a 'code' query." });
-    if (req.query.error) return res.status(502).json({ error: req.query.error });
-    if (!req.query.code) return res.status(502).json({ error: "Missing 'code' query." });
+    if (!req.query) return res.status(500).json({ error: "You need to provide a 'code' query." });
+    if (req.query.error) {
+        if (req.query.error === `access_denied`) return res.status(500).redirect("/account");
+        else return res.status(500).json({ error: req.query.error });
+    }
+    if (!req.query.code) return res.status(500).json({ error: "Missing 'code' query." });
+
+    const cookie = await supabase.auth.api.getUserByCookie(req);
+    if (!cookie) {
+        return res.status(500).json({
+            error: "Unauthorized.",
+        });
+    }
+
+    supabase.auth.setAuth(cookie.token);
 
     const params = new URLSearchParams();
     params.append('client_id', process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID);
@@ -46,15 +61,6 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
         });
     }
 
-    const cookie = await supabase.auth.api.getUserByCookie(req);
-    if (!cookie) {
-        return res.status(500).json({
-            error: "Unauthorized.",
-        });
-    }
-
-    supabase.auth.setAuth(cookie.token);
-
     const { data: userData } = await supabase.from("users").select("discord").eq("id", cookie.user.id);
     if (userData[0].discord.id) {
         return res.status(500).json({
@@ -73,7 +79,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
     }).eq("id", cookie.user.id);
 
     if (error) return res.status(500).json({ error: error.message });
-    res.status(200).redirect("/profile");
+    res.status(200).redirect("/account");
 });
 
 export default apiRoute;

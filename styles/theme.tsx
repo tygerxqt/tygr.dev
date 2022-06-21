@@ -20,6 +20,15 @@ const styles = {
       color: mode("#111111", "#FFFFFF")(props),
       bg: mode("#FFFFFF", "#111111")(props),
     },
+
+    "::-webkit-scrollbar": {
+      width: "8px",
+      background: mode("#FFFFFF", "#111111")(props),
+    },
+    "::-webkit-scrollbar-thumb": {
+      background: mode("#111111", "#FFFFFF")(props),
+      borderadius: "8px",
+    },
   }),
 };
 
@@ -54,24 +63,6 @@ const components = {
       content: {
         bg: mode("white", "#101212")(props),
       },
-    }),
-  },
-
-  Button: {
-    baseStyle: (props) => ({
-      position: "static",
-    }),
-  },
-
-  Divider: {
-    baseStyle: (props) => ({
-      zIndex: "-1",
-    }),
-  },
-
-  Input: {
-    baseStyle: (props) => ({
-      position: "static",
     }),
   },
 };

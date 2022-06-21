@@ -1,9 +1,8 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ApiResponse } from "../../types/ApiResponse";
+import { ApiResponse } from "../../types/Upload/ApiResponse";
 
 export const uploadBannerRequest = async (
     id: string,
-    token: string,
     formData: FormData,
     progressCallback?: (progressEvent: ProgressEvent) => void
 ): Promise<ApiResponse<string[]>> => {
@@ -13,7 +12,7 @@ export const uploadBannerRequest = async (
         validateStatus: (status) => true,
     };
     const response = await axios.post(
-        `/api/banners/upload?id=${id}&token=${token}`,
+        `/api/banners/upload?id=${id}`,
         formData,
         config
     );
