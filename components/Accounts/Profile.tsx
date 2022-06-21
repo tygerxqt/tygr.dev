@@ -43,6 +43,7 @@ function Profile({ recovery }) {
         };
 
         const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setUploadingAvatar(true);
             if (!event.target.files?.length) {
                 return;
             }
@@ -64,9 +65,12 @@ function Profile({ recovery }) {
                     type="button"
                     onClick={onClickHandler}
                     colorScheme="blue"
-                    variant="outline"
+                    variant="solid"
+                    isLoading={uploadingAvatar}
+                    loadingText="Uploading..."
+                    disabled={uploadingAvatar}
                 >
-                    {uploadingAvatar ? <Spinner /> : "Upload"}
+                    Upload
                 </Button>
                 <input
                     accept={props.acceptedFileTypes}
@@ -102,16 +106,18 @@ function Profile({ recovery }) {
                     avatar: `${process.env.NEXT_PUBLIC_URL}/api/avatars/${response.data[0]}`,
                 })
                 .eq("id", user.id);
-            if (error) throw error;
+            if (error) throw error.message;
             update();
+            setUploadingAvatar(false);
         } catch (err) {
             toast({
                 title: "Error",
-                description: err.message,
+                description: err,
                 status: "error",
                 duration: 9000,
                 isClosable: true,
             });
+            setUploadingAvatar(false);
         }
     };
 
@@ -124,6 +130,7 @@ function Profile({ recovery }) {
         };
 
         const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+            setUploadingBanner(true);
             if (!event.target.files?.length) {
                 return;
             }
@@ -145,9 +152,12 @@ function Profile({ recovery }) {
                     type="button"
                     onClick={onClickHandler}
                     colorScheme="blue"
-                    variant="outline"
+                    variant="solid"
+                    isLoading={uploadingBanner}
+                    loadingText="Uploading..."
+                    disabled={uploadingBanner}
                 >
-                    {uploadingBanner ? <Spinner /> : "Upload"}
+                    Upload
                 </Button>
                 <input
                     accept={props.acceptedFileTypes}
@@ -185,9 +195,8 @@ function Profile({ recovery }) {
                 .eq("id", user.id);
 
             if (error) throw error;
-
-            setUploadingBanner(false);
             update();
+            setUploadingBanner(false);
         } catch (err) {
             toast({
                 title: "Error",

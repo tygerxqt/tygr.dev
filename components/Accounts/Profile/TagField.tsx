@@ -16,9 +16,12 @@ const TagField = () => {
 
     const [oldTag, setOldTag] = useState<string>(user.user_metadata.tag);
 
+    const [loading, setLoading] = useState(false);
+
     const handleUpdate = async () => {
         const newTag = digit1 + digit2 + digit3 + digit4;
         if (oldTag.toString() === newTag.toString()) {
+            setEditing(false);
             return toast({
                 title: "Unable to update.",
                 description: "No changes were made",
@@ -27,6 +30,8 @@ const TagField = () => {
                 isClosable: true,
             });
         }
+
+        setLoading(true);
 
         axios.put(`/api/users/update`, { tag: digit1 + digit2 + digit3 + digit4, username: user.user_metadata.username }).then(async response => {
             await supabase.auth.update({
@@ -53,6 +58,7 @@ const TagField = () => {
 
         setOldTag(digit1 + digit2 + digit3 + digit4);
         setEditing(false);
+        setLoading(false);
     };
 
     return (
@@ -79,6 +85,8 @@ const TagField = () => {
                                     handleUpdate()
                                 }}
                                 colorScheme={"green"}
+                                disabled={loading}
+                                isLoading={loading}
                             >
                                 <AiOutlineCheck />
                             </Button>
@@ -93,6 +101,7 @@ const TagField = () => {
                                     setEditing(false);
                                 }}
                                 colorScheme={"red"}
+                                disabled={loading}
                             >
                                 <AiOutlineClose />
                             </Button>

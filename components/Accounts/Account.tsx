@@ -17,6 +17,11 @@ function Account() {
 
   const [deleteLoad, setDeleteLoad] = useState(false);
 
+  const [discordLoad, setDiscordLoad] = useState(false);
+  const [githubLoad, setGithubLoad] = useState(false);
+
+  const [portalLoad, setPortalLoad] = useState(false);
+
   // === Customer ===
   const [newCustomerName, setNewCustomerName] = useState(user.user_metadata.full_name);
   const [newCustomerEmail, setNewCustomerEmail] = useState(user.email);
@@ -33,6 +38,7 @@ function Account() {
   }
 
   const loadPortal = async () => {
+    setPortalLoad(true);
     const { data } = await axios.get(`/api/billing/portal?redirect=account`);
     router.push(data.data);
   }
@@ -48,6 +54,7 @@ function Account() {
 
   async function destroyDiscordLink() {
     try {
+      setDiscordLoad(true);
       await axios.post(`/api/auth/unlink/discord`).then(res => {
         toast({
           title: "Success",
@@ -56,6 +63,7 @@ function Account() {
           duration: 9000,
           isClosable: true,
         });
+        setDiscordLoad(false);
         update();
       }).catch(err => {
         throw err.response.data.error;
@@ -68,11 +76,13 @@ function Account() {
         duration: 9000,
         isClosable: true,
       });
+      setDiscordLoad(false);
     }
   }
 
   async function destroyGithubLink() {
     try {
+      setGithubLoad(true);
       await axios.post(`/api/auth/unlink/github`).then(res => {
         toast({
           title: "Success",
@@ -82,6 +92,7 @@ function Account() {
           isClosable: true,
         });
         update();
+        setGithubLoad(false);
       }).catch(err => {
         throw err.response.data.error;
       });
@@ -93,6 +104,7 @@ function Account() {
         duration: 9000,
         isClosable: true,
       });
+      setGithubLoad(false);
     }
   }
 
@@ -249,6 +261,8 @@ function Account() {
                                           colorScheme={"red"}
                                           fontSize="16px"
                                           onClick={() => destroyDiscordLink()}
+                                          disabled={discordLoad}
+                                          isLoading={discordLoad}
                                         >
                                           Confirm unlink
                                         </Button>
@@ -291,6 +305,8 @@ function Account() {
                                           fontSize="16px"
                                           colorScheme={"red"}
                                           onClick={() => destroyDiscordLink()}
+                                          disabled={discordLoad}
+                                          isLoading={discordLoad}
                                         >
                                           Confirm unlink
                                         </Button>
@@ -370,6 +386,8 @@ function Account() {
                                           colorScheme={"red"}
                                           fontSize="16px"
                                           onClick={() => destroyGithubLink()}
+                                          isLoading={githubLoad}
+                                          disabled={githubLoad}
                                         >
                                           Confirm unlink
                                         </Button>
@@ -412,6 +430,8 @@ function Account() {
                                           fontSize="16px"
                                           colorScheme={"red"}
                                           onClick={() => destroyGithubLink()}
+                                          disabled={githubLoad}
+                                          isLoading={githubLoad}
                                         >
                                           Confirm unlink
                                         </Button>
@@ -477,7 +497,7 @@ function Account() {
                           Dashboard
                         </Button>
                       </Link>
-                      <Button colorScheme="gray" onClick={() => loadPortal()}>
+                      <Button colorScheme="gray" onClick={() => loadPortal()} disabled={portalLoad} isLoading={portalLoad}>
                         Edit information
                       </Button>
                     </ButtonGroup>
@@ -492,7 +512,7 @@ function Account() {
                               Subscribe
                             </Button>
                           </Link>
-                          <Button onClick={() => loadPortal()}>
+                          <Button onClick={() => loadPortal()} disabled={portalLoad} isLoading={portalLoad}>
                             Edit billing information
                           </Button>
                         </>

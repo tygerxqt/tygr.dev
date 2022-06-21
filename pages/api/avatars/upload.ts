@@ -10,13 +10,13 @@ interface NextConnectApiRequest extends NextApiRequest {
 }
 type ResponseData = ApiResponse<string[], string>;
 
-const tenMegabyteInBytes = 10000000;
+const twentyMegabyteInBytes = 20000000;
 
 const upload = multer({
-  limits: { fileSize: tenMegabyteInBytes },
+  limits: { fileSize: twentyMegabyteInBytes },
   storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    const acceptFile: boolean = ["image/jpeg", "image/png"].includes(
+    const acceptFile: boolean = ["image/jpeg", "image/png", "image/gif"].includes(
       file.mimetype
     );
     cb(null, acceptFile);

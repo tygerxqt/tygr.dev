@@ -8,6 +8,7 @@ const EmailField = () => {
   const { user } = useAuth();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [oldEmail, setOldEmail] = useState(user.email);
   const [email, setEmail] = useState(user.email);
 
@@ -21,6 +22,7 @@ const EmailField = () => {
           duration: 3000,
           isClosable: true,
         });
+      setLoading(true);
 
       const { error } = await supabase.auth.update({
         email: email,
@@ -38,6 +40,7 @@ const EmailField = () => {
         duration: 5000,
         isClosable: true,
       });
+      setLoading(false);
       await supabase.auth.signOut();
     } catch (err) {
       toast({
@@ -68,7 +71,7 @@ const EmailField = () => {
               />
             </Flex>
             <Flex pl={4}>
-              <Button onClick={() => handleUpdate()} colorScheme={"green"}>
+              <Button onClick={() => handleUpdate()} colorScheme={"green"} disabled={loading} isLoading={loading}>
                 <AiOutlineCheck />
               </Button>
             </Flex>
@@ -79,6 +82,7 @@ const EmailField = () => {
                   setEditing(false);
                 }}
                 colorScheme={"red"}
+                disabled={loading}
               >
                 <AiOutlineClose />
               </Button>

@@ -124,6 +124,7 @@ export default function Auth() {
         if (!name) throw Error("Please provide your full name.");
         if (!username) throw Error("Please provide your username.");
       } catch (err) {
+        setLoading(false);
         toast({
           title: "Error",
           description: err.message,
@@ -139,6 +140,7 @@ export default function Auth() {
         username: username,
         password: password,
       }).then(async response => {
+        setLoading(false);
         toast({
           title: "Success",
           description: `${response.data.data}`,
@@ -147,6 +149,7 @@ export default function Auth() {
           isClosable: true,
         });
       }).catch(error => {
+        setLoading(false);
         toast({
           title: "Error",
           description: error,
@@ -155,8 +158,6 @@ export default function Auth() {
           isClosable: true,
         });
       });
-
-      setLoading(false);
     },
     [toast]
   );
@@ -538,7 +539,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel  >Email</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <Input
                             type="email"
                             placeholder="john@doe.com"
@@ -556,7 +557,7 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl pt={6}>
-                          <FormLabel  >Confirm Password</FormLabel>
+                          <FormLabel>Confirm Password</FormLabel>
                           <Input
                             type="password"
                             placeholder="********"

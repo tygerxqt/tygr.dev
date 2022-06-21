@@ -11,9 +11,11 @@ const UsernameField = () => {
   const [editing, setEditing] = useState(false);
   const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
   const [username, setUsername] = useState(user.user_metadata.username);
+  const [loading, setLoading] = useState(false);
 
   const handleUpdate = async () => {
-    if (username === oldUsername)
+    if (username === oldUsername) {
+      setEditing(false);
       return toast({
         title: "Unable to update.",
         description: "No changes were made",
@@ -21,7 +23,8 @@ const UsernameField = () => {
         duration: 3000,
         isClosable: true,
       });
-
+    }
+    setLoading(true);
     await axios.put(`/api/users/update`, { tag: user.user_metadata.tag, username: username }).then(async response => {
       await supabase.auth.update({
         data: {
@@ -35,6 +38,7 @@ const UsernameField = () => {
         duration: 5000,
         isClosable: true,
       });
+      setLoading(false);
     }).catch(err => {
       toast({
         title: "Unable to update.",
@@ -43,6 +47,7 @@ const UsernameField = () => {
         duration: 3000,
         isClosable: true,
       });
+      setLoading(false);
     });
 
     setUsername(username);
@@ -66,7 +71,7 @@ const UsernameField = () => {
               />
             </Flex>
             <Flex pl={4}>
-              <Button onClick={() => handleUpdate()} colorScheme={"green"}>
+              <Button onClick={() => handleUpdate()} colorScheme={"green"} disabled={loading} isLoading={loading}>
                 <AiOutlineCheck />
               </Button>
             </Flex>
@@ -77,6 +82,7 @@ const UsernameField = () => {
                   setEditing(false);
                 }}
                 colorScheme={"red"}
+                disabled={loading}
               >
                 <AiOutlineClose />
               </Button>
