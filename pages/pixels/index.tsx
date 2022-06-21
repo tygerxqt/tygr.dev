@@ -316,7 +316,7 @@ export default function Pricing({ plans }) {
                 </>
             ) : (
                 <>
-                    {session ? (
+                    {userData ? (
                         <>
                             {userData.pixel ? (
                                 <>
