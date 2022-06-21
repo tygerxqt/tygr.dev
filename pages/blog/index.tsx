@@ -84,7 +84,6 @@ export default function IndexBlog({ articles }) {
             </InputGroup>
             <Divider />
             {articles
-              .filter((e) => e.fields.archived === false)
               .filter((e) =>
                 e.fields.title.toLowerCase().includes(query.toLowerCase())
               )
@@ -143,7 +142,7 @@ const client = createClient({
 export async function getStaticProps() {
   let data = await client.getEntries({
     content_type: "post",
-    limit: 3,
+    "fields.archived": false,
     order: "sys.createdAt",
   });
 
