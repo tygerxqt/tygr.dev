@@ -86,7 +86,6 @@ function ProjectPage({ projects }) {
                             )
                             .map((project) => (
                                 <>
-                                    {console.log(project.sys.id)}
                                     <BetaProjectCard
                                         key={project.fields.title}
                                         title={project.fields.title}

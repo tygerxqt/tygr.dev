@@ -5,7 +5,6 @@ import supabase from "../../../../lib/SupabaseClient";
 
 const apiRoute = nextConnect({
     onError(error, req: NextApiRequest, res: NextApiResponse) {
-        console.log(error)
         res.status(501).json({ error: `Sorry something happened! ${error.message}` });
     },
     onNoMatch(req: NextApiRequest, res: NextApiResponse) {
