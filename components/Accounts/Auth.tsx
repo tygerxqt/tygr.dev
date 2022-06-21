@@ -331,7 +331,17 @@ export default function Auth() {
                           />
                         </FormControl>
                         <FormControl mt={6}>
-                          <FormLabel>Password</FormLabel>
+                          <Flex
+                            flexDirection={"row"}
+                            justifyContent="space-between"
+                          >
+                            <FormLabel>Password</FormLabel>
+                            <Link href={"/recovery"} passHref>
+                              <Button variant={"link"} pb={2} >
+                                Forgot Password?
+                              </Button>
+                            </Link>
+                          </Flex>
                           <Input
                             type="password"
                             placeholder="********"
