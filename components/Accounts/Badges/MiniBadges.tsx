@@ -1,27 +1,18 @@
 import { Tag, TagLeftIcon, Tooltip } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { AiFillBug } from "react-icons/ai";
 import { BiDonateHeart, BiCode } from "react-icons/bi";
 import { BsTerminalFill } from "react-icons/bs";
 import { RiParkingFill } from "react-icons/ri";
 import { MdLocalPolice } from "react-icons/md";
-import supabase from "../../../lib/SupabaseClient";
+import { useAuth } from "../../../contexts/Auth";
 
-export default function MiniBadges() {
-    const user = supabase.auth.user();
-    const session = supabase.auth.session();
-    const [badges, setBadges] = useState([]);
-    useEffect(() => {
-        fetch(`/api/users/@me`)
-            .then((res) => res.json())
-            .then((data) => {
-                const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);
-                if (data.pixel === true) {
-                    filtered.push("pixel");
-                }
-                setBadges(filtered);
-            });
-    }, [user, session]);
+function Badges() {
+    const { userData } = useAuth();
+
+    const array = Object.keys(userData.badges).filter((key) => userData.badges[key]);
+    if (userData.pixel === true) {
+        array.push("pixel");
+    }
 
     const getTag = (tag) => {
         let values = []
@@ -66,7 +57,7 @@ export default function MiniBadges() {
         return values
     }
 
-    const Tags = badges.slice(0, 5).map((item) => (
+    const Tags = array.slice(0, 5).map((item) => (
         <>
             <Tooltip hasArrow placement={"top"} label={getTag(item)[0]} key={item} >
                 <Tag
@@ -87,3 +78,17 @@ export default function MiniBadges() {
         </>
     )
 }
+
+export default function MiniBadges() {
+    const { userData } = useAuth();
+
+    return (
+        <>
+            {userData === undefined ? (
+                null
+            ) : (
+                <Badges />
+            )}
+        </>
+    )
+};

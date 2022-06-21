@@ -1,11 +1,10 @@
 import { useToast, Button, Spinner, Center, Flex, Stack, Text, Divider, Heading, SimpleGrid, Avatar, Image, Badge, Box, VStack, ButtonGroup } from "@chakra-ui/react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { uploadAvatarRequest } from "../../domains/avatars/upload.services";
 import { uploadBannerRequest } from "../../domains/banners/upload.services";
 import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/Account/UserProfile";
 import Container from "../UI/Container";
 import Head from "next/head";
 import EmailField from "./Profile/EmailField";
@@ -14,13 +13,10 @@ import PasswordField from "./Profile/PasswordField";
 import UsernameField from "./Profile/UsernameField";
 import Preview from "./Profile/Preview";
 import TagField from "./Profile/TagField";
+import { useAuth } from "../../contexts/Auth";
 
 function Profile() {
-    const user = supabase.auth.user();
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
-
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const { user, userData, update } = useAuth();
     const toast = useToast();
 
     const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -30,33 +26,6 @@ function Profile() {
 
     const isLargerThan1200 = useMediaQuery(1200);
     const isLargerThan768 = useMediaQuery(768);
-
-    // set server cookie
-    async function setCookie() {
-        await axios.post("/api/auth/cookie/set", {
-            event: user ? "SIGNED_IN" : "SIGNED_OUT",
-            session: supabase.auth.session(),
-        });
-    }
-
-    setCookie();
-
-    useEffect(() => {
-        async function fetch() {
-            const session = supabase.auth.session();
-            await axios.get(`/api/users/@me?token=${session.access_token}`).then(response => {
-                setUserData(response.data as UserProfile);
-                setLoading(false);
-                setUpdate(false);
-            }).catch(err => {
-                setLoading(false);
-                setUpdate(false);
-                throw new Error(err);
-            });
-        }
-
-        fetch();
-    }, [update, toast]);
 
     interface IProps {
         acceptedFileTypes?: string;
@@ -134,7 +103,7 @@ function Profile() {
                 })
                 .eq("id", user.id);
             if (error) throw error;
-            setUpdate(true);
+            update();
         } catch (err) {
             toast({
                 title: "Error",
@@ -218,7 +187,7 @@ function Profile() {
             if (error) throw error;
 
             setUploadingBanner(false);
-            setUpdate(true);
+            update();
         } catch (err) {
             toast({
                 title: "Error",
@@ -242,7 +211,7 @@ function Profile() {
                     duration: 9000,
                     isClosable: true,
                 });
-                setUpdate(true);
+                update();
             }).catch(err => {
                 throw err;
             })
@@ -270,7 +239,7 @@ function Profile() {
                     duration: 9000,
                     isClosable: true,
                 });
-                setUpdate(true);
+                update();
             }).catch(err => {
                 throw err;
             })
@@ -287,11 +256,17 @@ function Profile() {
         }
     }
 
-
+    useEffect(() => {
+        if (user) {
+            if (userData === null) {
+                update();
+            }
+        }
+    })
 
     return (
         <>
-            {loading ? (
+            {!userData ? (
                 <>
                     <Flex
                         as="main"
@@ -310,7 +285,7 @@ function Profile() {
                                 </Center>
                                 <Center>
                                     <Text fontSize="xl" fontWeight="bold">
-                                        Fetching user data...
+                                        Loading...
                                     </Text>
                                 </Center>
                             </Stack>
@@ -411,15 +386,14 @@ function Profile() {
                                             </Center>
                                         </Stack>
 
-                                        <Preview user={user} userData={userData} />
+                                        <Preview />
                                     </SimpleGrid>
                                 </>
                             ) : (
                                 <>
                                     <SimpleGrid columns={1} spacing={10}>
                                         <Stack spacing={8}>
-
-                                            <Preview user={user} userData={userData} />
+                                            <Preview />
 
                                             {/* Avatar */}
                                             <Heading fontSize={{ base: "xl", md: "2xl" }}>Avatar</Heading>

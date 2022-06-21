@@ -45,7 +45,7 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
 
     const github: GithubUser = githubData[0].github;
 
-    if (!github) {
+    if (!github.id) {
         res.status(500).json({ error: "You need to link you GitHub account to your Pixel account." });
     }
 

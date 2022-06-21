@@ -1,10 +1,12 @@
 import { Flex, Box, VStack, Stack, Badge, Image, Text, chakra } from "@chakra-ui/react";
+import { useAuth } from "../../../contexts/Auth";
 import useMediaQuery from "../../../hook/useMediaQuery";
 import Badges from "../Badges/Badges";
 import CompactBadges from "../Badges/CompactBadges";
 import MiniBadges from "../Badges/MiniBadges";
 
-export default function Preview({ user, userData }) {
+export default function Preview() {
+    const { user, userData } = useAuth();
     const isLargerThan1200 = useMediaQuery(1200);
     const isLargerThan400 = useMediaQuery(400);
     const isLargerThan600 = useMediaQuery(600);

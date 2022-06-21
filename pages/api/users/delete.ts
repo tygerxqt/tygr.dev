@@ -14,7 +14,7 @@ const apiRoute = nextConnect({
 
 apiRoute.use(cookieParser());
 
-apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
+apiRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
     const cookie = await supabase.auth.api.getUserByCookie(req);
     if (!cookie) {
         return res.status(500).json({
@@ -34,12 +34,12 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         const drive = deta.Drive("avatars");
         const list = await (await drive.list()).names;
         if (!list || list.length < 1) {
-            return console.log("Avatar not found. Skipping...");
+            console.log("Avatar not found. Skipping...");
         }
 
         const files = list.filter((name) => name.includes(cookie.user.id));
         if (!files || files.length < 1) {
-            return console.log("Avatar not found. Skipping...");
+            console.log("Avatar not found. Skipping...");
         }
 
         files.forEach(async (file) => {
@@ -52,12 +52,12 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         const drive = deta.Drive("banners");
         const list = await (await drive.list()).names;
         if (!list || list.length < 1) {
-            return console.log("Banner not found. Skipping...");
+            console.log("Banner not found. Skipping...");
         }
 
         const files = list.filter((name) => name.includes(cookie.user.id));
         if (!files || files.length < 1) {
-            return console.log("Banner not found. Skipping...");
+            console.log("Banner not found. Skipping...");
         }
 
         files.forEach(async (file) => {
@@ -70,20 +70,47 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(500).json({ error: customerError.message });
     }
 
-    if (!customerData || !customerData[0] || !customerData[0].customer || !customerData[0].customer.id) {
-        return res.status(200).json({ error: "No customer exists." });
+    if (customerData[0].customer && !customerData[0].customer.id) {
+        try {
+            await stripe.customers.del(customerData[0].customer.id);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    await stripe.customers.del(customerData[0].customer.id);
+    const { error: blogCommentsError } = await supabase.from("blog_comments").delete().match({ user: cookie.user.id });
+    if (blogCommentsError) {
+        return res.status(500).json({ error: customerError.message });
+    }
+
+    const { error: feedCommentsError } = await supabase.from("feed_comments").delete().match({ user: cookie.user.id });
+    if (feedCommentsError) {
+        return res.status(500).json({ error: feedCommentsError.message });
+    }
+
+    const { error: projectCommentsError } = await supabase.from("project_comments").delete().match({ user: cookie.user.id });
+    if (projectCommentsError) {
+        return res.status(500).json({ error: projectCommentsError.message });
+    }
+
+    const { error: projectRequestsError } = await supabase.from("project_requests").delete().match({ user: cookie.user.id });
+    if (projectRequestsError) {
+        return res.status(500).json({ error: projectRequestsError.message });
+    }
+
+    const { error: notificationsError } = await supabase.from("notifications").delete().match({ user: cookie.user.id });
+    if (notificationsError) {
+        return res.status(500).json({ error: notificationsError.message });
+    }
 
     const { error: tableErr } = await supabase.from("users").delete().match({ id: cookie.user.id });
     if (tableErr) {
-        return res.status(500).json({ error: tableErr });
+        return res.status(500).json({ error: tableErr.message });
     }
 
     const { error } = await supabaseAdmin.auth.api.deleteUser(cookie.user.id);
     if (error) {
-        return res.status(500).json({ error: error });
+        return res.status(500).json({ error: error.message });
     }
 
     res.status(200).json({

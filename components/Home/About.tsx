@@ -15,7 +15,7 @@ import { useColorMode } from "@chakra-ui/react";
 
 export default function AboutMe() {
   const isLargerThan800 = useMediaQuery(800);
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   const MoreInfo = ({ text, content }) => {
     return (

@@ -58,7 +58,8 @@
     "stripe": "^9.6.0",
     "tls": "^0.0.1",
     "vercel": "^24.2.0",
-    "webpack": "4"
+    "webpack": "4",
+    "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",

@@ -1,10 +1,11 @@
 import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
+import { useAuth } from "../../../contexts/Auth";
 import supabase from "../../../lib/SupabaseClient";
 
 const EmailField = () => {
-  const user = supabase.auth.user();
+  const { user } = useAuth();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [oldEmail, setOldEmail] = useState(user.email);

@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
-import { ApiResponse } from "../../types/ApiResponse";
+import { ApiResponse } from "../../types/Upload/ApiResponse";
 
 export const uploadAvatarRequest = async (
   id: string,

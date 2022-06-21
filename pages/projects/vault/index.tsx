@@ -14,51 +14,28 @@ import {
     Button,
 } from "@chakra-ui/react";
 import useMediaQuery from "../../../hook/useMediaQuery";
-import axios from "axios";
 import { createClient } from "contentful";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import Container from "../../../components/UI/Container";
 import ProjectCard from "../../../components/Projects/ProjectCard";
-import supabase from "../../../lib/SupabaseClient";
-import { UserProfile } from "../../../types/Account/UserProfile";
 import Navbar from "../../../components/UI/Navbar";
 import Link from "next/link";
+import { useAuth } from "../../../contexts/Auth";
+import PremiumContainer from "../../../components/Accounts/PremiumContainer";
 
 function ProjectPage({ projects }) {
+    const { userData } = useAuth();
     const [query, setQuery] = useState("");
     const handleChange = (e) => {
         setQuery(e.target.value);
     };
 
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
     const isLargerThan768 = useMediaQuery(768);
-
-    useEffect(() => {
-        const user = supabase.auth.user();
-        const session = supabase.auth.session();
-
-        async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/@me`);
-            if (dataStatus != 200) throw new Error(data.message);
-            setUserData(data as UserProfile);
-            setLoading(false);
-            setUpdate(false);
-        }
-
-        if (session) {
-            fetch();
-        } else {
-            setLoading(false);
-        }
-    }, [update]);
 
     return (
         <>
-            {loading ? (
+            {userData === undefined ? (
                 <>
                     <Navbar enableTransition={false} />
                     <Flex
@@ -87,7 +64,7 @@ function ProjectPage({ projects }) {
                 </>
             ) : (
                 <>
-                    <Container enableTransition={false}>
+                    <PremiumContainer>
                         <Head>
                             <title>Projects</title>
                             <meta name="title" content="Projects" />
@@ -140,7 +117,7 @@ function ProjectPage({ projects }) {
                                     />
                                 </InputGroup>
                                 <Divider />
-                                {userData.pixel && (
+                                {userData && userData.pixel && (
                                     <>
                                         <ButtonGroup spacing={5}>
                                             <Link href={"/projects"} passHref>
@@ -187,7 +164,7 @@ function ProjectPage({ projects }) {
                                     ))}
                             </SimpleGrid>
                         </Stack>
-                    </Container>
+                    </PremiumContainer>
                 </>
             )}
         </>

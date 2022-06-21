@@ -1,38 +1,18 @@
-import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast, Text, Center, Divider, Box, Stack, IconButton, AvatarBadge } from "@chakra-ui/react";
+import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure, useToast, Text, Center, Box, Stack, IconButton } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { BiLinkExternal, BiSad } from "react-icons/bi";
+import { BiLinkExternal } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
-import supabase from "../../lib/SupabaseClient";
+import { useAuth } from "../../contexts/Auth";
 
 export default function Notifications() {
+    const { userData } = useAuth();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
     const [loading, setLoading] = useState(false);
-    const [notifications, setNotifications] = useState([] as any[]);
-
-    useEffect(() => {
-        async function fetch() {
-            await axios.get(`/api/users/@me`).then(response => {
-                setNotifications(response.data.notifications);
-            }).catch(error => {
-                toast({
-                    title: "Error",
-                    description: error,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true
-                });
-            }).finally(() => {
-                setLoading(false);
-            });
-        }
-
-        fetch();
-    }, [toast, loading]);
 
     async function deleteNotification(id) {
         try {
@@ -71,7 +51,7 @@ export default function Notifications() {
             ) : (
                 <>
                     <MenuItem icon={<FaBell fontSize={"16px"} />} onClick={onOpen}>
-                        Notifications <Box as="span" fontSize={"14px"} color={"gray.500"}>{notifications.length}</Box>
+                        Notifications <Box as="span" fontSize={"14px"} color={"gray.500"}>{userData.notifications.length}</Box>
                     </MenuItem>
 
                     <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -80,9 +60,9 @@ export default function Notifications() {
                             <ModalHeader>Notifications</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
-                                {notifications[0] ? (
+                                {userData.notifications[0] ? (
                                     <>
-                                        {notifications.map((notification) => (
+                                        {userData.notifications.map((notification) => (
                                             <>
                                                 <Box p={4} border={"1px"} borderColor={"#242424"} rounded={"lg"}>
                                                     <Stack isInline justifyContent={"space-between"}>

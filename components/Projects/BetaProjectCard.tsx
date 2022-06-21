@@ -1,4 +1,4 @@
-import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode, Badge, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, ButtonGroup, Heading } from "@chakra-ui/react"
+import { ScaleFade, Stack, Tag, TagLabel, TagLeftIcon, Image, Text, Link, Divider, Box, useColorMode, Badge, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, ButtonGroup, Heading } from "@chakra-ui/react"
 import { useState } from "react"
 import { FaExternalLinkAlt, FaGithub, FaReact } from "react-icons/fa"
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si"

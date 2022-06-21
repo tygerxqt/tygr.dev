@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Text, Image, useColorMode, Stack, Badge, Box, Divider, Link, Textarea, toast, useToast, Spinner, Avatar, Flex, IconButton, ScaleFade, Tag, TagLabel, TagLeftIcon } from "@chakra-ui/react";
+import { Button, ButtonGroup, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure, Text, Image, useColorMode, Stack, Badge, Box, Divider, Link, Textarea, toast, useToast, Spinner, Avatar, Flex, IconButton, ScaleFade, Tag, TagLabel, TagLeftIcon, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
@@ -8,6 +8,7 @@ import supabase from "../../lib/SupabaseClient";
 import dateFormat from "dateformat";
 import { SiTypescript, SiJavascript, SiNextdotjs, SiElectron, SiCplusplus, SiCsharp } from "react-icons/si";
 import { VscTerminalBash } from "react-icons/vsc";
+import NextLink from "next/link";
 
 export default function ProjectCard({
     title,
@@ -22,10 +23,12 @@ export default function ProjectCard({
     id,
     userData
 }) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
+    const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
     const { colorMode } = useColorMode();
     const isLargerThan480 = useMediaQuery(480);
     const isLargerThan800 = useMediaQuery(800);
+    const isLargerThan600 = useMediaQuery(600);
 
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
@@ -54,7 +57,7 @@ export default function ProjectCard({
         }
 
         fetch();
-    }, [toast, loading, isOpen, id]);
+    }, [toast, loading, id, isOpenDrawer, isOpenModal]);
 
     async function handleCommentPost() {
         try {
@@ -209,38 +212,76 @@ export default function ProjectCard({
                 borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
             >
                 <ScaleFade in={true}>
-                    <Box cursor={"pointer"} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={onOpen}>
-                        {hover ? (
-                            <>
-                                <Image
-                                    width={1250}
-                                    height={600}
-                                    w="auto"
-                                    h="auto"
-                                    src={image}
-                                    transition="filter 0.2s ease-in"
-                                    filter={"blur(2px)"}
-                                    placeholder="blur"
-                                    borderRadius="10px 10px 0px 0px"
-                                    alt="project image"
-                                ></Image>
-                            </>
-                        ) : (
-                            <>
-                                <Image
-                                    width={1250}
-                                    height={600}
-                                    w="auto"
-                                    h="auto"
-                                    src={image}
-                                    transition="0.3s"
-                                    placeholder="blur"
-                                    borderRadius="10px 10px 0px 0px"
-                                    alt="project image"
-                                ></Image>
-                            </>
-                        )}
-                    </Box>
+                    {isLargerThan600 ? (
+                        <><Box cursor={"pointer"} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={onOpenModal}>
+                            {hover ? (
+                                <>
+                                    <Image
+                                        width={1250}
+                                        height={600}
+                                        w="auto"
+                                        h="auto"
+                                        src={image}
+                                        transition="filter 0.2s ease-in"
+                                        filter={"blur(2px)"}
+                                        placeholder="blur"
+                                        borderRadius="10px 10px 0px 0px"
+                                        alt="project image"
+                                    ></Image>
+                                </>
+                            ) : (
+                                <>
+                                    <Image
+                                        width={1250}
+                                        height={600}
+                                        w="auto"
+                                        h="auto"
+                                        src={image}
+                                        transition="0.3s"
+                                        placeholder="blur"
+                                        borderRadius="10px 10px 0px 0px"
+                                        alt="project image"
+                                    ></Image>
+                                </>
+                            )}
+                        </Box>
+                        </>
+                    ) : (
+                        <>
+                            <Box cursor={"pointer"} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} onClick={onOpenDrawer}>
+                                {hover ? (
+                                    <>
+                                        <Image
+                                            width={1250}
+                                            height={600}
+                                            w="auto"
+                                            h="auto"
+                                            src={image}
+                                            transition="filter 0.2s ease-in"
+                                            filter={"blur(2px)"}
+                                            placeholder="blur"
+                                            borderRadius="10px 10px 0px 0px"
+                                            alt="project image"
+                                        ></Image>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Image
+                                            width={1250}
+                                            height={600}
+                                            w="auto"
+                                            h="auto"
+                                            src={image}
+                                            transition="0.3s"
+                                            placeholder="blur"
+                                            borderRadius="10px 10px 0px 0px"
+                                            alt="project image"
+                                        ></Image>
+                                    </>
+                                )}
+                            </Box>
+                        </>
+                    )}
                     <Stack px={4} py={2}>
                         <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
                             <Text fontFamily="Ubuntu" fontSize={"2xl"}>
@@ -308,182 +349,324 @@ export default function ProjectCard({
                 </ScaleFade>
             </Stack>
 
-            <Modal onClose={onClose} isOpen={isOpen} size={"4xl"} scrollBehavior={"outside"}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader p={0}>
-                        <Image
-                            width={1250}
-                            height={600}
-                            w="auto"
-                            h="auto"
-                            src={image}
-                            transition="0.3s"
-                            placeholder="blur"
-                            borderRadius="10px 10px 0px 0px"
-                            alt="project image"
-                        ></Image>
-                    </ModalHeader>
-                    <ModalCloseButton rounded={"xl"} bgColor={colorMode === "dark" ? "#242424" : "#FFFFFF"} />
-                    <ModalBody mt={"2vh"}>
-                        <Stack spacing={8}>
-                            <Stack spacing={2}>
-                                <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
-                                    <Stack isInline alignItems={"center"}>
-                                        <Heading fontSize={["xl", "2xl", "3xl"]}>
-                                            {title}
-                                        </Heading>
-                                        <Text fontSize={"2xl"}>
-                                            {beta === true ? (
-                                                <Badge colorScheme='blue' fontWeight={"thin"} variant="outline" ml="2">
-                                                    Beta
-                                                </Badge>
-                                            ) : <div />}
-                                            {published === false ? (
-                                                <Badge colorScheme='red' fontWeight={"thin"} variant="outline" ml="2">
-                                                    Private
-                                                </Badge>
-                                            ) : <div />}
-                                            {archived === true ? (
-                                                <Badge colorScheme='green' fontWeight={"thin"} variant="outline" ml="2">
-                                                    Archived
-                                                </Badge>
-                                            ) : <div />}
+            {isLargerThan600 ? (
+                <>
+                    <Modal onClose={onCloseModal} isOpen={isOpenModal} size={"4xl"} scrollBehavior={"outside"}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader p={0}>
+                                <Image
+                                    width={1250}
+                                    height={600}
+                                    w="auto"
+                                    h="auto"
+                                    src={image}
+                                    transition="0.3s"
+                                    placeholder="blur"
+                                    borderRadius="10px 10px 0px 0px"
+                                    alt="project image"
+                                ></Image>
+                            </ModalHeader>
+                            <ModalCloseButton rounded={"xl"} bgColor={colorMode === "dark" ? "#242424" : "#FFFFFF"} />
+                            <ModalBody mt={"2vh"}>
+                                <Stack spacing={8}>
+                                    <Stack spacing={2}>
+                                        <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
+                                            <Stack isInline alignItems={"center"}>
+                                                <Heading fontSize={["xl", "2xl", "3xl"]}>
+                                                    {title}
+                                                </Heading>
+                                                <Text fontSize={"2xl"}>
+                                                    {beta === true ? (
+                                                        <Badge colorScheme='blue' fontWeight={"thin"} variant="outline" ml="2">
+                                                            Beta
+                                                        </Badge>
+                                                    ) : <div />}
+                                                    {published === false ? (
+                                                        <Badge colorScheme='red' fontWeight={"thin"} variant="outline" ml="2">
+                                                            Private
+                                                        </Badge>
+                                                    ) : <div />}
+                                                    {archived === true ? (
+                                                        <Badge colorScheme='green' fontWeight={"thin"} variant="outline" ml="2">
+                                                            Archived
+                                                        </Badge>
+                                                    ) : <div />}
+                                                </Text>
+                                            </Stack>
+                                        </Stack>
+                                        {isLargerThan480 ? (
+                                            <Stack isInline>{Tags}</Stack>
+                                        ) : (
+                                            <Stack isInline>
+                                                <Box>
+                                                    {Tags}
+                                                </Box>
+                                            </Stack>
+                                        )}
+                                        <Divider />
+                                        <Text fontSize={['sm', 'md']}>
+                                            {description}
                                         </Text>
                                     </Stack>
-                                </Stack>
-                                {isLargerThan480 ? (
-                                    <Stack isInline>{Tags}</Stack>
-                                ) : (
-                                    <Stack isInline>
-                                        <Box>
-                                            {Tags}
-                                        </Box>
+                                    <Stack>
+                                        {isLargerThan480 ? (
+                                            <>
+                                                <ButtonGroup spacing={4} >
+                                                    {githubLink && (
+                                                        <Link href={githubLink} isExternal>
+                                                            <Button>
+                                                                Source Code
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                    {deployLink && (
+                                                        <Link href={deployLink} isExternal>
+                                                            <Button>
+                                                                Project site
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                    {githubLink && (
+                                                        <Link href={githubLink + "/issues/new"} isExternal>
+                                                            <Button>
+                                                                Report a bug
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                </ButtonGroup>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ButtonGroup spacing={4}>
+                                                    {githubLink && (
+                                                        <Link href={githubLink} isExternal>
+                                                            <Button>
+                                                                Source Code
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                    {deployLink && (
+                                                        <Link href={deployLink} isExternal>
+                                                            <Button>
+                                                                Project site
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                </ButtonGroup>
+                                                <ButtonGroup spacing={4}>
+                                                    {githubLink && (
+                                                        <Link href={githubLink + "/issues/new"} isExternal>
+                                                            <Button mt={2}>
+                                                                Report a bug
+                                                            </Button>
+                                                        </Link>
+                                                    )}
+                                                </ButtonGroup>
+                                            </>
+                                        )}
                                     </Stack>
-                                )}
-                                <Divider />
-                                <Text fontSize={['sm', 'md']}>
-                                    {description}
-                                </Text>
-                            </Stack>
-                            <Stack>
-                                {isLargerThan480 ? (
-                                    <>
-                                        <ButtonGroup spacing={4} >
-                                            {githubLink && (
-                                                <Link href={githubLink} isExternal>
-                                                    <Button>
-                                                        Source Code
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                            {deployLink && (
-                                                <Link href={deployLink} isExternal>
-                                                    <Button>
-                                                        Project site
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                            {githubLink && (
-                                                <Link href={githubLink + "/issues/new"} isExternal>
-                                                    <Button>
-                                                        Report a bug
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                        </ButtonGroup>
-                                    </>
-                                ) : (
-                                    <>
-                                        <ButtonGroup spacing={4}>
-                                            {githubLink && (
-                                                <Link href={githubLink} isExternal>
-                                                    <Button>
-                                                        Source Code
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                            {deployLink && (
-                                                <Link href={deployLink} isExternal>
-                                                    <Button>
-                                                        Project site
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                        </ButtonGroup>
-                                        <ButtonGroup spacing={4}>
-                                            {githubLink && (
-                                                <Link href={githubLink + "/issues/new"} isExternal>
-                                                    <Button mt={2}>
-                                                        Report a bug
-                                                    </Button>
-                                                </Link>
-                                            )}
-                                        </ButtonGroup>
-                                    </>
-                                )}
-                            </Stack>
-                            <Stack spacing={5}>
-                                <Stack>
-                                    <Heading fontSize={["md", "lg", "xl"]}>
-                                        Comments
-                                    </Heading>
-                                </Stack>
-                                <Stack spacing={5}>
-                                    <Textarea placeholder={supabase.auth.session() ? "Add a comment..." : "Login to add a comment"} value={comment} onChange={(e) => setComment(e.target.value)} disabled={supabase.auth.session() ? false : true} />
-                                    <ButtonGroup spacing={2}>
-                                        <Button colorScheme="blue" onClick={() => { handleCommentPost() }} disabled={supabase.auth.session() ? false : true}>
-                                            Send
-                                        </Button>
-                                    </ButtonGroup>
-                                </Stack>
-                                {comments[0] && (
-                                    <Divider />
-                                )}
-                                <Stack spacing={4}>
-                                    {loading ? (
-                                        <>
-                                            <Spinner />
-                                        </>
-                                    ) : (
-                                        <>
-                                            {comments.sort((a, b) => a - b).reverse().map((comment) => {
-                                                return (
-                                                    <>
-                                                        <Box border={"1px"} borderColor={"#242424"} p={4} rounded={"xl"}>
-                                                            <Stack spacing={3}>
-                                                                <Flex justifyContent={"space-between"} alignItems={"center"}>
-                                                                    <Stack isInline spacing={2} align="center">
-                                                                        <Avatar src={comment.avatar} size={"sm"} />
-                                                                        <Text fontSize={["sm", "md"]} fontWeight={"medium"}>
-                                                                            {comment.username}#{comment.tag}
+                                    <Stack spacing={5}>
+                                        <Stack>
+                                            <Heading fontSize={["md", "lg", "xl"]}>
+                                                Comments
+                                            </Heading>
+                                        </Stack>
+                                        <Stack spacing={5}>
+                                            <Textarea placeholder={supabase.auth.session() ? "Add a comment..." : "Login to add a comment"} value={comment} onChange={(e) => setComment(e.target.value)} disabled={supabase.auth.session() ? false : true} />
+                                            <ButtonGroup spacing={2}>
+                                                <Button colorScheme="blue" onClick={() => { handleCommentPost() }} disabled={supabase.auth.session() ? false : true}>
+                                                    Send
+                                                </Button>
+                                            </ButtonGroup>
+                                        </Stack>
+                                        {comments[0] && (
+                                            <Divider />
+                                        )}
+                                        <Stack spacing={4}>
+                                            {loading ? (
+                                                <>
+                                                    <Spinner />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {comments.sort((a, b) => a - b).reverse().map((comment) => {
+                                                        return (
+                                                            <>
+                                                                <Box border={"1px"} borderColor={"#242424"} p={4} rounded={"xl"}>
+                                                                    <Stack spacing={3}>
+                                                                        <Flex justifyContent={"space-between"} alignItems={"center"}>
+                                                                            <Stack isInline spacing={2} align="center">
+                                                                                <Avatar src={comment.avatar} size={"sm"} />
+                                                                                <Text fontSize={["sm", "md"]} fontWeight={"medium"}>
+                                                                                    {comment.username}#{comment.tag}
+                                                                                </Text>
+                                                                                <Text>&bull;</Text>
+                                                                                <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.created_at), "dd/mm/yy")}</Text>
+                                                                            </Stack>
+                                                                            <Stack isInline spacing={2}>
+                                                                                {userData.badges.admin && (
+                                                                                    <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
+                                                                                )}
+                                                                            </Stack>
+                                                                        </Flex>
+                                                                        <Text fontSize={["sm", "md"]}>
+                                                                            {comment.body}
                                                                         </Text>
-                                                                        <Text>&bull;</Text>
-                                                                        <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.date), "mm/dd/yy hh:MM tt")}</Text>
                                                                     </Stack>
-                                                                    <Stack isInline spacing={2}>
-                                                                        {userData.badges.admin && (
-                                                                            <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
-                                                                        )}
-                                                                    </Stack>
-                                                                </Flex>
-                                                                <Text fontSize={["sm", "md"]}>
-                                                                    {comment.body}
-                                                                </Text>
-                                                            </Stack>
-                                                        </Box>
-                                                    </>
-                                                );
-                                            }
+                                                                </Box>
+                                                            </>
+                                                        );
+                                                    }
+                                                    )}
+                                                </>
                                             )}
-                                        </>
-                                    )}
+                                        </Stack>
+                                    </Stack>
                                 </Stack>
-                            </Stack>
-                        </Stack>
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
+                            </ModalBody>
+                        </ModalContent>
+                    </Modal>
+                </>
+            ) : (
+                <>
+                    <Drawer isOpen={isOpenDrawer} onClose={onCloseDrawer} size={"lg"} placement={"left"}>
+                        <DrawerOverlay />
+                        <DrawerContent>
+                            <DrawerCloseButton />
+                            <DrawerHeader p={0}>
+                                <Image
+                                    width={1250}
+                                    height={600}
+                                    w="auto"
+                                    h="auto"
+                                    src={image}
+                                    transition="0.3s"
+                                    placeholder="blur"
+                                    borderRadius="10px 10px 0px 0px"
+                                    alt="project image"
+                                ></Image>
+                            </DrawerHeader>
+
+                            <DrawerBody>
+                                <Stack spacing={8}>
+                                    <Stack spacing={2}>
+                                        <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
+                                            <Stack isInline alignItems={"center"}>
+                                                <Heading fontSize={["xl", "2xl", "3xl"]}>
+                                                    {title}
+                                                </Heading>
+                                                <Text fontSize={"2xl"}>
+                                                    {beta === true ? (
+                                                        <Badge colorScheme='blue' fontWeight={"thin"} variant="outline" ml="2">
+                                                            Beta
+                                                        </Badge>
+                                                    ) : <div />}
+                                                </Text>
+                                            </Stack>
+                                        </Stack>
+                                        {isLargerThan480 ? (
+                                            <Stack isInline>{Tags}</Stack>
+                                        ) : (
+                                            <Stack isInline>
+                                                <Box>
+                                                    {Tags}
+                                                </Box>
+                                            </Stack>
+                                        )}
+                                        <Divider />
+                                        <Text fontSize={['sm', 'md']}>
+                                            {description}
+                                        </Text>
+                                    </Stack>
+                                    <SimpleGrid columns={3} spacing={4}>
+                                        {githubLink && (
+                                            <NextLink href={githubLink} passHref>
+                                                <Button fontSize={{ base: "sm", sm: "md" }}>
+                                                    Source Code
+                                                </Button>
+                                            </NextLink>
+                                        )}
+                                        {deployLink && (
+                                            <NextLink href={deployLink} passHref>
+                                                <Button fontSize={{ base: "sm", sm: "md" }}>
+                                                    Project site
+                                                </Button>
+                                            </NextLink>
+                                        )}
+                                        {githubLink && (
+                                            <NextLink href={githubLink + "/issues/new"} passHref>
+                                                <Button fontSize={{ base: "sm", sm: "md" }}>
+                                                    Report a bug
+                                                </Button>
+                                            </NextLink>
+                                        )}
+                                    </SimpleGrid>
+
+                                    <Stack spacing={5}>
+                                        <Stack>
+                                            <Heading fontSize={["md", "lg", "xl"]}>
+                                                Comments
+                                            </Heading>
+                                        </Stack>
+                                        <Stack spacing={5}>
+                                            <Textarea placeholder={supabase.auth.session() ? "Add a comment..." : "Login to add a comment"} value={comment} onChange={(e) => setComment(e.target.value)} disabled={supabase.auth.session() ? false : true} />
+                                            <ButtonGroup spacing={2}>
+                                                <Button colorScheme="blue" onClick={() => { handleCommentPost() }} disabled={supabase.auth.session() ? false : true}>
+                                                    Send
+                                                </Button>
+                                            </ButtonGroup>
+                                        </Stack>
+                                        {comments[0] && (
+                                            <Divider />
+                                        )}
+                                        <Stack spacing={4}>
+                                            {loading ? (
+                                                <>
+                                                    <Spinner />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {comments.sort((a, b) => a - b).reverse().map((comment) => {
+                                                        return (
+                                                            <>
+                                                                <Box border={"1px"} borderColor={"#242424"} p={4} rounded={"xl"}>
+                                                                    <Stack spacing={3}>
+                                                                        <Flex justifyContent={"space-between"} alignItems={"center"}>
+                                                                            <Stack isInline spacing={2} align="center">
+                                                                                <Avatar src={comment.avatar} size={"sm"} />
+                                                                                <Text fontSize={["sm", "md"]} fontWeight={"medium"}>
+                                                                                    {comment.username}#{comment.tag}
+                                                                                </Text>
+                                                                                <Text>&bull;</Text>
+                                                                                <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.created_at), "dd/mm/yy")}</Text>
+                                                                            </Stack>
+                                                                            <Stack isInline spacing={2}>
+                                                                                {userData.badges.admin && (
+                                                                                    <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
+                                                                                )}
+                                                                            </Stack>
+                                                                        </Flex>
+                                                                        <Text fontSize={["sm", "md"]}>
+                                                                            {comment.body}
+                                                                        </Text>
+                                                                    </Stack>
+                                                                </Box>
+                                                            </>
+                                                        );
+                                                    }
+                                                    )}
+                                                </>
+                                            )}
+                                        </Stack>
+                                    </Stack>
+                                </Stack>
+                            </DrawerBody>
+                        </DrawerContent>
+                    </Drawer>
+                </>
+            )}
+
         </>
     )
 }

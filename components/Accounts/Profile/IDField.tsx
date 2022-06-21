@@ -1,8 +1,9 @@
 import { Flex, Input, Box, Button, Text, useToast } from "@chakra-ui/react";
 import { AiOutlineCopy } from "react-icons/ai";
-import supabase from "../../../lib/SupabaseClient";
+import { useAuth } from "../../../contexts/Auth";
 
 export default function IDField() {
+    const { user } = useAuth();
     const toast = useToast();
     return (
         <>
@@ -14,13 +15,13 @@ export default function IDField() {
                     <Flex w={"95vw"}>
                         <Input
                             disabled={true}
-                            value={supabase.auth.user().id}
+                            value={user.id}
                         />
                     </Flex>
                     <Flex pl={4}>
                         <Button onClick={async () => {
                             try {
-                                navigator.clipboard.writeText(supabase.auth.user().id)
+                                navigator.clipboard.writeText(user.id)
                             } catch (err) {
                                 toast({
                                     title: "Error",

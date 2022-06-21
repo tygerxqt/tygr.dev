@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import multer from "multer";
-import { ApiResponse } from "../../../types/ApiResponse";
+import { ApiResponse } from "../../../types/Upload/ApiResponse";
 import { Deta } from "deta";
 import supabase from "../../../lib/SupabaseClient";
 import cookieParser from "cookie-parser";
@@ -68,6 +68,7 @@ apiRoute.post(async (req: NextConnectApiRequest, res: NextApiResponse<ResponseDa
 export const config = {
   api: {
     bodyParser: false, // Disallow body parsing, consume as stream
+    responseLimit: '8mb',
   },
 };
 export default apiRoute;

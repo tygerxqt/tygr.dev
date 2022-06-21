@@ -14,10 +14,10 @@ export default function PostCard({ post }) {
                             <Stack isInline alignItems={"center"}>
                                 <Avatar
                                     name="tygerxqt"
-                                    size="xs"
+                                    size="sm"
                                     src="https://avatars.githubusercontent.com/u/59417077?v=4"
                                 />
-                                <Text fontSize={["xs", "xs", "sm", "sm"]}>
+                                <Text fontSize={"sm"}>
                                     tygerxqt#0001
                                 </Text>
                             </Stack>

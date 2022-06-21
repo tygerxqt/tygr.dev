@@ -1,49 +1,11 @@
-import { Button, Avatar, Spinner, Text, Flex, Box, Menu, MenuButton, MenuGroup, MenuList, Image, useMenu, toast, useToast } from "@chakra-ui/react";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/Account/UserProfile";
+import { Button, Avatar, Spinner, Text, Flex, Box, Menu, MenuButton, MenuGroup, MenuList, Image } from "@chakra-ui/react";
+import { useAuth } from "../../contexts/Auth";
 import CompactBadges from "./Badges/CompactBadges";
 
 export default function UserPopout({
     type
 }) {
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
-    const toast = useToast();
-
-    useEffect(() => {
-        const user = supabase.auth.user();
-        const session = supabase.auth.session();
-
-        async function fetch() {
-            try {
-                await axios.get(`/api/users/@me`).then(response => {
-                    setUserData(response.data as UserProfile)
-                }).catch(err => {
-                    throw new Error(err)
-                })
-            } catch (err) {
-                toast({
-                    title: "Error",
-                    description: "An error occurred while fetching your profile",
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true
-                })
-            } finally {
-                setLoading(false);
-                setUpdate(false);
-            }
-        }
-
-        if (session) {
-            fetch();
-        } else {
-            setLoading(false);
-        }
-    }, [update, toast]);
+    const { user, userData } = useAuth();
 
     switch (type) {
         default: {
@@ -56,7 +18,7 @@ export default function UserPopout({
         case "menu": {
             return (
                 <>
-                    {loading ? (
+                    {userData === undefined ? (
                         <>
                             <Button isLoading>
                                 <Spinner />
@@ -65,8 +27,8 @@ export default function UserPopout({
                     ) : (
                         <>
                             <Menu>
-                                <MenuButton as={Button} leftIcon={<Avatar src={userData.avatar} size="xs" />} px={"2"}>
-                                    {supabase.auth.user().user_metadata.username + "#" + supabase.auth.user().user_metadata.tag}
+                                <MenuButton as={Button} leftIcon={<Avatar src={userData.avatar} size="xs" />} px={2}>
+                                    {user.user_metadata.username + "#" + user.user_metadata.tag}
                                 </MenuButton>
                                 <MenuList pt={0}>
                                     <Image
@@ -101,7 +63,7 @@ export default function UserPopout({
                                             <CompactBadges />
                                         </Box>
                                     </Flex>
-                                    <MenuGroup title={`${supabase.auth.user().user_metadata.username}#${supabase.auth.user().user_metadata.tag}`} p={0} fontSize={"xl"} />
+                                    <MenuGroup title={`${user.user_metadata.username}#${user.user_metadata.tag}`} p={0} fontSize={"xl"} />
                                 </MenuList>
                             </Menu>
                         </>

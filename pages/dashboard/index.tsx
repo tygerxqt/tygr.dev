@@ -7,19 +7,16 @@ import { createClient } from "contentful";
 import PremiumContainer from "../../components/Accounts/PremiumContainer";
 import PostCard from "../../components/Accounts/Feed/PostCard";
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import { UserProfile } from "../../types/Account/UserProfile";
 import useMediaQuery from "../../hook/useMediaQuery";
+import { useAuth } from "../../contexts/Auth";
 
 export default function Dashboard({ posts }) {
-    const session = supabase.auth.session();
+    const { userData } = useAuth();
     const router = useRouter();
     const toast = useToast();
 
     const isLargerThan768 = useMediaQuery(768);
-
-    const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
+    const isLargerThan1100 = useMediaQuery(1100);
 
     const loadPortal = async () => {
         await axios.get(`/api/billing/portal?redirect=dashboard`).then(res => {
@@ -53,32 +50,9 @@ export default function Dashboard({ posts }) {
         })
     }
 
-    useEffect(() => {
-        async function fetch() {
-            if (!supabase.auth.session()) {
-                return setLoading(false);
-            }
-            await axios.get(`/api/users/@me`).then(response => {
-                setUserData(response.data);
-                setLoading(false);
-            }).catch(error => {
-                console.log(error.response.data.error);
-                toast({
-                    title: "Error",
-                    description: error.response.data.error,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true
-                });
-            });
-        }
-
-        fetch();
-    }, [toast, loading])
-
     return (
         <>
-            {loading ? (
+            {userData === undefined ? (
                 <>
                     <Flex
                         as="main"
@@ -97,7 +71,7 @@ export default function Dashboard({ posts }) {
                                 </Center>
                                 <Center>
                                     <Text fontSize="xl" fontWeight="bold">
-                                        Fetching user data...
+                                        Loading...
                                     </Text>
                                 </Center>
                             </Stack>
@@ -110,7 +84,7 @@ export default function Dashboard({ posts }) {
                         <Head>
                             <title>Dashboard</title>
                         </Head>
-                        <SimpleGrid columns={[1, 1, 2, 2]} spacing={20} my={["10vh", "10vh", "15vh", "15vh"]}>
+                        <SimpleGrid columns={isLargerThan1100 ? 2 : 1} spacing={20} my={["10vh", "10vh", "15vh", "15vh"]}>
                             <Stack spacing={10}>
                                 <Stack spacing={5}>
                                     <Heading fontSize={{ base: "4xl", md: "6xl" }}>Dashboard</Heading>

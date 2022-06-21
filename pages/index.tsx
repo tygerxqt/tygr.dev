@@ -10,37 +10,37 @@ import { createClient } from "contentful";
 function IndexPage({ projects }) {
   return (
     <>
+      <Head>
+        <title>tygerxqt</title>
+        <meta name="title" content="tygerxqt" />
+        <meta name="keywords" content="tygerxqt, tygr.dev" />
+        <meta
+          name="description"
+          content="tygerxqt, a self-taught Web/IOT Developer."
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tygr.dev" />
+        <meta property="og:title" content="tygerxqt." />
+        <meta
+          property="og:description"
+          content="tygerxqt, a self-taught Web/IOT Developer"
+        />
+        <meta property="og:image" content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png" />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://tygr.dev/" />
+        <meta property="twitter:title" content="tygerxqt" />
+        <meta
+          property="twitter:description"
+          content="tygerxqt, a self-taught Web/IOT Developer."
+        />
+        <meta
+          property="twitter:image"
+          content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png"
+        />
+      </Head>
       <Container enableTransition={true}>
-        <Head>
-          <title>tygerxqt</title>
-          <meta name="title" content="tygerxqt" />
-          <meta name="keywords" content="tygerxqt, tygr.dev" />
-          <meta
-            name="description"
-            content="tygerxqt, a self-taught Web/IOT Developer."
-          />
-
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://tygr.dev" />
-          <meta property="og:title" content="tygerxqt." />
-          <meta
-            property="og:description"
-            content="tygerxqt, a self-taught Web/IOT Developer"
-          />
-          <meta property="og:image" content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png" />
-
-          <meta property="twitter:card" content="summary_large_image" />
-          <meta property="twitter:url" content="https://tygr.dev/" />
-          <meta property="twitter:title" content="tygerxqt" />
-          <meta
-            property="twitter:description"
-            content="tygerxqt, a self-taught Web/IOT Developer."
-          />
-          <meta
-            property="twitter:image"
-            content="https://images.ctfassets.net/547zkxycwgvr/3Q0kToF2x0JVJYMuAlaKD8/ab6255362cf55e7421bac16caaa00073/tygrdev5.png"
-          />
-        </Head>
         <Stack
           as="main"
           justifyContent="center"

@@ -1,27 +1,19 @@
-import { Tag, TagLeftIcon, Tooltip } from "@chakra-ui/react";
+import { Skeleton, Spinner, Tag, TagLeftIcon, Tooltip } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiFillBug } from "react-icons/ai";
 import { BiDonateHeart, BiCode } from "react-icons/bi";
 import { BsTerminalFill } from "react-icons/bs";
 import { RiParkingFill } from "react-icons/ri";
 import { MdLocalPolice } from "react-icons/md";
-import supabase from "../../../lib/SupabaseClient";
+import { useAuth } from "../../../contexts/Auth";
 
-export default function CompactBadges() {
-    const user = supabase.auth.user();
-    const session = supabase.auth.session();
-    const [badges, setBadges] = useState([]);
-    useEffect(() => {
-        fetch(`/api/users/@me`)
-            .then((res) => res.json())
-            .then((data) => {
-                const filtered = Object.keys(data.badges).filter((key) => data.badges[key]);
-                if (data.pixel === true) {
-                    filtered.push("pixel");
-                }
-                setBadges(filtered);
-            });
-    }, [user, session]);
+function Badges() {
+    const { userData } = useAuth();
+
+    const array = Object.keys(userData.badges).filter((key) => userData.badges[key]);
+    if (userData.pixel === true) {
+        array.push("pixel");
+    }
 
     const getTag = (tag) => {
         let values = []
@@ -66,9 +58,9 @@ export default function CompactBadges() {
         return values
     }
 
-    const Tags = badges.map((item) => (
+    const Tags = array.map((item) => (
         <>
-            <Tooltip hasArrow placement={"top"} label={getTag(item)[0]} key={item} >
+            <Tooltip key={item[0]} hasArrow placement={"top"} label={getTag(item)[0]}>
                 <Tag
                     key={item}
                     colorScheme={getTag(item)[1]}
@@ -85,6 +77,20 @@ export default function CompactBadges() {
     return (
         <>
             {Tags}
+        </>
+    );
+}
+
+export default function CompactBadges() {
+    const { userData } = useAuth();
+
+    return (
+        <>
+            {userData === undefined ? (
+                null
+            ) : (
+                <Badges />
+            )}
         </>
     );
 }

@@ -3,21 +3,22 @@ import axios from "axios";
 import dateFormat from "dateformat";
 import { useState, useEffect } from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { useAuth } from "../../../contexts/Auth";
 import supabase from "../../../lib/SupabaseClient";
-import { UserProfile } from "../../../types/Account/UserProfile";
 
 export default function FeedComments({ metadata }) {
     const toast = useToast();
+    const { userData, user } = useAuth();
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState([]);
 
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile)
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetch() {
             await axios.get(`/api/feed/comments/${metadata.sys.id}`).then(response => {
                 setComments(response.data.data);
+                setLoading(false);
             }).catch(error => {
                 toast({
                     title: "Error",
@@ -29,21 +30,6 @@ export default function FeedComments({ metadata }) {
                 });
                 setLoading(false);
             });
-
-            await axios.get(`/api/users/@me`).then(response => {
-                setUserData(response.data);
-                setLoading(false);
-            }).catch(error => {
-                toast({
-                    title: "Error",
-                    description: error.response.data.message,
-                    status: "error",
-                    duration: 9000,
-                    isClosable: true,
-                    position: "top-left"
-                });
-                setLoading(false);
-            })
         }
 
         fetch();
@@ -173,7 +159,7 @@ export default function FeedComments({ metadata }) {
                                                         <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.date), "mm/dd/yy hh:MM tt")}</Text>
                                                     </Stack>
                                                     <Stack isInline spacing={2}>
-                                                        {comment.user === userData.user.id && (
+                                                        {comment.user === user.id && (
                                                             <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
                                                         )}
                                                     </Stack>

@@ -1,48 +1,17 @@
 import { Flex, Center, Stack, Spinner, Text, VisuallyHidden } from "@chakra-ui/react";
-import axios from "axios";
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/Auth";
 import useMediaQuery from "../../hook/useMediaQuery";
-import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/Account/UserProfile";
 import Container from "../UI/Container";
 import Navbar from "../UI/Navbar";
 
 export default function PremiumContainer({ children }) {
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [userData, setUserData] = useState<UserProfile>({} as UserProfile);
+    const { userData } = useAuth();
     const isLargerThan768 = useMediaQuery(768);
 
-    useEffect(() => {
-        const user = supabase.auth.user();
-        const session = supabase.auth.session();
-
-        async function fetch() {
-            try {
-                await axios.get(`/api/users/@me`).then(response => {
-                    setUserData(response.data as UserProfile)
-                }).catch(error => {
-                    throw new Error(error.response.data.error);
-                });
-            } catch (err) {
-                throw err;
-            } finally {
-                setLoading(false);
-                setUpdate(false);
-            }
-        }
-
-        if (session) {
-            fetch();
-        } else {
-            setLoading(false);
-        }
-
-    }, [update]);
     return (
         <>
-            {loading ? (
+            {userData === undefined ? (
                 <>
                     <Navbar enableTransition={false} />
                     <Flex
@@ -62,7 +31,7 @@ export default function PremiumContainer({ children }) {
                                 </Center>
                                 <Center>
                                     <Text fontSize="xl" fontWeight="bold">
-                                        Checking subscription status...
+                                        Loading...
                                     </Text>
                                 </Center>
                             </Stack>
@@ -71,7 +40,7 @@ export default function PremiumContainer({ children }) {
                 </>
             ) : (
                 <>
-                    {!userData.pixel ? (
+                    {userData === null || userData.pixel === false ? (
                         <>
                             <Navbar enableTransition={false} />
                             <Flex

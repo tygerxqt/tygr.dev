@@ -1,32 +1,25 @@
-import { Flex, Center, Stack, Spinner, Heading, Divider, Text, UnorderedList, ListItem, Box, useColorMode, SimpleGrid, Select, ButtonGroup, Button, Input, FormControl, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
+import { Flex, Center, Stack, Spinner, Heading, Divider, Text, UnorderedList, ListItem, Box, SimpleGrid, Select, ButtonGroup, Button, Input, FormControl, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, toast, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Stripe from "stripe";
 import Container from "../../components/UI/Container";
 import Navbar from "../../components/UI/Navbar";
 import useMediaQuery from "../../hook/useMediaQuery";
 import stripe from "../../lib/Stripe"
-import supabase from "../../lib/SupabaseClient";
-import { UserProfile } from "../../types/Account/UserProfile";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
+import { useAuth } from "../../contexts/Auth";
 
 export default function Pricing({ plans }) {
-    const user = supabase.auth.user();
-    const session = supabase.auth.session();
+    const { userData, update, session, user } = useAuth();
     const router = useRouter();
-
-    const [userData, setUserData] = useState({} as UserProfile);
-    const [customer, setCustomer] = useState({} as Stripe.Customer);
-    const [update, setUpdate] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     const [selectedPlan, setSelectedPlan] = useState("price_1L7E5lCvkEhaRfsbUYDWXUVF");
 
-    const [newCustomerName, setNewCustomerName] = useState(customer ? customer.name : "");
-    const [newCustomerEmail, setNewCustomerEmail] = useState(customer ? customer.email : "");
+    const [newCustomerName, setNewCustomerName] = useState(user ? user.user_metadata.full_name : "");
+    const [newCustomerEmail, setNewCustomerEmail] = useState(user ? user.email : "");
+    const [loading, setLoading] = useState(false);
 
     const loadPortal = async () => {
         await axios.get(`/api/billing/portal?redirect=pixels`).then(res => {
@@ -38,42 +31,16 @@ export default function Pricing({ plans }) {
 
     const isLargerThan768 = useMediaQuery(768);
 
-    useEffect(() => {
-        const user = supabase.auth.user();
-        const session = supabase.auth.session();
-
-        async function fetch() {
-            const { data, status: dataStatus } = await axios.get(`/api/users/@me`);
-            if (dataStatus != 200) throw new Error(data.message);
-            const { data: customerData, status: customerStatus } = await axios.get(`api/billing/customers/fetch`);
-            if (customerStatus != 200) throw new Error(customerData.message);
-            setUserData(data as UserProfile);
-            setCustomer(customerData.data);
-            setLoading(false);
-            setUpdate(false);
-
-            setNewCustomerEmail(user.email);
-            setNewCustomerName(user.user_metadata.full_name);
-        }
-
-        if (session) {
-            fetch();
-        } else {
-            setLoading(false);
-        }
-    }, [update]);
-
     async function createCustomer() {
-        const session = supabase.auth.session();
-
+        setLoading(true);
         const { data, status } = await axios.post(`api/billing/customers/create`, {
             email: newCustomerEmail,
             name: newCustomerName,
         });
 
         if (status != 200) throw new Error(data.message);
-        setCustomer(data.data);
-        setUpdate(true);
+        update();
+        setLoading(false);
     }
 
     const processSubscription = planId => async () => {
@@ -117,14 +84,16 @@ export default function Pricing({ plans }) {
                     </Head>
                     <Stack my="12.5vh" justifyContent="center">
                         <Stack justifyContent="center" alignItems="center">
-                            <Heading fontSize={["3xl", "3xl", "5xl", "5xl"]}>Pixels</Heading>
-                            <Divider />
                             <Stack
                                 w={["100vw", "95vw"]}
                                 maxW="680px"
                                 spacing={5}
                                 p={4}
                             >
+                                <Center>
+                                    <Heading fontSize={["3xl", "3xl", "5xl", "5xl"]}>Pixels</Heading>
+                                </Center>
+                                <Divider />
                                 <Text fontSize={{ base: "md", md: "lg" }} mt={"3vh"}>
                                     Pixels is a subscription service provided by tygerxqt that starts at a minimum of $1 a month. Pixel was created to provide a way for people to support tygerxqt and gain rewards and perks in return. <br /><br /> Being a Pixel subscriber grants you access to the following perks and rewards:
                                 </Text>
@@ -138,7 +107,7 @@ export default function Pricing({ plans }) {
                                         <ListItem>A Pixel perfect badge to show your support.</ListItem>
                                     </UnorderedList>
                                 </Box>
-                                <Box mt={"3vh"}>
+                                <Center mt={"3vh"}>
                                     <ButtonGroup>
                                         <Link href="/account" passHref>
                                             <Button>
@@ -146,7 +115,7 @@ export default function Pricing({ plans }) {
                                             </Button>
                                         </Link>
                                     </ButtonGroup>
-                                </Box>
+                                </Center>
                             </Stack>
                         </Stack>
                     </Stack>
@@ -158,7 +127,7 @@ export default function Pricing({ plans }) {
     const Subscribe = () => {
         return (
             <>
-                {loading ? (
+                {userData === undefined ? (
                     <>
                         <Spinner />
                     </>
@@ -195,7 +164,7 @@ export default function Pricing({ plans }) {
                                         </UnorderedList>
                                     </Stack>
                                     <Stack spacing={10}>
-                                        {customer ? (
+                                        {userData.customer.id ? (
                                             <>
                                                 <Box border={"1px"} borderColor={"#242424"} p={4} rounded={"lg"} >
                                                     <Stack spacing={"3vh"}>
@@ -227,11 +196,11 @@ export default function Pricing({ plans }) {
                                                         </Stack>
                                                         <Stack>
                                                             <Heading fontSize={["xl", "xl", "lg", "lg"]}>Name</Heading>
-                                                            <Input value={newCustomerName} />
+                                                            <Input value={newCustomerName} onChange={(e) => setNewCustomerName(e.target.value)} />
                                                         </Stack>
                                                         <Stack>
                                                             <Heading fontSize={["xl", "xl", "lg", "lg"]}>Email</Heading>
-                                                            <Input value={newCustomerEmail} />
+                                                            <Input value={newCustomerEmail} onChange={(e) => setNewCustomerEmail(e.target.value)} />
                                                         </Stack>
                                                         <Stack>
                                                             <ButtonGroup>
@@ -262,7 +231,7 @@ export default function Pricing({ plans }) {
                                                 </Stack>
                                                 <Stack>
                                                     <ButtonGroup>
-                                                        <Button onClick={processSubscription(selectedPlan)} disabled={!customer}>
+                                                        <Button onClick={processSubscription(selectedPlan)} disabled={!userData.customer}>
                                                             Subscribe
                                                         </Button>
                                                     </ButtonGroup>
@@ -318,7 +287,7 @@ export default function Pricing({ plans }) {
 
     return (
         <>
-            {loading ? (
+            {userData === undefined && !user ? (
                 <>
                     <Navbar enableTransition={false} />
                     <Flex
@@ -338,7 +307,7 @@ export default function Pricing({ plans }) {
                                 </Center>
                                 <Center>
                                     <Text fontSize="xl" fontWeight="bold">
-                                        Checking subscription status...
+                                        Loading...
                                     </Text>
                                 </Center>
                             </Stack>

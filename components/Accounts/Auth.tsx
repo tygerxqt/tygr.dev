@@ -17,10 +17,12 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import Navbar from "../UI/Navbar";
-import supabase from "../../lib/SupabaseClient";
+import { useAuth } from "../../contexts/Auth";
 import axios from "axios";
+import supabase from "../../lib/SupabaseClient";
 
 export default function Auth() {
+  const { signIn, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState("login");
 
@@ -65,29 +67,26 @@ export default function Auth() {
     async (email: string, password: string) => {
       try {
         setLoading(true);
-
+        if (!email || !password) {
+          return toast({
+            title: "Error",
+            description: "You need to provide an email and password.",
+            status: "error",
+            duration: 9000,
+            isClosable: true
+          });
+        }
         // set client cookie
-        const { user, error } = await supabase.auth.signIn({ email, password });
+        signIn(email, password);
 
-        // set server cookie
-        axios.post("/api/auth/cookie/set", {
+        await axios.post("/api/auth/cookie", {
           event: user ? "SIGNED_IN" : "SIGNED_OUT",
           session: supabase.auth.session(),
         });
 
-        if (error) {
-          toast({
-            title: "Error",
-            description: error.message,
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-          return console.log(error);
-        }
         toast({
           title: "Success",
-          description: `Logged in as ${user.user_metadata.username}!`,
+          description: `Logged in as ${email}!`,
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -95,7 +94,7 @@ export default function Auth() {
       } catch (error) {
         toast({
           title: "Error",
-          description: error.message,
+          description: error,
           status: "error",
           duration: 9000,
           isClosable: true,
@@ -105,7 +104,7 @@ export default function Auth() {
         setLoading(false);
       }
     },
-    [toast]
+    [toast, signIn, user]
   );
 
   const handleRegister = useCallback(
@@ -134,11 +133,11 @@ export default function Auth() {
       }
 
       await axios.post("/api/auth/signup", {
-        name,
-        email,
-        username,
-        password
-      }).then(response => {
+        name: name,
+        email: email,
+        username: username,
+        password: password,
+      }).then(async response => {
         toast({
           title: "Success",
           description: `${response.data.data}`,
@@ -149,7 +148,7 @@ export default function Auth() {
       }).catch(error => {
         toast({
           title: "Error",
-          description: error.response.data.error,
+          description: error,
           status: "error",
           duration: 9000,
           isClosable: true,

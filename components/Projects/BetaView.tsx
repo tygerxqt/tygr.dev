@@ -1,7 +1,8 @@
-import { Button, Divider, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, useDisclosure, Image, Text, useColorMode, ModalFooter, FormControl, FormLabel, Input, FormHelperText, Checkbox, Spacer, useCheckbox, Link, ButtonGroup, Avatar, Tooltip, useToast } from "@chakra-ui/react";
+import { Button, Divider, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Stack, useDisclosure, Image, Text, useColorMode, ModalFooter, Link, ButtonGroup, useToast, DrawerContent, DrawerHeader, Drawer, DrawerCloseButton, DrawerOverlay, DrawerBody } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BiLogOut } from "react-icons/bi";
+import { useAuth } from "../../contexts/Auth";
+import useMediaQuery from "../../hook/useMediaQuery";
 import supabase from "../../lib/SupabaseClient";
 import UserPopout from "../Accounts/UserPopout";
 
@@ -10,16 +11,19 @@ export default function BetaView({
     image,
     id,
 }) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { user } = useAuth();
+    const { isOpen: isOpenModal, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure();
+    const { isOpen: isOpenDrawer, onOpen: onOpenDrawer, onClose: onCloseDrawer } = useDisclosure();
     const { colorMode } = useColorMode();
     const toast = useToast();
+    const isLargerThan600 = useMediaQuery(600);
 
     const [loading, setLoading] = useState(false);
     const [request, setRequest] = useState({} as any);
 
     useEffect(() => {
         async function fetch() {
-            await axios.get(`/api/projects/beta/fetch?project=${id}&user=${supabase.auth.user().id}`).then(response => {
+            await axios.get(`/api/projects/beta/fetch?project=${id}&user=${user.id}`).then(response => {
                 setRequest(response.data.data);
                 setLoading(false);
             }).catch(error => {
@@ -35,7 +39,7 @@ export default function BetaView({
         }
 
         fetch();
-    }, [toast, id, loading])
+    }, [toast, id, loading, user])
 
     async function submitRequest() {
         try {
@@ -75,9 +79,18 @@ export default function BetaView({
 
     return (
         <>
-            <Button onClick={onOpen} colorScheme={"blue"}>Open beta</Button>
+            {isLargerThan600 ? (
+                <>
+                    <Button onClick={onOpenModal} colorScheme={"blue"}>Open beta</Button>
+                </>
+            ) : (
+                <>
+                    <Button onClick={onOpenDrawer} colorScheme={"blue"}>Open beta</Button>
+                </>
+            )}
 
-            <Modal onClose={onClose} isOpen={isOpen} size={"4xl"} scrollBehavior={"outside"}>
+
+            <Modal onClose={onCloseModal} isOpen={isOpenModal} size={"4xl"} scrollBehavior={"outside"}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader p={0}>
@@ -116,15 +129,6 @@ export default function BetaView({
                                 {" "}
                                 <ButtonGroup>
                                     <UserPopout type={"menu"} />
-                                    <Tooltip hasArrow label="Logout">
-                                        <Button onClick={() => {
-                                            setLoading(true);
-                                            supabase.auth.signOut()
-                                            setLoading(false);
-                                        }}>
-                                            <BiLogOut fontSize="24px" />
-                                        </Button>
-                                    </Tooltip>
                                 </ButtonGroup>
                             </Stack>
                             {/* @ts-ignore */}
@@ -133,7 +137,7 @@ export default function BetaView({
                                 <>
                                     {request.user && (
                                         <Button isLoading={loading} disabled>
-                                            Request is pending. Please check back later.
+                                            Request is pending...
                                         </Button>
                                     )}
                                 </>
@@ -150,6 +154,70 @@ export default function BetaView({
                 </ModalContent>
                 <ModalFooter />
             </Modal>
+
+            <Drawer isOpen={isOpenDrawer} onClose={onCloseDrawer} size={"lg"} placement={"left"}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader p={0}>
+                        <Image
+                            width={1250}
+                            height={600}
+                            w="auto"
+                            h="auto"
+                            src={image}
+                            transition="0.3s"
+                            placeholder="blur"
+                            borderRadius="10px 10px 0px 0px"
+                            alt="project image"
+                        ></Image>
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <Stack spacing={8} pb={"1vh"}>
+                            <Stack spacing={2}>
+                                <Stack isInline justifyContent={"space-between"} alignItems={"center"}>
+                                    <Stack isInline alignItems={"center"}>
+                                        <Heading fontSize={["xl", "2xl", "3xl"]}>
+                                            Beta signup for {title}
+                                        </Heading>
+                                    </Stack>
+                                </Stack>
+                                <Divider />
+                                <Text fontSize={['sm', 'md']}>
+                                    We have auto filled the form with your Pixel account information, if anything is incorrect please make changes on the <Link href="/profile">profile page</Link>.
+                                </Text>
+                            </Stack>
+                            <Stack>
+                                <Heading fontSize={['md', 'lg']}>
+                                    Account
+                                </Heading>
+                                {" "}
+                                <ButtonGroup>
+                                    <UserPopout type={"menu"} />
+                                </ButtonGroup>
+                            </Stack>
+                            {/* @ts-ignore */}
+
+                            {request ? (
+                                <>
+                                    {request.user && (
+                                        <Button isLoading={loading} disabled>
+                                            Request is pending...
+                                        </Button>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <Button onClick={() => submitRequest()} isLoading={loading}>
+                                        Submit
+                                    </Button>
+                                </>
+                            )}
+
+                        </Stack>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </>
     )
 }

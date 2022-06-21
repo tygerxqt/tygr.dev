@@ -1,18 +1,22 @@
+import axios from "axios";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Auth from "../../components/Accounts/Auth";
 import Profile from "../../components/Accounts/Profile";
+import { useAuth } from "../../contexts/Auth";
 import supabase from "../../lib/SupabaseClient";
 
 export default function ProfilePage() {
-  const [session, setSession] = useState(null);
-  useEffect(() => {
-    setSession(supabase.auth.session());
+  const { session, user } = useAuth();
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    })
-  }, []);
+  useEffect(() => {
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      await axios.post("/api/auth/cookie", {
+        event: session?.user ? "SIGNED_IN" : "SIGNED_OUT",
+        session: session,
+      });
+    });
+  });
 
   return <div>
     <Head>
@@ -44,6 +48,6 @@ export default function ProfilePage() {
         content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png"
       />
     </Head>
-    {!session ? <Auth /> : <Profile />}
+    {!user ? <Auth /> : <Profile />}
   </div>;
 }

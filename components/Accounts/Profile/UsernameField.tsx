@@ -2,11 +2,11 @@ import { Box, Button, Flex, Input, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { AiOutlineCheck, AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
+import { useAuth } from "../../../contexts/Auth";
 import supabase from "../../../lib/SupabaseClient";
 
 const UsernameField = () => {
-  const session = supabase.auth.session();
-  const user = supabase.auth.user();
+  const { user } = useAuth();
   const toast = useToast();
   const [editing, setEditing] = useState(false);
   const [oldUsername, setOldUsername] = useState(user.user_metadata.username);
