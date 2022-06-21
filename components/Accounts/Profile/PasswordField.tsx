@@ -23,8 +23,9 @@ import { AiOutlineEdit } from "react-icons/ai";
 import supabase from "../../../lib/SupabaseClient";
 import * as React from "react";
 import { HiEye, HiEyeOff } from "react-icons/hi";
+import { useAuth } from "../../../contexts/Auth";
 
-const PasswordField = () => {
+const PasswordField = ({ recovery }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [passwordHidden, setPasswordHidden] = React.useState(true);
@@ -35,6 +36,12 @@ const PasswordField = () => {
       setPasswordHidden(true);
     }
   };
+
+  React.useEffect(() => {
+    if (recovery === true) {
+      onOpen();
+    }
+  }, [onOpen, recovery])
 
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -95,10 +102,12 @@ const PasswordField = () => {
             </Button>
           </Flex>
         </Flex>
-        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <Drawer isOpen={isOpen} placement="right" onClose={onClose} closeOnEsc={recovery ? false : true} closeOnOverlayClick={recovery ? false : true}>
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerCloseButton />
+            {!recovery && (
+              <DrawerCloseButton />
+            )}
             <DrawerHeader>Update password</DrawerHeader>
             <DrawerBody>
               <FormControl>

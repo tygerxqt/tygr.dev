@@ -1,4 +1,4 @@
-import { useToast, Button, Spinner, Center, Flex, Stack, Text, Divider, Heading, SimpleGrid, Avatar, Image, Badge, Box, VStack, ButtonGroup } from "@chakra-ui/react";
+import { useToast, Button, Spinner, Center, Flex, Stack, Text, Divider, Heading, SimpleGrid, Avatar, Image, Badge, Box, VStack, ButtonGroup, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import useMediaQuery from "../../hook/useMediaQuery";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import Preview from "./Profile/Preview";
 import TagField from "./Profile/TagField";
 import { useAuth } from "../../contexts/Auth";
 
-function Profile() {
+function Profile({ recovery }) {
     const { user, userData, update } = useAuth();
     const toast = useToast();
 
@@ -481,7 +481,7 @@ function Profile() {
                                     <UsernameField />
                                     <TagField />
                                     <EmailField />
-                                    <PasswordField />
+                                    <PasswordField recovery={recovery} />
                                     <IDField />
                                 </Stack>
                             </Stack>

@@ -20,6 +20,7 @@ import Navbar from "../UI/Navbar";
 import { useAuth } from "../../contexts/Auth";
 import axios from "axios";
 import supabase from "../../lib/SupabaseClient";
+import Link from "next/link";
 
 export default function Auth() {
   const { signIn, user } = useAuth();
@@ -243,11 +244,11 @@ export default function Auth() {
                                 justifyContent="space-between"
                               >
                                 <FormLabel>Password</FormLabel>
-                                {/* <Link href={"/recovery"} passHref>
+                                <Link href={"/recovery"} passHref>
                                   <Button variant={"link"} pb={2} >
                                     Forgot Password?
                                   </Button>
-                                </Link> */}
+                                </Link>
                               </Flex>
                               <Input
                                 type="password"

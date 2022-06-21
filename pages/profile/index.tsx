@@ -1,13 +1,21 @@
 import axios from "axios";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Auth from "../../components/Accounts/Auth";
 import Profile from "../../components/Accounts/Profile";
 import { useAuth } from "../../contexts/Auth";
 import supabase from "../../lib/SupabaseClient";
+import React from "react";
 
 export default function ProfilePage() {
-  const { session, user } = useAuth();
+  const { user } = useAuth();
+  const [recovery, setRecovery] = useState(window.location.hash.includes("type=recovery"));
+
+  useEffect(() => {
+    if (window.location.hash.includes("type=recovery")) {
+      setRecovery(true);
+    }
+  }, []);
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -48,6 +56,6 @@ export default function ProfilePage() {
         content="https://images.ctfassets.net/547zkxycwgvr/4JPYvu5J5MXi5G4MpHF5qH/1f47ef5e0fee9dd8a23882cc716d1486/PixelSEO.png"
       />
     </Head>
-    {!user ? <Auth /> : <Profile />}
+    {!user ? <Auth /> : <Profile recovery={recovery} />}
   </div>;
 }
