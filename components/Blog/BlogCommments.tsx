@@ -159,9 +159,14 @@ export default function BlogComment({ metadata }) {
                                                         <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.date), "mm/dd/yy hh:MM tt")}</Text>
                                                     </Stack>
                                                     <Stack isInline spacing={2}>
-                                                        {comment.user === user.id && (
-                                                            <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
+                                                        {user && (
+                                                            <>
+                                                                {comment.user === user.id && (
+                                                                    <IconButton icon={<AiFillDelete fontSize={"16px"} />} size={"sm"} aria-label={""} onClick={() => deleteComment(comment.id)} />
+                                                                )}
+                                                            </>
                                                         )}
+
                                                     </Stack>
                                                 </Flex>
                                                 <Text fontSize={["sm", "md"]}>
