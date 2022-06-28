@@ -24,6 +24,8 @@ import {
   MenuList,
   Text,
   chakra,
+  Icon,
+  createIcon,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import useMediaQuery from "../../hook/useMediaQuery";
@@ -37,6 +39,36 @@ import CompactBadges from "../Accounts/Badges/CompactBadges";
 import Notifications from "./Notifications";
 import supabase from "../../lib/SupabaseClient";
 import axios from "axios";
+import Link from "next/link";
+
+export const ClimateIcon = createIcon({
+  displayName: 'ClimateIcon',
+  viewBox: '0 0 32 32',
+  path: [
+    (
+      <path
+        fill='#00d924'
+        d='M0 10.82h32c0 8.84-7.16 16-16 16s-16-7.16-16-16z'
+        key={""}
+      />
+    ),
+    (
+      <path
+        fill='#00be20'
+        d='M32 10.82c0 2.21-1.49 4.65-5.41 4.65-3.42 0-7.27-2.37-10.59-4.65 3.52-2.43 7.39-5.63 10.59-5.63C29.86 5.18 32 8.17 32 10.82z'
+        key={""}
+      />
+    ),
+    (
+      <path
+        fill='#ffe37d'
+        d='M0 10.82c0 2.21 1.49 4.65 5.41 4.65 3.42 0 7.27-2.37 10.59-4.65-3.52-2.43-7.39-5.64-10.59-5.64C2.14 5.18 0 8.17 0 10.82z'
+        key={""}
+      />
+    ),
+  ],
+});
+
 
 export default function Navbar({ enableTransition }) {
   const { userData, user, signOut, update } = useAuth();
@@ -105,6 +137,11 @@ export default function Navbar({ enableTransition }) {
                   Blog
                 </Button>
               </NextLink>
+              <NextLink href="https://climate.stripe.com/uXOYfk" passHref>
+                <Button as="a" variant="ghost" fontSize="16px" leftIcon={<Icon as={ClimateIcon} />}>
+                  Climate
+                </Button>
+              </NextLink>
             </Stack>
           </DrawerBody>
         </DrawerContent>
@@ -168,6 +205,16 @@ export default function Navbar({ enableTransition }) {
           >
             {colorMode === "dark" ? <BsMoonFill /> : <BsFillSunFill />}
           </Button>
+          <Link href={"https://climate.stripe.com/uXOYfk"} passHref>
+          <Button
+            variant="ghost"
+            p="4"
+            ml="3vw"
+            fontSize={"24px"}
+          >
+            <Icon as={ClimateIcon} />
+            </Button>
+          </Link>
 
           {/* Desktop */}
           {userData && user ? (
