@@ -11,9 +11,6 @@ User-agent: *
 Disallow: /accounts
 
 User-agent: *
-Disallow: /accounts
-
-User-agent: *
 Disallow: /profile
 
 User-agent: *
