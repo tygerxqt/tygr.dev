@@ -15,7 +15,7 @@ export default function Pricing({ plans }) {
     const { userData, update, session, user } = useAuth();
     const router = useRouter();
 
-    const [selectedPlan, setSelectedPlan] = useState("price_1L7E5lCvkEhaRfsbUYDWXUVF");
+    const [selectedPlan, setSelectedPlan] = useState("price_1L7Q5GCvkEhaRfsbD0rGp102");
 
     const [newCustomerName, setNewCustomerName] = useState(user ? user.user_metadata.full_name : "");
     const [newCustomerEmail, setNewCustomerEmail] = useState(user ? user.email : "");
