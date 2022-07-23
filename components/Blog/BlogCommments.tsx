@@ -156,7 +156,7 @@ export default function BlogComment({ metadata }) {
                                                             {comment.username}#{comment.tag}
                                                         </Text>
                                                         <Text>&bull;</Text>
-                                                        <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.date), "mm/dd/yy hh:MM tt")}</Text>
+                                                        <Text fontSize={["sm", "md"]} fontWeight={"medium"}>{dateFormat(Date.parse(comment.created_at), "dd/mm/yy")}</Text>
                                                     </Stack>
                                                     <Stack isInline spacing={2}>
                                                         {user && (
