@@ -1,9 +1,5 @@
 ![](https://i.imgur.com/39gT3q3.png)
 
-> **Note:**
-> Due to a security vulnerability, this repo was cloned to strip the git history.
-> Safe v5 releases will be published shortly with their respective changelogs.
-
 # Tech stack
 
 * Framework: [NextJS](https://nextjs.org/)
