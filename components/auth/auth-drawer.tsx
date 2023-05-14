@@ -60,8 +60,8 @@ export default function AuthDrawer({
                             {mode === "reset" && "Reset password"}
                         </DrawerTitle>
                         <DrawerDescription>
-                            {mode === "login" && "Please log in to your Icebyte account."}
-                            {mode === "register" && "Register a Icebyte account and join the club!"}
+                            {mode === "login" && "Please log in to your Pixel account."}
+                            {mode === "register" && "Register a Pixel account and join the club!"}
                             {mode === "reset" && "Please enter your email address to reset your password."}
                         </DrawerDescription>
                     </DrawerHeader>

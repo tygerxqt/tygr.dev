@@ -8,7 +8,7 @@ import {
     DrawerFooter
 } from "@/components/ui/drawer";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { AlertTriangle, FileText, LogOut, Mail, User } from "lucide-react";
+import { AlertTriangle, FileText, LogOut, User } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import AuthDrawer from "./auth-drawer";

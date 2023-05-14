@@ -84,14 +84,14 @@ export default function ProtectedPage({ children }: { children: React.ReactNode 
                         <div className="flex flex-col items-center justify-center gap-6 text-center">
                             <div className="flex flex-col items-center justify-center w-full gap-2">
                                 <h1 className="text-3xl font-bold text-center sm:text-4xl">
-                                    {mode === "login" && "Login to Icebyte"}
+                                    {mode === "login" && "Login to Pixel"}
                                     {mode === "register" && "Join the club!"}
                                     {mode === "reset" && "Reset password"}
                                 </h1>
 
                                 <p className="text-sm sm:text-base text-primary-500">
-                                    {mode === "login" && "Please log in with your icebyte account to continue."}
-                                    {mode === "register" && "Register a icebyte account and join the club!"}
+                                    {mode === "login" && "Please log in with your Pixel account to continue."}
+                                    {mode === "register" && "Register a Pixel account and join the club!"}
                                     {mode === "reset" && "Please enter your email address to reset your password."}
                                 </p>
                             </div>

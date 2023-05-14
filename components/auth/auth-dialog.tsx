@@ -59,8 +59,8 @@ export default function AuthDialog({
                             {mode === "reset" && "Reset password"}
                         </DialogTitle>
                         <DialogDescription className="m-0 text-center text">
-                            {mode === "login" && "Please log in to your Icebyte account."}
-                            {mode === "register" && "Register an Icebyte account and join the club!"}
+                            {mode === "login" && "Please log in to your Pixel account."}
+                            {mode === "register" && "Register an Pixel account and join the club!"}
                             {mode === "reset" && "Please enter your email address to reset your password."}
                         </DialogDescription>
                     </DialogHeader>
