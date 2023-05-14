@@ -66,7 +66,7 @@ export default function Home() {
           </div>
 
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex flex-col w-full border rounded-md bg-primary-700/50 border-black/10 dark:border-white/10">
+            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
               <Image src="/assets/projects/tygr-dev.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
               <div className="px-4 py-2">
                 <div className="flex flex-row items-center justify-between w-full ">
@@ -78,13 +78,13 @@ export default function Home() {
                     <Star className="w-4 h-4" fill="white" />
                   </div>
                 </div>
-                <p className="text-primary-100/50">
+                <p className="text-primary-500 dark:text-primary-100/50">
                   My personal website. Hosted on Vercel.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col w-full rounded-md bg-primary-700/50">
+            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
               <Image src="/assets/projects/nordstud-io.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
               <div className="px-4 py-2">
                 <div className="flex flex-row items-center justify-between w-full ">
@@ -96,13 +96,13 @@ export default function Home() {
                     <Star className="w-4 h-4" fill="white" />
                   </div>
                 </div>
-                <p className="text-primary-100/50">
+                <p className="text-primary-500 dark:text-primary-100/50">
                   The website for my software studio, Nord Studio.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-col w-full border rounded-md bg-primary-700/50 border-black/10 dark:border-white/10">
+            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
               <Image src="/assets/projects/nyan-coffee.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
               <div className="px-4 py-2">
                 <div className="flex flex-row items-center justify-between w-full ">
@@ -114,7 +114,7 @@ export default function Home() {
                     <Star className="w-4 h-4" fill="white" />
                   </div>
                 </div>
-                <p className="text-primary-100/50">
+                <p className="text-primary-500 dark:text-primary-100/50">
                   A static site for my friend, NyanSpaghet.
                 </p>
               </div>
