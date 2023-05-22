@@ -29,7 +29,7 @@
     "lucide-react": "^0.216.0",
     "next": "13.4.2",
     "next-themes": "^0.2.1",
-    "pocketbase": "^0.14.4",
+    "pocketbase": "^0.15.0",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
