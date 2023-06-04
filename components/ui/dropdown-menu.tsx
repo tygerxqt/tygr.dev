@@ -27,7 +27,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
     <DropdownMenuPrimitive.SubTrigger
         ref={ref}
         className={cn(
-            "flex cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm text-primary-500 font-medium outline-none hover:text-black hover:active:bg-primary-300/50 focus:text-black focus:bg-primary-200 focus:active:bg-primary-300/50  dark:hover:text-white dark:hover:active:bg-primary-700/50 dark:focus:text-white dark:focus:bg-primary-700 dark:focus:active:bg-primary-700/50 transition-colors data-[state=open]:bg-primary-200 data-[state=open]:text-black  dark:data-[state=open]:bg-primary-700 dark:data-[state=open]:text-white",
+            "flex cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm text-neutral-500 font-medium outline-none hover:text-black hover:active:bg-neutral-300/50 focus:text-black focus:bg-neutral-200 focus:active:bg-neutral-300/50  dark:hover:text-white dark:hover:active:bg-neutral-700/50 dark:focus:text-white dark:focus:bg-neutral-700 dark:focus:active:bg-neutral-700/50 transition-colors data-[state=open]:bg-neutral-200 data-[state=open]:text-black  dark:data-[state=open]:bg-neutral-700 dark:data-[state=open]:text-white",
             inset && "pl-8",
             className
         )}
@@ -47,7 +47,7 @@ const DropdownMenuSubContent = React.forwardRef<
     <DropdownMenuPrimitive.SubContent
         ref={ref}
         className={cn(
-            "animate-in slide-in-from-left-1 z-50 min-w-[8rem] overflow-hidden rounded-md border border-black/20 bg-white p-1 text-primary-500 shadow-md dark:border-white/20 dark:bg-black dark:text-white",
+            "animate-in slide-in-from-left-1 z-50 min-w-[8rem] overflow-hidden rounded-md border border-black/20 bg-white p-1 text-neutral-500 shadow-md dark:border-white/20 dark:bg-black dark:text-white",
             className
         )}
         {...props}
@@ -65,7 +65,7 @@ const DropdownMenuContent = React.forwardRef<
             ref={ref}
             sideOffset={sideOffset}
             className={cn(
-                "animate-in data-[side=right]:slide-in-from-left-2 data-[side=left]:slide-in-from-right-2 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border border-black/20 bg-white p-1 text-primary-500 shadow-md dark:border-white/20 dark:bg-black dark:text-white",
+                "animate-in data-[side=right]:slide-in-from-left-2 data-[side=left]:slide-in-from-right-2 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border border-black/20 bg-white p-1 text-neutral-500 shadow-md dark:border-white/20 dark:bg-black dark:text-white",
                 className
             )}
             {...props}
@@ -83,7 +83,7 @@ const DropdownMenuItem = React.forwardRef<
     <DropdownMenuPrimitive.Item
         ref={ref}
         className={cn(
-            "relative flex cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm text-primary-500 dark:text-primary-500 font-medium outline-none hover:text-black hover:active:bg-primary-300/50 focus:text-black focus:bg-primary-200 focus:active:bg-primary-300/50  dark:hover:text-white dark:hover:active:bg-primary-700/50 dark:focus:text-white dark:focus:bg-primary-700 dark:focus:active:bg-primary-700/50 transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+            "relative flex cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm text-neutral-500 dark:text-neutral-500 font-medium outline-none hover:text-black hover:active:bg-neutral-300/50 focus:text-black focus:bg-neutral-200 focus:active:bg-neutral-300/50  dark:hover:text-white dark:hover:active:bg-neutral-700/50 dark:focus:text-white dark:focus:bg-neutral-700 dark:focus:active:bg-neutral-700/50 transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
             inset && "pl-8",
             className
         )}
@@ -175,7 +175,7 @@ const DropdownMenuShortcut = ({
     return (
         <span
             className={cn(
-                "ml-auto text-xs tracking-widest text-primary-500",
+                "ml-auto text-xs tracking-widest text-neutral-500",
                 className
             )}
             {...props}

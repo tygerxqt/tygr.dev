@@ -5,8 +5,8 @@
 * Framework: [NextJS](https://nextjs.org/)
 * Deployment: [Vercel](https://vercel.com/)
 * Content: [Contentlayer](https://www.contentlayer.dev/)
-* UI: [NextUI](https://nextui.org/) / [Radix](https://www.radix-ui.com/)
-* Styling: [Stitches](https://stitches.dev/)  
+* UI: [Radix](https://www.radix-ui.com/)
+* Styling: [TailwindCSS](https://tailwindcss.com/)  
 
 # Running locally
 

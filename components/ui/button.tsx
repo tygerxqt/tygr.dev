@@ -9,13 +9,13 @@ const buttonVariants = cva(
         variants: {
             theme: {
                 primary: "text-white bg-black border border-black  dark:text-black dark:bg-white dark:border-white",
-                secondary: "bg-white text-primary-500 border border-black/10 hover:border-black hover:text-black  dark:bg-black dark:border-white/10 dark:hover:border-white dark:hover:text-white",
+                secondary: "bg-white text-neutral-500 border border-black/10 hover:border-black hover:text-black  dark:bg-black dark:border-white/10 dark:hover:border-white dark:hover:text-white",
             },
             variant: {
-                primary: "hover:bg-white hover:text-black  disabled:hover:bg-black disabled:hover:text-white  hover:active:bg-primary-200  dark:hover:bg-black dark:hover:text-white  disabled:dark:hover:bg-white disabled:dark:hover:text-black  dark:hover:active:bg-primary-700",
+                primary: "hover:bg-white hover:text-black  disabled:hover:bg-black disabled:hover:text-white  hover:active:bg-neutral-200  dark:hover:bg-black dark:hover:text-white  disabled:dark:hover:bg-white disabled:dark:hover:text-black  dark:hover:active:bg-neutral-700",
                 shadow: "hover:-translate-y-0.5 hover:active:translate-y-0 shadow-md active:shadow-md hover:shadow-xl",
-                ghost: "text-primary-500 hover:text-black bg-transparent border-none hover:border hover:bg-primary-200 hover:active:bg-primary-300  dark:text-primary-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:bg-primary-700 dark:hover:active:bg-primary-600",
-                link: "text-primary-500 hover:text-black bg-transparent border-none hover:border hover:underline hover:underline-offset-4  dark:text-primary-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:underline hover:underline-offset-4"
+                ghost: "text-neutral-500 hover:text-black bg-transparent border-none hover:border hover:bg-neutral-200 hover:active:bg-neutral-300  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:bg-neutral-700 dark:hover:active:bg-neutral-600",
+                link: "text-neutral-500 hover:text-black bg-transparent border-none hover:border hover:underline hover:underline-offset-4  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:underline hover:underline-offset-4"
             },
             size: {
                 none: "p-0",

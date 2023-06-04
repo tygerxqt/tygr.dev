@@ -1,127 +1,50 @@
-import { AiFillGithub, AiOutlineTwitter, AiFillMail } from "react-icons/ai";
-import { ArrowRight, LayoutGrid, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/icons";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Home() {
   return (
-    <>
-      <div className="flex flex-col items-center justify-center w-full px-3 my-32 sm:gap-6 md:gap-4 lg:gap-2 sm:px-6">
-        <div className="flex flex-col items-center max-w-[1400px] w-full justify-center md:justify-between gap-4 md:gap-6 lg:gap-8 text-center sm:text-left sm:flex-row xs:gap-2">
-          <div className="flex flex-col items-center justify-center gap-6 sm:items-start sm:justify-start">
-            <div className="flex flex-col gap-2">
-              <small className="text-lg translate-y-2 xl:text-lg text-primary-500">
-                tygerxqt • they/him
-              </small>
-              <h1 className="text-4xl font-black sm:text-5xl md:text-6xl lg:text-6xl">
-                A professional idiot.
-              </h1>
-              <p className="font-semibold text-md sm:text-lg md:text-xl lg:text-2xl text-primary-400">
-                Founder of Nord Studio & Lofu Studio.
-              </p>
-            </div>
-            <div className="flex flex-row items-center justify-center w-full gap-4 sm:justify-start sm:items-start sm:flex-row">
-              <Link href="https://github.com/tygerxqt">
-                <Button theme="primary" size="sm" className="flex flex-row items-center">
-                  <AiFillGithub className="w-4 h-4 mr-2" />
-                  Github
-                </Button>
-              </Link>
-              <Link href="https://twitter.com/tygerxqt">
-                <Button theme="primary" size="sm" className="flex flex-row items-center">
-                  <AiOutlineTwitter className="w-4 h-4 mr-2" />
-                  Twitter
-                </Button>
-              </Link>
-              <Link href="mailto:hi@tygr.dev">
-                <Button theme="primary" size="sm" className="flex flex-row items-center">
-                  <AiFillMail className="w-4 h-4 mr-2" />
-                  Email
-                </Button>
-              </Link>
-            </div>
-          </div>
-          <Image alt="Logo" src={"https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=448"} width={448} height={0} priority className="hidden w-48 h-48 border rounded-full sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-96 lg:h-96 xl:w-fit xl:h-fit border-black/10 dark:border-white/10 md:block" />
-        </div>
-
-        <div className="flex flex-col items-center max-w-[1400px] w-full gap-8 pt-32">
-          <div className="flex flex-col items-start w-full gap-2 sm:gap-0">
-            <div className="flex flex-row items-start justify-between w-full">
-              <h2 className="text-3xl font-bold">
-                ~/projects
-              </h2>
-              <Link href="/projects">
-                <Button className="flex-row items-center hidden sm:flex" size="sm">
-                  View All <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
-                <Button className="flex flex-row items-center sm:hidden" size="icon">
-                  <LayoutGrid className="w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-            <p className="text-left text-primary-500">
-              A few featured projects that I&apos;ve worked on or am currently working on.
-            </p>
-          </div>
-
-          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
-              <Image src="/assets/projects/tygr-dev.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
-              <div className="px-4 py-2">
-                <div className="flex flex-row items-center justify-between w-full ">
-                  <p className="text-2xl font-semibold">
-                    tygr.dev
-                  </p>
-                  <div className="flex flex-row items-center gap-1">
-                    4
-                    <Star className="w-4 h-4" fill="white" />
-                  </div>
-                </div>
-                <p className="text-primary-500 dark:text-primary-100/50">
-                  My personal website. Hosted on Vercel.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
-              <Image src="/assets/projects/nordstud-io.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
-              <div className="px-4 py-2">
-                <div className="flex flex-row items-center justify-between w-full ">
-                  <p className="text-2xl font-semibold">
-                    nordstud.io
-                  </p>
-                  <div className="flex flex-row items-center gap-1">
-                    4
-                    <Star className="w-4 h-4" fill="white" />
-                  </div>
-                </div>
-                <p className="text-primary-500 dark:text-primary-100/50">
-                  The website for my software studio, Nord Studio.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-col w-full border rounded-md bg-primary-200/50 dark:bg-primary-700/50 border-black/10 dark:border-white/10">
-              <Image src="/assets/projects/nyan-coffee.jpg" alt="project image" width={1200} height={0} className="object-cover w-full h-48 rounded-t-md" />
-              <div className="px-4 py-2">
-                <div className="flex flex-row items-center justify-between w-full ">
-                  <p className="text-2xl font-semibold">
-                    nyan.coffee
-                  </p>
-                  <div className="flex flex-row items-center gap-1">
-                    2
-                    <Star className="w-4 h-4" fill="white" />
-                  </div>
-                </div>
-                <p className="text-primary-500 dark:text-primary-100/50">
-                  A static site for my friend, NyanSpaghet.
-                </p>
-              </div>
-            </div>
-          </div>
+    <main className="py-8">
+      <div className="flex flex-row gap-4">
+        <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
+        <div className="flex flex-col items-start">
+          <small className="text-neutral-500 text-sm">
+            any - they/them • 17 • UK <span><s>(bri ish)</s></span>
+          </small>
+          <p className="sm:text-3xl text-2xl w-full max-w-2xl items-center font-display font-bold">
+            <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder and head of
+            design at {" "}
+            <a target="_blank" href="https://nordstud.io" className="dark:text-neutral-400 text-neutral-600 inline-flex flex-row gap-3 items-center">nord studio
+              <span className="pr-2">
+                <Icons.Nord className="w-8 h-8" />
+              </span>
+            </a>
+            and {" "}
+            <a target="_blank" href="https://lofu.studio" className="dark:text-neutral-400 text-neutral-600 inline-flex flex-row gap-2 items-center">
+              lofu studio
+              <span>
+                <Icons.Lofu className="w-8 h-8" />
+              </span>
+            </a>
+          </p>
         </div>
       </div>
-    </>
+      <div className="pt-8">
+        <h3 className="font-display text-2xl font-bold pb-2">
+          ~/about
+        </h3>
+        <p>
+          I discovered Discord in 2018, and not long after, I kept using the various bots on the platform. It was only a short time until I tried it and got pretty good at it! During my journey, I made a total of 4 different bots.
+          <br /> <br />
+
+          My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, the music bot. Then Atlas, and finally, Citra. During this journey, I learned various skills and languages, but most importantly, I started to teach myself how to make a website.
+          <br /> <br />
+          Initially, it was for my Discord bots so they could have a dashboard like the cool kids; however, I got bored of making bots; it didn&apos;t help that Discord kept changing the way they interfaced with the API too. So I stopped maintaining them.
+          <br /> <br />
+          However, my web development journey has only just begun.
+          <br /> <br />
+          - Ty Mason
+        </p>
+      </div>
+    </main>
   )
 }
