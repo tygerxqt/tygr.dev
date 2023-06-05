@@ -20,7 +20,7 @@ export default function Home() {
             </small>
             <p className="items-center w-full max-w-2xl text-2xl font-bold sm:text-3xl font-display">
               <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder
-              <span className="dark:text-neutral-400 text-neutral-600">{" "} and {" "}</span>
+              <span className="dark:text-neutral-400 text-neutral-600">{" "} & {" "}</span>
               head of design
               <span className="dark:text-neutral-400 text-neutral-600">{" "} at {" "}</span>
               <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3 hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
@@ -117,29 +117,32 @@ export default function Home() {
       </div>
 
       <hr className="w-full my-4 border border-black/10 dark:border-white/10" />
-      <div className="flex flex-col gap-2">
-        <div>
-          <h2 className="text-2xl font-bold">
-            ~/journey.txt
-          </h2>
-          <small className="text-sm text-neutral-500">
-            A little on how I got to where I am today.
-          </small>
+
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col items-start gap-2 sm:justify-between sm:flex-row">
+            <h2 className="text-2xl font-bold">
+              ~/journey.txt
+            </h2>
+            <small className="text-sm text-neutral-500">
+              A little on how I got to where I am today.
+            </small>
+          </div>
+          <TextBlockWrapper className="p-2 border rounded-md border-black/10 dark:border-white/10" expandButtonTitle="Read more">
+            <p>
+              I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
+              <br /><br />
+              Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
+              <br /><br />
+              After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
+              <br /><br />
+              I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didn&apos;t help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
+              <br /><br />
+              My web development journey has only begun; I&apos;ve been self-teaching various skills, languages, and frameworks since then.
+              <br /><br />
+            </p>
+          </TextBlockWrapper>
         </div>
-        <TextBlockWrapper className="p-2 border rounded-md border-black/10 dark:border-white/10" expandButtonTitle="Read more">
-          <p>
-            I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
-            <br /><br />
-            Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
-            <br /><br />
-            After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
-            <br /><br />
-            I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didn&apos;t help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
-            <br /><br />
-            My web development journey has only begun; I&apos;ve been self-teaching various skills, languages, and frameworks since then.
-            <br /><br />
-          </p>
-        </TextBlockWrapper>
       </div>
     </main>
   )
