@@ -40,8 +40,8 @@ export function TextBlockWrapper({
                 </CollapsibleContent>
                 <div
                     className={cn(
-                        "absolute flex items-center justify-center bg-gradient-to-b from-[#1C1B22]/30 to-white/90 dark:to-[#1C1B22]/90 p-2",
-                        isOpened ? "inset-x-0 bottom-0 h-12" : "inset-0"
+                        "absolute flex items-center justify-center bg-gradient-to-b from-neutral-100/30 to-neutral-100/90 dark:from-neutral-900/30 dark:to-neutral-900/90 p-2",
+                        isOpened ? "inset-x-0 bottom-0 h-12 from-transparent to-transparent dark:from-transparent dark:to-transparent" : "inset-0"
                     )}
                 >
                     <CollapsibleTrigger asChild>
