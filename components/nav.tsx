@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { FaHamburger } from "react-icons/fa";
 import { Menu } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function Nav() {
     return (
@@ -35,9 +36,10 @@ export default function Nav() {
                     </a>
                 </div>
 
-                <Button variant="ghost">
+                <Button variant="ghost" className="sm:hidden">
                     <Menu />
                 </Button>
+                <ThemeToggle />
             </nav>
         </>
     )
