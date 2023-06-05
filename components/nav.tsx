@@ -36,10 +36,13 @@ export default function Nav() {
                     </a>
                 </div>
 
-                <Button variant="ghost" className="sm:hidden">
-                    <Menu />
-                </Button>
-                <ThemeToggle />
+                <div>
+                    <ThemeToggle />
+                    <Button variant="ghost" className="sm:hidden" size="icon">
+                        <Menu />
+                    </Button>
+                </div>
+
             </nav>
         </>
     )

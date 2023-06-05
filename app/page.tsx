@@ -4,35 +4,41 @@ import { FaReact, FaRust } from "react-icons/fa";
 import { SiAstro, SiFigma, SiSvelte, SiTypescript } from "react-icons/si";
 import { AiFillCamera, AiFillHtml5 } from "react-icons/ai";
 import { MdDesignServices } from "react-icons/md";
+import { Balancer } from "react-wrap-balancer";
+import { TextBlockWrapper } from "@/components/text-block-wrapper";
 
 export default function Home() {
   return (
     <main className="flex flex-col gap-4 py-8">
       <div className="flex flex-row gap-4">
         <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
+
         <div className="flex flex-col items-start">
-          <small className="text-sm text-neutral-500">
-            any - they/them • 17 • UK <span><s>(bri ish)</s></span>
-          </small>
-          <p className="items-center w-full max-w-2xl text-2xl font-bold sm:text-3xl font-display">
-            <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder
-            <span className="dark:text-neutral-400 text-neutral-600">{" "} and {" "}</span>
-            head of design
-            <span className="dark:text-neutral-400 text-neutral-600">{" "} at {" "}</span>
-            <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3">nord studio
-              <span className="pr-1 dark:text-neutral-400 text-neutral-600">
-                <Icons.Nord className="w-8 h-8" />
-              </span>
-            </a>
-            <span className="dark:text-neutral-400 text-neutral-600"> and {" "}</span>
-            <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row items-center gap-2">
-              lofu studio
-              <span>
-                <Icons.Lofu className="w-8 h-8 dark:text-neutral-400 text-neutral-600" />
-              </span>
-            </a>
-          </p>
+          <Balancer>
+            <small className="text-sm text-neutral-500">
+              any - they/them • 17 • UK <span><s>(bri ish)</s></span>
+            </small>
+            <p className="items-center w-full max-w-2xl text-2xl font-bold sm:text-3xl font-display">
+              <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder
+              <span className="dark:text-neutral-400 text-neutral-600">{" "} and {" "}</span>
+              head of design
+              <span className="dark:text-neutral-400 text-neutral-600">{" "} at {" "}</span>
+              <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3 hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
+                <span className="pr-1 dark:text-neutral-400 text-neutral-600">
+                  <Icons.Nord className="w-8 h-8" />
+                </span>
+              </a>
+              <span className="dark:text-neutral-400 text-neutral-600"> and {" "}</span>
+              <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row items-center gap-2 hover:text-neutral-800 dark:hover:text-neutral-200">
+                lofu studio
+                <span>
+                  <Icons.Lofu className="w-8 h-8 dark:text-neutral-400 text-neutral-600" />
+                </span>
+              </a>
+            </p>
+          </Balancer>
         </div>
+
       </div>
 
       <div className="flex-row justify-between hidden pt-4 sm:flex">
@@ -110,21 +116,30 @@ export default function Home() {
         </div>
       </div>
 
-      <div>
-        <hr className="w-full my-4 border border-black/10 dark:border-white/10" />
-        <p>
-          I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
-          <br /><br />
-          Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
-          <br /><br />
-          After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
-          <br /><br />
-          I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didnapos;t help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
-          <br /><br />
-          My web development journey has only begun; Iapos;ve been self-teaching various skills, languages, and frameworks since then.
-          <br /><br />
-          - Ty Mason
-        </p>
+      <hr className="w-full my-4 border border-black/10 dark:border-white/10" />
+      <div className="flex flex-col gap-2">
+        <div>
+          <h2 className="text-2xl font-bold">
+            ~/journey.txt
+          </h2>
+          <small className="text-sm text-neutral-500">
+            A little on how I got to where I am today.
+          </small>
+        </div>
+        <TextBlockWrapper className="p-2 border rounded-md border-black/10 dark:border-white/10" expandButtonTitle="Read more">
+          <p>
+            I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
+            <br /><br />
+            Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
+            <br /><br />
+            After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
+            <br /><br />
+            I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didn&apos;t help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
+            <br /><br />
+            My web development journey has only begun; I&apos;ve been self-teaching various skills, languages, and frameworks since then.
+            <br /><br />
+          </p>
+        </TextBlockWrapper>
       </div>
     </main>
   )
