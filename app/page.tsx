@@ -115,13 +115,13 @@ export default function Home() {
         <p>
           I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
           <br /><br />
-          Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called "Cookie" (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
+          Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called quot;Cookiequot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
           <br /><br />
-          After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn't get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
+          After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
           <br /><br />
-          I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didn't help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
+          I devoted most of my time to teaching myself how to construct and design websites; however, I got bored of making bots; it didnapos;t help that Discord kept changing how they interfaced with the API. So I stopped maintaining them.
           <br /><br />
-          My web development journey has only begun; I've been self-teaching various skills, languages, and frameworks since then.
+          My web development journey has only begun; Iapos;ve been self-teaching various skills, languages, and frameworks since then.
           <br /><br />
           - Ty Mason
         </p>
