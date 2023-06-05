@@ -7,7 +7,7 @@ import { MdDesignServices } from "react-icons/md";
 
 export default function Home() {
   return (
-    <main className="gap-4 py-8">
+    <main className="flex flex-col gap-4 py-8">
       <div className="flex flex-row gap-4">
         <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
         <div className="flex flex-col items-start">
@@ -115,7 +115,7 @@ export default function Home() {
         <p>
           I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
           <br /><br />
-          Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called quot;Cookiequot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
+          Surprisingly, I got good at it after several years of trial and error! During my journey, I made a total of 4 different bots. My first bot was called &quot;Cookie&quot; (later renamed Arisu), a moderator bot explicitly built for my Discord server. Next came Mimi, a music bot. And finally, Atlas, a public moderation bot.
           <br /><br />
           After a while, I ran out of ideas for new things to add to these bots. However, there was one thing that I couldn&apos;t get my mind off. Some popular bots had websites you could visit, allowing you to control the bot! Now THAT was cool, and I wanted it for myself.
           <br /><br />
