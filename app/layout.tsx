@@ -21,10 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable} ${readexPro.variable} ${literata.variable}`}>
-      <body className='flex flex-col gap-2 w-full items-center '>
+      <body className='flex flex-col items-center w-full gap-2 '>
         <div className='max-w-[800px] w-full p-4'>
           <Providers>
-            {/* <Nav /> */}
+            <Nav />
             {children}
           </Providers >
         </div>
