@@ -22,12 +22,12 @@ export default function Home() {
               <AiFillGithub />
             </Button>
           </Link>
-          <Link href="https://github.com/tygerxqt">
+          <Link href="https://twitter.com/tygerxqt">
             <Button size={"icon"} className="flex flex-row items-center gap-2 h-9">
               <FaTwitter fill="currentColor" />
             </Button>
           </Link>
-          <Link href="https://github.com/tygerxqt">
+          <Link href="https://instagram.com/tygerxqt">
             <Button size={"icon"} className="flex flex-row items-center gap-2 h-9 ">
               <AiFillInstagram />
             </Button>
