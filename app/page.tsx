@@ -3,9 +3,13 @@ import Image from "next/image";
 import { FaReact, FaRust } from "react-icons/fa";
 import { SiAstro, SiFigma, SiSvelte, SiTypescript } from "react-icons/si";
 import { AiFillCamera, AiFillHtml5 } from "react-icons/ai";
+import { ArrowUpRight, LayoutGrid } from "lucide-react"
 import { MdDesignServices } from "react-icons/md";
 import { Balancer } from "react-wrap-balancer";
 import { TextBlockWrapper } from "@/components/text-block-wrapper";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import ProjectCol from "@/components/project-col";
 
 export default function Home() {
   return (
@@ -23,13 +27,13 @@ export default function Home() {
               <span className="dark:text-neutral-400 text-neutral-600">{" "} & {" "}</span>
               head of design
               <span className="dark:text-neutral-400 text-neutral-600">{" "} at {" "}</span>
-              <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3 hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
+              <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row gap-3 items-center hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
                 <span className="pr-1 dark:text-neutral-400 text-neutral-600">
                   <Icons.Nord className="w-8 h-8" />
                 </span>
               </a>
               <span className="dark:text-neutral-400 text-neutral-600"> and {" "}</span>
-              <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row items-center gap-2 hover:text-neutral-800 dark:hover:text-neutral-200">
+              <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row gap-2 items-center hover:text-neutral-800 dark:hover:text-neutral-200">
                 lofu studio
                 <span>
                   <Icons.Lofu className="w-8 h-8 dark:text-neutral-400 text-neutral-600" />
@@ -38,10 +42,9 @@ export default function Home() {
             </p>
           </Balancer>
         </div>
-
       </div>
 
-      <div className="flex-row justify-between hidden pt-4 sm:flex">
+      <div className="hidden flex-row justify-between pt-4 sm:flex">
         <div className="flex flex-col gap-3">
           <p className="text-xl font-semibold">
             Languages
@@ -116,11 +119,11 @@ export default function Home() {
         </div>
       </div>
 
-      <hr className="w-full my-4 border border-black/10 dark:border-white/10" />
+      <hr className="my-4 w-full border border-black/10 dark:border-white/10" />
 
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-start gap-2 sm:justify-between sm:flex-row">
+          <div className="flex flex-col gap-2 items-start sm:justify-between sm:flex-row">
             <h2 className="text-2xl font-bold">
               ~/journey.txt
             </h2>
@@ -128,7 +131,7 @@ export default function Home() {
               A little on how I got to where I am today.
             </small>
           </div>
-          <TextBlockWrapper className="p-2 border rounded-md border-black/10 dark:border-white/10" expandButtonTitle="Read more">
+          <TextBlockWrapper className="p-2 rounded-md border border-black/10 dark:border-white/10" expandButtonTitle="Read more">
             <p>
               I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
               <br /><br />
@@ -142,6 +145,30 @@ export default function Home() {
               <br /><br />
             </p>
           </TextBlockWrapper>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-row justify-between items-center w-full">
+            <div className="flex flex-col items-start">
+
+              <h2 className="text-2xl font-bold">
+                ~/projects.json
+              </h2>
+              <small className="text-sm text-neutral-500">
+                A few featured projects that I&apos;ve worked on!
+              </small>
+            </div>
+            <Link href="/projects">
+              <Button size="icon" className="flex flex-row gap-2 items-center w-9 h-9">
+                <LayoutGrid className="p-0" />
+              </Button>
+            </Link>
+          </div>
+          <div className="flex flex-col gap-2 pt-2">
+            <ProjectCol title="Horizon" desc="The only music app you'll need. Built with Tauri and React." year={2023} href="https://github.com/lofustudio/horizon" />
+            <ProjectCol title="Campsite" desc="The cosiest social platform!" year={2023} href="https://github.com/campsite-chat" />
+            <ProjectCol title="Icebyte" desc="A game review plaform. Built by nerds, for nerds." year={2022} href="https://github.com/tygerxqt/icebyte" />
+          </div>
         </div>
       </div>
     </main>
