@@ -7,7 +7,7 @@ export default function ProjectsPage() {
                         ~/projects
                     </h2>
                     <p className="text-sm">
-                        An entire list of projects I've worked or contributed.
+                        An entire list of projects I&apos;ve worked or contributed.
                     </p>
                 </div>
             </div>
