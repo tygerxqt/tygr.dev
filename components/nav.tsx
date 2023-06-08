@@ -1,13 +1,12 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { FaHamburger } from "react-icons/fa";
 import { Menu } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 
 export default function Nav() {
     return (
         <>
-            <nav className="flex flex-row items-center justify-between w-full gap-4 px-2 py-4">
+            <nav className="flex flex-row gap-4 justify-between items-center px-2 py-4 w-full">
                 <div>
                     <Image width={32} height={32} src="/logos/dark.jpg" alt="logo" className="hidden dark:block" />
                     <Image width={32} height={32} src="/logos/light.jpg" alt="logo" className="dark:hidden" />
@@ -24,9 +23,9 @@ export default function Nav() {
                             Projects
                         </Button>
                     </a>
-                    <a href="/photos">
+                    <a href="/gallery">
                         <Button variant="link">
-                            Photos
+                            Gallery
                         </Button>
                     </a>
                     <a href="/blog">
@@ -38,11 +37,10 @@ export default function Nav() {
 
                 <div>
                     <ThemeToggle />
-                    <Button variant="ghost" className="sm:hidden" size="icon">
+                    <Button variant="ghost" className="text-black sm:hidden dark:text-white" size="icon">
                         <Menu />
                     </Button>
                 </div>
-
             </nav>
         </>
     )
