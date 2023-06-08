@@ -6,33 +6,36 @@ import { AiFillCamera, AiFillGithub, AiFillHtml5, AiFillInstagram } from "react-
 import { ArrowUpRight, LayoutGrid } from "lucide-react"
 import { MdDesignServices } from "react-icons/md";
 import { Balancer } from "react-wrap-balancer";
-import { TextBlockWrapper } from "@/components/text-block-wrapper";
+import { TextBlockWrapper } from "@/components/ui/text-block-wrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProjectCol from "@/components/project-col";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-4 py-8">
-      <div className="flex flex-row gap-4">
-        <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
-        <div className="flex flex-col items-center gap-2 pt-2 sm:hidden">
-          <Link href="https://github.com/tygerxqt">
-            <Button size={"icon"} className="flex flex-row items-center gap-2 h-9">
-              <AiFillGithub />
-            </Button>
-          </Link>
-          <Link href="https://twitter.com/tygerxqt">
-            <Button size={"icon"} className="flex flex-row items-center gap-2 h-9">
-              <FaTwitter fill="currentColor" />
-            </Button>
-          </Link>
-          <Link href="https://instagram.com/tygerxqt">
-            <Button size={"icon"} className="flex flex-row items-center gap-2 h-9 ">
-              <AiFillInstagram />
-            </Button>
-          </Link>
+    <main className="flex flex-col gap-4 px-2 py-8">
+      <div className="flex flex-row sm:gap-4">
+        <div className="flex flex-row gap-2 justify-center items-start h-full max-h-[132px]">
+          <div className="hidden flex-col gap-1 justify-evenly items-center sm:flex">
+            <Link href="https://github.com/tygerxqt" target="_blank">
+              <Button size={"icon"} className="px-2 py-1 h-[40px] w-[40px] flex items-center">
+                <AiFillGithub className="w-full h-full" />
+              </Button>
+            </Link>
+            <Link href="https://twitter.com/tygerxqt" target="_blank">
+              <Button size={"icon"} className="px-2 py-1 h-[40px] w-[40px]">
+                <FaTwitter fill="currentColor" className="w-full h-full" />
+              </Button>
+            </Link>
+            <Link href="https://instagram.com/tygerxqt" target="_blank">
+              <Button size={"icon"} className="px-2 py-1 h-[40px] w-[40px]">
+                <AiFillInstagram className="w-full h-full" />
+              </Button>
+            </Link>
+          </div>
+          <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
         </div>
+
         <div className="flex flex-col items-start">
           <Balancer>
             <small className="text-sm text-neutral-500">
@@ -40,16 +43,16 @@ export default function Home() {
             </small>
             <p className="items-center w-full max-w-2xl text-2xl font-bold sm:text-3xl font-display">
               <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder
-              <span className="dark:text-neutral-400 text-neutral-600">{" "} & {" "}</span>
-              head of design
-              <span className="dark:text-neutral-400 text-neutral-600">{" "} at {" "}</span>
-              <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3 hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
+              {/* <span className="dark:text-neutral-400 text-neutral-600">{" "} & {" "}</span> */}
+              {/* head of design */}
+              <span className="dark:text-neutral-400 text-neutral-600">{" "} of {" "}</span>
+              <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row gap-3 items-center hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
                 <span className="pr-1 dark:text-neutral-400 text-neutral-600">
                   <Icons.Nord className="w-8 h-8" />
                 </span>
               </a>
               <span className="dark:text-neutral-400 text-neutral-600"> and {" "}</span>
-              <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row items-center gap-2 hover:text-neutral-800 dark:hover:text-neutral-200">
+              <a target="_blank" href="https://lofu.studio" className="inline-flex flex-row gap-2 items-center hover:text-neutral-800 dark:hover:text-neutral-200">
                 lofu studio
                 <span>
                   <Icons.Lofu className="w-8 h-8 dark:text-neutral-400 text-neutral-600" />
@@ -60,7 +63,25 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-row justify-between hidden pt-4 sm:flex">
+      <div className="flex flex-row gap-2 items-center pt-2 sm:hidden">
+        <Link href="https://github.com/tygerxqt" target="_blank">
+          <Button size={"icon"} className="flex flex-row gap-2 items-center px-2 py-1 h-full text-sm font-medium">
+            <AiFillGithub /> GitHub
+          </Button>
+        </Link>
+        <Link href="https://twitter.com/tygerxqt" target="_blank">
+          <Button size={"icon"} className="flex flex-row gap-2 items-center px-2 py-1 h-full text-sm font-medium">
+            <FaTwitter fill="currentColor" /> Twitter
+          </Button>
+        </Link>
+        <Link href="https://instagram.com/tygerxqt" target="_blank">
+          <Button size={"icon"} className="flex flex-row gap-2 items-center px-2 py-1 h-full text-sm font-medium">
+            <AiFillInstagram /> Instagram
+          </Button>
+        </Link>
+      </div>
+
+      <div className="hidden flex-row justify-between pt-4 sm:flex">
         <div className="flex flex-col gap-3">
           <p className="text-xl font-semibold">
             Languages
@@ -135,11 +156,11 @@ export default function Home() {
         </div>
       </div>
 
-      <hr className="w-full my-4 border border-black/10 dark:border-white/10" />
+      <hr className="my-4 w-full border border-black/10 dark:border-white/10" />
 
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-start gap-2 sm:justify-between sm:flex-row">
+          <div className="flex flex-col gap-2 items-start sm:justify-between sm:flex-row">
             <h2 className="text-2xl font-bold">
               ~/journey.txt
             </h2>
@@ -147,7 +168,7 @@ export default function Home() {
               A little on how I got to where I am today.
             </small>
           </div>
-          <TextBlockWrapper className="p-2 border rounded-md border-black/10 dark:border-white/10" expandButtonTitle="Read more">
+          <TextBlockWrapper className="p-2 rounded-md border border-black/10 dark:border-white/10" expandButtonTitle="Read more">
             <p>
               I discovered Discord in 2018 and regularly used the various bots on the platform. After using them consistently, I was curious about how they worked, so I asked Google. I looked at multiple JavaScript tutorials and tried to create my bot for people to use.
               <br /><br />
@@ -164,7 +185,7 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-center justify-between w-full">
+          <div className="flex flex-row justify-between items-center w-full">
             <div className="flex flex-col items-start">
 
               <h2 className="text-2xl font-bold">
@@ -175,7 +196,7 @@ export default function Home() {
               </small>
             </div>
             <Link href="/projects">
-              <Button size="icon" className="flex flex-row items-center gap-2 w-9 h-9">
+              <Button size="icon" className="flex flex-row gap-2 items-center w-9 h-9">
                 <LayoutGrid className="p-0" />
               </Button>
             </Link>
