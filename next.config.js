@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['secure.gravatar.com'],
+        domains: ['secure.gravatar.com', 's3.us-west-2.amazonaws.com'],
     },
     headers() {
         return [
