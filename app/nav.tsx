@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Nav() {
     return (
         <>
-            <nav className="flex flex-row gap-4 justify-between items-center px-2 py-4 w-full">
+            <nav className="flex flex-row items-center justify-between w-full gap-4 px-2 py-4">
                 <div>
                     <Image width={32} height={32} src="/logos/dark.jpg" alt="logo" className="hidden dark:block" />
                     <Image width={32} height={32} src="/logos/light.jpg" alt="logo" className="dark:hidden" />
@@ -40,22 +40,22 @@ export default function Nav() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {/* <Link href="/gallery"> */}
-                                <DropdownMenuItem disabled>
-                                    <ImageIcon className="mr-2 w-4 h-4" />
-                                    <span>Gallery</span>
-                                </DropdownMenuItem>
+                            <DropdownMenuItem disabled>
+                                <ImageIcon className="w-4 h-4 mr-2" />
+                                <span>Gallery</span>
+                            </DropdownMenuItem>
                             {/* </Link> */}
-                            {/* <Link href="/tools"> */}
-                                <DropdownMenuItem disabled>
-                                    <Wrench className="mr-2 w-4 h-4" />
-                                    <span>Tools</span>
-                                </DropdownMenuItem>
+                            {/* <Link href="/gear"> */}
+                            <DropdownMenuItem disabled>
+                                <Wrench className="w-4 h-4 mr-2" />
+                                <span>Gear</span>
+                            </DropdownMenuItem>
                             {/* </Link> */}
                             {/* <Link href="/links"> */}
-                                <DropdownMenuItem disabled>
-                                    <LinkIcon className="mr-2 w-4 h-4" />
-                                    <span>Links</span>
-                                </DropdownMenuItem>
+                            <DropdownMenuItem disabled>
+                                <LinkIcon className="w-4 h-4 mr-2" />
+                                <span>Links</span>
+                            </DropdownMenuItem>
                             {/* </Link> */}
                         </DropdownMenuContent>
                     </DropdownMenu>
