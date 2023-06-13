@@ -1,10 +1,16 @@
-import BlogCard from "@/components/blog-card";
+import BlogCard from "@/components/blog/card";
 import { notion } from "@/lib/notion";
 import { BlogPost } from "@/types/blog-post";
 
 async function getPosts() {
     const posts = await notion.databases.query({
         database_id: process.env.NOTION_BLOG_DATABASE_ID as string,
+        filter: {
+            property: "status",
+            status: {
+                equals: "Published"
+            }
+        }
     });
 
     let res: BlogPost[] = posts.results.map((p: any) => p.properties);

@@ -1,4 +1,4 @@
-import ProjectCol from "@/components/project-col";
+import ProjectCol from "@/components/projects/col";
 import { notion } from "@/lib/notion"
 import { Project } from "@/types/project";
 
