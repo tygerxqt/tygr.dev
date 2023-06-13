@@ -18,8 +18,9 @@ export interface Block {
     bulleted_list_item: Paragraph;
     numbered_list_item: Paragraph;
     to_do: ToDo;
-    toggle: Toggle;
+    toggle: Paragraph;
     image: Image;
+    quote: Paragraph;
 }
 
 export interface TedBy {
@@ -42,13 +43,8 @@ export interface ToDo {
     color: string;
 }
 
-export interface Toggle {
-    rich_text: RichText[];
-    color: string;
-}
-
 export interface Image {
-    caption: any[];
+    caption: RichText[];
     type: string;
     file: File;
     external: External;
