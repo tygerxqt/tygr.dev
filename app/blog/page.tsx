@@ -1,26 +1,9 @@
+import { allPosts } from "@/.contentlayer/generated";
 import BlogCard from "@/components/blog/card";
-import { notion } from "@/lib/notion";
-import { BlogPost } from "@/types/blog-post";
-
-async function getPosts() {
-    const posts = await notion.databases.query({
-        database_id: process.env.NOTION_BLOG_DATABASE_ID as string,
-        filter: {
-            property: "status",
-            status: {
-                equals: "Published"
-            }
-        }
-    });
-
-    let res: BlogPost[] = posts.results.map((p: any) => p.properties);
-
-    return res;
-}
+import { compareDesc } from "date-fns";
 
 export default async function BlogPage() {
-    const posts = await getPosts();
-
+    const posts = allPosts.filter(post => post.archived === false).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
     return (
         <>
             <div className="flex flex-col gap-2 pt-2">
@@ -32,15 +15,10 @@ export default async function BlogPage() {
                         All of my blog posts and tutorials. I write about web development, programming, and games.
                     </p>
                 </div>
-                {/* {JSON.stringify(posts)} */}
                 <div className="grid grid-cols-1 gap-4 px-2 sm:px-0 sm:gap-2 sm:grid-cols-2">
-                    {posts.map((p: BlogPost, i: number) => {
-                        return (
-                            <>
-                                <BlogCard title={p.name.title[0].text.content} summary={p.summary.rich_text[0].text.content} image={p.hero.files[0].file.url} slug={p.slug.rich_text[0].text.content} time="1 min left" key={i} />
-                            </>
-                        )
-                    })}
+                    {posts.map((post, idx) => (
+                        <BlogCard key={idx} {...post} />
+                    ))}
                 </div>
             </div>
         </>

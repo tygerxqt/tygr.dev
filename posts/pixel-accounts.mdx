@@ -1,0 +1,46 @@
+---
+archived: true
+title: "Pixel accounts."
+summary: "Pixel accounts is an authentication component for Pixel, the subscription service that offers perks and rewards for as little as $1 a month."
+image: "/assets/blog/PixelBanner.png"
+date: 2022-03-28
+---
+
+# Introduction.
+Pixels is a subscription service provided by [tygerxqt](https://tygr.dev/twitter) that starts at a minimum of $1 a month. Being a Pixel subscriber grants you access to the following perks and rewards:
+
+- Pixel role in the Discord Server. This unlocks hidden channels, double XP, and more.
+- Behind the scenes content for all projects including constant updates for public and private projects, access to all original assets, and the project roadmap.
+- Early access to new projects and content.
+- Access to my entire photo library. All assets will be in their raw format, and you will be able to use them for any of your projects.
+- Access to all private repositories on GitHub.
+- A cool Pixel perfect badge to show your support.
+
+# Pixel.
+Originally, Pixel was hosted on [Ko-Fi](https://ko-fi.com), a donation and subscription platform for content creators. But after using the service for a while I learned that Ko-Fi wasn't the platform Pixel should be hosted on. I tried looking for alternatives but most of them either cost a monthly subscription or didn't have the tools I would like to have. Thinking for a while about what I could do, It hit me. I can create my own platform to host Pixel on! 
+
+### Supabase.
+To do this, I would need to create my own authentication component first so I can identify and authenticate different users that are subscribed to Pixel. I searched around on the internet looking for tutorials and guides to help me get started making my auth component. As I was searching I stumbled upon a service called [Supabase](https://supabase.com). Supabase is an open-source [Firebase](https://en.wikipedia.org/wiki/Firebase) alternative. A supabase instance comes with a Postgres database and a user management system. Perfect! Supabase also comes with an object storage system also but I decided to use something else as people have had trouble with it and I didn't want to deal with it.
+
+### Deta
+After more searching around, I found [Deta](https://deta.sh). Deta is a free developer-friendly cloud platform. A Deta instance comes with Micros, Bases, and a Drive. Micros are mini NodeJS and Python servers to quote `Get your apps / APIs on the internet in seconds`. Bases are super easy to use production-grade NoSQL database with unlimited storage. And finally, Drive: an easy to use cloud storage solution. Something I can use to store avatars and banners! Neat.
+
+# Pixel accounts.
+Okay, now I know what tools I'll use for Pixel accounts but I need to figure out what features to add to correctly prioritise them. I spent some time with a pen and notepad, coming up with different ideas and features to add. Here are the features that Pixel accounts have:
+
+- Avatars and banners.
+- Linking external accounts.
+- Account Badges.
+- Tagging system (`tygerxqt#0001`).
+- Blog comments.
+- Billing management (Obviously).
+- Blog comments.
+- Project feedback.
+
+
+> [Cookie](https://github.com/tygerxqt/cookie) will have access to the database, when she detects that you have subscribed, she will give you the "Pixel" role in [tyger's valley](https://tygr.dev/discord) and will invite you to [tygerware](https://github.com/tygerware).
+
+
+
+# Conclusion.
+Pixel accounts are avalible right now! Head on over to either [/profile](/profile) or [/account](/account) to create your Pixel account today!
