@@ -24,11 +24,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable} ${readexPro.variable} ${literata.variable}`}>
-      <body className='flex flex-col gap-2 items-center w-full bg-neutral-100 dark:bg-neutral-900'>
-        <div className='max-w-[800px] w-full p-2 sm:p-4'>
+      <body className='flex flex-col items-center w-full gap-2 bg-neutral-100 dark:bg-neutral-900'>
+        <div className='w-full p-2 sm:p-4'>
           <Providers>
             <Nav />
-            {children}
+            <div className='flex flex-col items-center justify-center w-full'>
+              {children}
+            </div>
             <Footer />
           </Providers >
         </div>

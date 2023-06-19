@@ -6,17 +6,17 @@ const customLink = (props: any) => {
 
     if (href.startsWith('/')) {
         return (
-            <Link href={href} {...props}>
+            <Link href={href} {...props} className="text-blue-500">
                 {props.children}
             </Link>
         );
     }
 
     if (href.startsWith('#')) {
-        return <a {...props} />;
+        return <a {...props} className="text-blue-500" />;
     }
 
-    return <a target="_blank" rel="noopener noreferrer" {...props} />;
+    return <a target="_blank" rel="noopener noreferrer" className="text-blue-500" {...props} />;
 }
 
 const MDXComponents = {

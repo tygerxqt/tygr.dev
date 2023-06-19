@@ -17,7 +17,7 @@ export default async function ProjectsPage() {
 
     return (
         <>
-            <div className="flex flex-col gap-2 pt-2">
+            <div className="flex flex-col gap-2 pt-2 w-full max-w-[800px]">
                 <div className="pb-4">
                     <h2 className="text-2xl font-bold sm:text-3xl">
                         ~/projects
