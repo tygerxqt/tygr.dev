@@ -34,7 +34,7 @@ export default function BlogPage() {
                 </div>
                 <div className="grid grid-cols-1 gap-4 px-2 sm:px-0 sm:gap-2 sm:grid-cols-2">
                     {posts.filter((post) => post.title.toLowerCase().includes(query) || post.summary.toLowerCase().includes(query)).map((post, idx) => (
-                        <BlogCard key={idx} {...post} />
+                        <BlogCard key={idx} post={post} />
                     ))}
                 </div>
             </div>

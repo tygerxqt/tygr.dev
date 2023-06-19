@@ -2,10 +2,10 @@ import { Post } from "@/.contentlayer/generated"
 import Image from "next/image"
 import Link from "next/link"
 
-export default function BlogCard(post: Post) {
+export default function BlogCard({ post, archive = false }: { post: Post, archive?: boolean }) {
     return (
         <>
-            <Link href={`/blog/${post.slug}`}>
+            <Link href={`/blog/` + (archive ? "archive/" : "") + `${post.slug}`}>
                 <button className="w-full min-h-[550px] border border-black/10 dark:border-white/10 flex flex-col p-0 m-0 rounded-lg text-start sm:hover:-translate-y-1 transition-transform">
                     <Image src={post.image} alt="blog post" height={550} width={1920} className="flex-1 object-cover rounded-lg grow" />
                     <div className="bottom-0 left-0 right-0 w-full rounded-lg backdrop-blur">
