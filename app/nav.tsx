@@ -4,7 +4,6 @@ import { ChevronDown, ImageIcon, LinkIcon, Menu, Wrench } from "lucide-react";
 import { ThemeToggle } from "../components/theme-toggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 
 export default function Nav() {
     return (
@@ -40,12 +39,12 @@ export default function Nav() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <Link href="/gallery">
-                                    <DropdownMenuItem>
-                                        <ImageIcon className="w-4 h-4 mr-2" />
-                                        <span>Gallery</span>
-                                    </DropdownMenuItem>
-                                </Link>
+                                {/* <Link href="/gallery"> */}
+                                <DropdownMenuItem disabled>
+                                    <ImageIcon className="w-4 h-4 mr-2" />
+                                    <span>Gallery</span>
+                                </DropdownMenuItem>
+                                {/* </Link> */}
                                 {/* <Link href="/gear"> */}
                                 <DropdownMenuItem disabled>
                                     <Wrench className="w-4 h-4 mr-2" />
