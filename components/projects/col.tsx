@@ -6,13 +6,15 @@ import { useState } from 'react';
 export default function ProjectCol({ href, title, desc, year, img }: { href: string, title: string, desc: string, year: number, img: string }) {
     const [hover, setHover] = useState(false);
 
-    document.onmousemove = (e) => {
-        const img = document.getElementById(title);
-        if (!img) return;
+    if (typeof window !== 'undefined') {
+        document.onmousemove = (e) => {
+            const img = document.getElementById(title);
+            if (!img) return;
 
-        // make the image follow the cursor
-        img.style.left = e.clientX + 20 + "px";
-        img.style.top = e.clientY + 20 + "px";
+            // make the image follow the cursor
+            img.style.left = e.clientX + 20 + "px";
+            img.style.top = e.clientY + 20 + "px";
+        }
     }
 
     return (
