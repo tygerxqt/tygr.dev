@@ -15,7 +15,7 @@ export default function BlogPage() {
 
     return (
         <>
-            <div className="flex flex-col gap-2 pt-2">
+            <div className="max-w-[800px] w-full flex flex-col items-start gap-2">
                 <div>
                     <h2 className="text-2xl font-bold sm:text-3xl">
                         ~/blog

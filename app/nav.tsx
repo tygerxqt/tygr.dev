@@ -46,18 +46,18 @@ export default function Nav() {
                                         <span>Gallery</span>
                                     </DropdownMenuItem>
                                 </Link>
-                                {/* <Link href="/gear"> */}
-                                <DropdownMenuItem disabled>
-                                    <Wrench className="w-4 h-4 mr-2" />
-                                    <span>Gear</span>
-                                </DropdownMenuItem>
-                                {/* </Link> */}
-                                {/* <Link href="/links"> */}
-                                <DropdownMenuItem disabled>
-                                    <LinkIcon className="w-4 h-4 mr-2" />
-                                    <span>Links</span>
-                                </DropdownMenuItem>
-                                {/* </Link> */}
+                                <Link href="/gear">
+                                    <DropdownMenuItem>
+                                        <Wrench className="w-4 h-4 mr-2" />
+                                        <span>Gear</span>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/links">
+                                    <DropdownMenuItem>
+                                        <LinkIcon className="w-4 h-4 mr-2" />
+                                        <span>Links</span>
+                                    </DropdownMenuItem>
+                                </Link>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

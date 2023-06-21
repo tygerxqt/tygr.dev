@@ -5,7 +5,7 @@ export default function BlogLayout({
 }) {
     return (
         <>
-            <div className="flex flex-col items-center justify-center w-full max-w-[800px]">
+            <div className="flex flex-col items-center justify-center w-full">
                 {children}
             </div>
         </>
