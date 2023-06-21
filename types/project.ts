@@ -1,9 +1,10 @@
-export interface Project {
+export interface ProjectProps {
     summary: Summary;
     private: Private;
     link: Link;
     year: Year;
     name: Name;
+    image: Image;
 }
 
 export interface Link {
@@ -56,4 +57,19 @@ export interface Year {
     id: string;
     type: string;
     number: number;
+}
+
+interface Image {
+    id: string;
+    type: string;
+    files: File[];
+}
+
+interface File {
+    name: string;
+    type: string;
+    file: {
+        url: string;
+        expiry_time: string;
+    };
 }

@@ -1,7 +1,26 @@
-export default function ProjectCol({ href, title, desc, year }: { href: string, title: string, desc: string, year: number }) {
+"use client";
+
+import Image from 'next/image';
+import { useState } from 'react';
+
+export default function ProjectCol({ href, title, desc, year, img }: { href: string, title: string, desc: string, year: number, img: string }) {
+    const [hover, setHover] = useState(false);
+
+    document.onmousemove = (e) => {
+        const img = document.getElementById(title);
+        if (!img) return;
+
+        // make the image follow the cursor
+        img.style.left = e.clientX + 20 + "px";
+        img.style.top = e.clientY + 20 + "px";
+    }
+
     return (
         <>
-            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" href={href}>
+            <div className='hidden md:block'>
+                <Image id={title} src={img} alt={title} width={400} height={200} className="rounded-md md:data-[hover=true]:absolute md:data-[hover=false]:hidden border border-black/10 dark:border-white/10 transition-opacity duration-150" data-hover={hover} />
+            </div>
+            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" href={href} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
                 <p className="gap-1 font-semibold">
                     {title} {" "}
                     <span className="inline-block text-sm font-normal text-neutral-500">

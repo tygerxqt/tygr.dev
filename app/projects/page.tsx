@@ -1,15 +1,16 @@
 import ProjectCol from "@/components/projects/col";
 import { notion } from "@/lib/notion"
-import { Project } from "@/types/project";
+import { ProjectProps } from "@/types/project";
 
 async function getProjects() {
     const projects: any = await notion.databases.query({
         database_id: process.env.NOTION_PROJECTS_DATABASE_ID as string,
     });
 
-    let res: Project[] = projects.results.map((p: any) => p.properties);
+    let res: ProjectProps[] = projects.results.map((p: any) => p.properties);
+    let filtered = res.filter((p) => p.private.checkbox.valueOf() === false);
 
-    return res;
+    return filtered;
 }
 
 export default async function ProjectsPage() {
@@ -26,9 +27,9 @@ export default async function ProjectsPage() {
                         An entire list of projects I&apos;ve worked or contributed.
                     </p>
                 </div>
-                {projects.map((p: Project, i: number) => (
+                {projects.map((p: ProjectProps, i: number) => (
                     <>
-                        <ProjectCol title={p.name.title[0].text.content} desc={p.summary.rich_text[0].text.content} href={p.link.url} year={p.year.number} />
+                        <ProjectCol title={p.name.title[0].text.content} desc={p.summary.rich_text[0].text.content} href={p.link.url} year={p.year.number} img={p.image.files[0].file.url} />
                     </>
                 ))}
             </div>
