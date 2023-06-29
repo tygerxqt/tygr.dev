@@ -12,13 +12,16 @@ export default function LinkItem({ link }: { link: LinkProps }) {
             <Youtube />
           )} {" "}
           <span className="inline-block text-sm font-normal text-neutral-500">
-            • {link.name.title[0].plain_text}
+            {link.name.title[0].plain_text}
           </span>
         </p>
-        <span className="hidden w-full sm:flex sm:flex-row sm:items-center ">
-          <hr className="flex-1 mx-2 border border-black/10 dark:border-white/10" />
+        <span className="flex flex-row items-center w-full">
+          <hr className="flex-1 mx-2 border border-black/10 dark:border-white/10 min-w-[24px]" />
           <span className="text-sm font-medium text-neutral-500">
             {link.summary.rich_text[0].plain_text}
+          </span>
+          <span className="text-sm font-medium text-neutral-500">
+            {link.link.rich_text[0].plain_text.replace(/(https?:\/\/)?(www.)?/i, '').split('/')[0]}
           </span>
         </span>
       </a>

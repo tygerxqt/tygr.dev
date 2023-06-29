@@ -16,6 +16,13 @@ async function getLinks() {
 export default async function LinksPage() {
     const links = await getLinks();
 
+    const linksByType: { [x: string]: LinkProps[] } = links.reduce((acc: any, link) => {
+        const type = link.type.select.name.toLowerCase();
+        if (!acc[type]) acc[type] = [];
+        acc[type].push(link);
+        return acc;
+    }, {});
+
     return (
         <>
             <div className="flex flex-col gap-2 pt-2 w-full max-w-[800px]">
@@ -27,8 +34,13 @@ export default async function LinksPage() {
                         A bunch of useful links ranging from all my social media, resources that are helpful, to even my wishlist.
                     </p>
                 </div>
-                {links.map((link, i) => (
-                    <LinkItem key={i} link={link} />
+                {linksByType && Object.keys(linksByType).map((type, i) => (
+                    <div key={i} className="flex flex-col gap-2">
+                        <h3 className="text-lg font-bold underline capitalize underline-offset-2">{type}s</h3>
+                        {linksByType[type].map((link, i) => (
+                            <LinkItem key={i} link={link} />
+                        ))}
+                    </div>
                 ))}
             </div>
         </>
