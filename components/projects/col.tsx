@@ -12,8 +12,8 @@ export default function ProjectCol({ href, title, desc, year, img }: { href: str
             if (!img) return;
 
             // make the image follow the cursor
-            img.style.left = e.clientX + 20 + "px";
-            img.style.top = e.clientY + 20 + "px";
+            img.style.left = e.pageX + 20 + "px";
+            img.style.top = e.pageY - 200 + "px";
         }
     }
 
