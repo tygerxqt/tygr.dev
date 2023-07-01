@@ -34,7 +34,7 @@ export default async function PostPage({ params }: { params: { slug: string, } }
 
     return (
         <>
-            <article className="p-2 py-4 mx-auto">
+            <article className="p-2 py-4 mx-auto max-w-[800px]">
                 <div className="flex flex-col gap-2 pb-2">
                     <h1 className="text-3xl font-black font-display sm:text-4xl">{post.title}</h1>
                     <div className="flex flex-row items-center justify-between gap-4">
