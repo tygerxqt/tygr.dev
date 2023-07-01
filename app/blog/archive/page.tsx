@@ -6,8 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { compareDesc } from "date-fns";
 import { ArrowLeft } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 import { useState } from "react";
+
+export const metadata: Metadata = {
+    title: 'tygr.dev | Archived Blog',
+    description: "All of my archived blog posts.",
+    keywords: ["tygerxqt archived blog", "ty mason archived blog", "tygr dev archived blog", "tygr archived blog", "tyger796 archived blog", "tyger archived blog"],
+}
 
 export default function BlogPage() {
     const posts = allPosts.filter(post => post.archived === true).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
