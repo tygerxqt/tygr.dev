@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col items-center justify-center w-full">
       <div className="flex flex-col gap-4 px-2 py-8 max-w-[800px] w-full">
-        <div className="flex flex-row sm:gap-4">
+        <div className="flex flex-row gap-2 sm:gap-4">
           <div className="flex flex-row gap-2 justify-center items-start h-full max-h-[132px]">
             <div className="flex-col items-center hidden gap-1 justify-evenly sm:flex">
               <Link href="https://github.com/tygerxqt" target="_blank">
@@ -51,7 +51,7 @@ export default async function Home() {
                 </Button>
               </Link>
             </div>
-            <Image width={132} height={132} className="max-h-[132px] rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
+            <Image width={132} height={132} className="max-h-[132px] min-w-[132px] w-full rounded-md hidden sm:block" src="https://secure.gravatar.com/avatar/871c2885d0acbbc08be33547816255e3?size=512" alt="Avatar" />
           </div>
 
           <div className="flex flex-col items-start">
@@ -59,7 +59,7 @@ export default async function Home() {
               <small className="text-sm text-neutral-500">
                 any - they/them • 17 • UK <span><s>(bri ish)</s></span>
               </small>
-              <p className="items-center w-full max-w-2xl text-2xl font-bold sm:text-3xl font-display">
+              <p className="items-center w-full text-2xl font-bold sm:text-3xl font-display">
                 <span className="text-neutral-500">ty mason.</span> aka tygerxqt, <span className="text-neutral-500">a professional idiot.</span> founder
                 <span className="dark:text-neutral-400 text-neutral-600">{" "} of {" "}</span>
                 <a target="_blank" href="https://nordstud.io" className="inline-flex flex-row items-center gap-3 hover:text-neutral-800 dark:hover:text-neutral-200">nord studio
@@ -222,6 +222,5 @@ export default async function Home() {
         </div>
       </div >
     </main>
-
   )
 }

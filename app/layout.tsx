@@ -2,8 +2,9 @@ import { Inter, Literata, Readex_Pro, Sora } from 'next/font/google'
 import Providers from './providers'
 
 import './globals.css'
-import Nav from '@/app/nav';
-import Footer from './footer';
+
+import Nav from '@/components/nav';
+import Footer from '@/components/footer';
 import { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'], display: "swap", variable: "--font-inter" });
