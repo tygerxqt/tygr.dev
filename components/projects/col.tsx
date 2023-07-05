@@ -22,7 +22,7 @@ export default function ProjectCol({ href, title, desc, year, img }: { href: str
             <div className='hidden md:block'>
                 <Image id={title} src={img} alt={title} width={400} height={200} className="rounded-md md:data-[hover=true]:absolute md:data-[hover=false]:hidden border border-black/10 dark:border-white/10 transition-opacity duration-150" data-hover={hover} />
             </div>
-            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" href={href} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" rel="noopener noreferrer" href={href} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
                 <p className="gap-1 font-semibold">
                     {title} {" "}
                     <span className="inline-block text-sm font-normal text-neutral-500">

@@ -6,7 +6,7 @@ import { FaLastfm } from 'react-icons/fa';
 export default function LinkItem({ link }: { link: LinkProps }) {
   return (
     <>
-      <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" href={link.link.rich_text[0].plain_text}>
+      <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" rel="noopener noreferrer" href={link.link.rich_text[0].plain_text}>
         <p className="gap-1 font-semibold">
           {link.name.title[0].plain_text.toLowerCase().includes("youtube") ?? (
             <Youtube />
