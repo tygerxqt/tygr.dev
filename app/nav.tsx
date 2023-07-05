@@ -4,6 +4,7 @@ import { ChevronDown, ImageIcon, LinkIcon, Menu, Wrench } from "lucide-react";
 import { ThemeToggle } from "../components/theme-toggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function Nav() {
     return (
