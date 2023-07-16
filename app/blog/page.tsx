@@ -32,12 +32,18 @@ export default function BlogPage() {
                         </Button>
                     </Link>
                 </div>
+
+                <div className="flex flex-col items-center justify-center w-full py-8">
+                    {posts.length === 0 && (
+                        <p className="text-neutral-500">There are no posts to show at the moment.</p>
+                    )}
+                </div>
                 <div className="grid grid-cols-1 gap-4 px-2 sm:px-0 sm:gap-2 sm:grid-cols-2">
                     {posts.filter((post) => post.title.toLowerCase().includes(query) || post.summary.toLowerCase().includes(query)).map((post, idx) => (
                         <BlogCard key={idx} post={post} />
                     ))}
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }
