@@ -10,7 +10,7 @@ export default async function GalleryPage() {
 
     return (
         <>
-            <main className="mx-auto max-w-[1960px] p-4">
+            <main className="mx-auto max-w-[1960px] p-0 sm:p-2 md:p-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {images.map((image, index) => {
                         return (
