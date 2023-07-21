@@ -14,7 +14,7 @@ export default async function GalleryPage() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {images.map((image, index) => {
                         return (
-                            <button>
+                            <button key={index}>
                                 <div className="h-[400px]">
                                     <Suspense fallback={<p>Loading...</p>}>
                                         <Image src={image.src} alt={image.alt} width={1200} height={800} className="object-cover w-full h-full border rounded-lg border-black/10 dark:border-white/10" />
