@@ -29,6 +29,7 @@
     "reading-time": "^1.5.0",
     "rehype-pretty-code": "^0.9.8",
     "remark-gfm": "^3.0.1",
+    "sharp": "^0.32.4",
     "shiki": "^0.14.2"
   },
   "devDependencies": {

@@ -16,7 +16,25 @@ export default async function GalleryPage() {
         }
     }).then((res) => res.json()).then((json) => json.results);
 
-    const images: ImageProps[] = data.map((p: any) => p.properties);
+    const props: ImageProps[] = data.map((p: any) => p.properties);
+
+    const sources = props.map(async (prop) => {
+        // Get the blur data url
+
+        // const buffer = await fetch(prop.Image.files[0].file.url, { next: { revalidate: 3600 } }).then(async (res) =>
+        //     Buffer.from(await res.arrayBuffer())
+        // );
+
+        // const { base64 } = await getPlaiceholder(buffer);
+
+        return {
+            src: prop.Image.files[0].file.url,
+            // blurDataURL: base64,
+            alt: prop.Name.title[0].plain_text
+        }
+    });
+
+    const images = await Promise.all(sources);
 
     return (
         <>
@@ -27,7 +45,14 @@ export default async function GalleryPage() {
                             <button key={index}>
                                 <div className="h-[400px]">
                                     <Suspense fallback={<p>Loading...</p>}>
-                                        <Image src={image.Image.files[0].file.url} alt={image.Name.title[0].plain_text} width={1200} height={800} className="object-cover w-full h-full border rounded-lg border-black/10 dark:border-white/10" />
+                                        <Image
+                                            {...image}
+                                            width={1920}
+                                            height={1080}
+                                            quality={75}
+                                            className="object-cover w-full h-full border rounded-lg border-black/10 dark:border-white/10"
+                                            style={{ objectFit: 'cover', objectPosition: 'center' }}
+                                        />
                                     </Suspense>
                                 </div>
                             </button>
