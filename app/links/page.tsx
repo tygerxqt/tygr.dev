@@ -35,8 +35,8 @@ export default async function LinksPage() {
                     </p>
                 </div>
                 {linksByType && Object.keys(linksByType).map((type, i) => (
-                    <div key={i} className="flex flex-col gap-2">
-                        <h3 className="text-lg font-bold underline capitalize underline-offset-2">{type}s</h3>
+                    <div key={i} className="flex flex-col gap-2 pb-2">
+                        <h3 className="text-lg font-bold capitalize underline-offset-2">{type}s</h3>
                         {linksByType[type].map((link, i) => (
                             <LinkItem key={i} link={link} />
                         ))}
