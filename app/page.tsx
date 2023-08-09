@@ -1,6 +1,6 @@
 import { Icons } from "@/components/icons";
 import Image from "next/image";
-import { FaReact, FaRust, FaTwitter } from "react-icons/fa";
+import { FaCloud, FaReact, FaRust, FaTwitter } from "react-icons/fa";
 import { SiAstro, SiFigma, SiSvelte, SiTypescript } from "react-icons/si";
 import { AiFillCamera, AiFillGithub, AiFillHtml5, AiFillInstagram } from "react-icons/ai";
 import { LayoutGrid } from "lucide-react"
@@ -10,24 +10,11 @@ import { TextBlockWrapper } from "@/components/ui/text-block-wrapper";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProjectCol from "@/components/projects/col";
-import { notion } from "@/lib/notion";
-import { ProjectProps } from "@/types/project";
-
-async function getProjects() {
-  const projects: any = await notion.databases.query({
-    database_id: process.env.NOTION_PROJECTS_DATABASE_ID as string
-  });
-
-  let all: ProjectProps[] = projects.results.map((p: any) => p.properties);
-  all = all.filter((p: ProjectProps) => p.private.checkbox.valueOf() === false);
-
-  let res: ProjectProps[] = all.slice(0, 3);
-
-  return res;
-}
+import { cms } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 
 export default async function Home() {
-  const projects = await getProjects();
+  const projects = await cms.request(readItems("projects"));
 
   return (
     <main className="flex flex-col items-center justify-center w-full">
@@ -40,9 +27,9 @@ export default async function Home() {
                   <AiFillGithub className="w-full h-full" />
                 </Button>
               </Link>
-              <Link href="https://twitter.com/tygerxqt" target="_blank">
+              <Link href="https://bsky.app/profile/tygr.dev" target="_blank">
                 <Button size={"icon"} className="px-2 py-1 h-[40px] w-[40px]">
-                  <FaTwitter fill="currentColor" className="w-full h-full" />
+                  <FaCloud fill="currentColor" className="w-full h-full" />
                 </Button>
               </Link>
               <Link href="https://instagram.com/tygerxqt" target="_blank">
@@ -85,9 +72,9 @@ export default async function Home() {
               <AiFillGithub /> GitHub
             </Button>
           </Link>
-          <Link href="https://twitter.com/tygerxqt" target="_blank">
+          <Link href="https://bsky.app/profile/tygr.dev" target="_blank">
             <Button size={"icon"} className="flex flex-row items-center h-full gap-2 px-2 py-1 text-sm font-medium">
-              <FaTwitter fill="currentColor" /> Twitter
+              <FaCloud fill="currentColor" /> Bluesky
             </Button>
           </Link>
           <Link href="https://instagram.com/tygerxqt" target="_blank">
@@ -214,9 +201,9 @@ export default async function Home() {
               </Link>
             </div>
             <div className="flex flex-col gap-2 pt-2">
-              <ProjectCol title={projects[0].name.title[0].plain_text} desc={projects[0].summary.rich_text[0].plain_text} year={projects[0].year.number} href={projects[0].link.url} img={projects[0].image.files[0].file.url} />
-              <ProjectCol title={projects[1].name.title[0].plain_text} desc={projects[1].summary.rich_text[0].plain_text} year={projects[1].year.number} href={projects[1].link.url} img={projects[1].image.files[0].file.url} />
-              <ProjectCol title={projects[2].name.title[0].plain_text} desc={projects[2].summary.rich_text[0].plain_text} year={projects[2].year.number} href={projects[2].link.url} img={projects[2].image.files[0].file.url} />
+              {projects.slice(0, 3).map((p, i: number) => (
+                <ProjectCol title={p.name} desc={p.summary} href={p.link} year={p.year} img={`${process.env.NEXT_PUBLIC_CMS_URL}/assets/${p.image}`} />
+              ))}
             </div>
           </div>
         </div>

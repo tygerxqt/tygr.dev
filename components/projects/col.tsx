@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-export default function ProjectCol({ href, title, desc, year, img }: { href: string, title: string, desc: string, year: number, img: string }) {
+export default function ProjectCol({ href, title, desc, year, img }: { href: string, title: string, desc: string, year: string, img: string }) {
     const [hover, setHover] = useState(false);
 
     if (typeof window !== 'undefined') {

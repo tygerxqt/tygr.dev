@@ -3,7 +3,7 @@ const { withContentlayer } = require('next-contentlayer');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['secure.gravatar.com', 's3.us-west-2.amazonaws.com'],
+        domains: ['secure.gravatar.com', 'cms.tygr.dev', 't2.gstatic.com'],
     },
     headers() {
         return [
