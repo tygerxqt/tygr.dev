@@ -35,10 +35,23 @@ export interface Image {
     image: string;
 }
 
+export interface Tool {
+    id: number;
+    date_updated: Date | null;
+    dob: Date | null;
+    dod: Date | null;
+    name: string;
+    summary: string;
+    status: "alive" | "replaced" | "repaired" | "broken" | "discontinued" | "dead";
+    url: string;
+    image: string;
+}
+
 interface Schema {
     projects: Project[];
     links: Link[];
     gallery: Image[];
+    gear: Tool[];
 }
 
 export const cms = createDirectus<Schema>(process.env.NEXT_PUBLIC_CMS_URL as string).with(rest());
