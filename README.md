@@ -5,6 +5,7 @@
 * Framework: [NextJS](https://nextjs.org/)
 * Deployment: [Vercel](https://vercel.com/)
 * Content: [Contentlayer](https://www.contentlayer.dev/)
+* CMS: [Directus](https://directus.io/)
 * UI: [Radix](https://www.radix-ui.com/)
 * Styling: [TailwindCSS](https://tailwindcss.com/)  
 
