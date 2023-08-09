@@ -28,7 +28,7 @@ export default async function LinksPage() {
                     <div key={i} className="flex flex-col gap-2 pb-2">
                         <h3 className="text-lg font-bold capitalize underline-offset-2">{type}s</h3>
                         {linksByType[type].map((link: Link, i: number) => (
-                            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" rel="noopener noreferrer" href={link.link}>
+                            <a className="flex flex-row items-center w-full p-2 overflow-hidden rounded-md whitespace-nowrap text-ellipsis hover:bg-neutral-200 dark:hover:bg-neutral-800" target="_blank" rel="noopener noreferrer" href={link.link} key={i}>
                                 <p className="flex flex-row items-center gap-2 font-semibold">
                                     <Image src={`https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${link.link}&size=16`} width={16} height={16} alt="" aria-label={`Favicon for ${link.name}`} />
                                     {" "}

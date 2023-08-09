@@ -202,7 +202,7 @@ export default async function Home() {
             </div>
             <div className="flex flex-col gap-2 pt-2">
               {projects.slice(0, 3).map((p, i: number) => (
-                <ProjectCol title={p.name} desc={p.summary} href={p.link} year={p.year} img={`${process.env.NEXT_PUBLIC_CMS_URL}/assets/${p.image}`} />
+                <ProjectCol title={p.name} desc={p.summary} href={p.link} year={p.year} img={`${process.env.NEXT_PUBLIC_CMS_URL}/assets/${p.image}`} key={i} />
               ))}
             </div>
           </div>
