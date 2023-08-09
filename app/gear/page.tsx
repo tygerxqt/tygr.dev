@@ -20,7 +20,7 @@ export default async function GearPage() {
                 </div>
                 <div className="flex flex-col gap-6">
                     {gear.map((tool, i: number) => (
-                        <GearCard tool={tool} />
+                        <GearCard tool={tool} key={i} />
                     ))}
                 </div>
             </div>
