@@ -5,8 +5,6 @@ import { readItems } from "@directus/sdk";
 export default async function GearPage() {
     const gear = await cms.request(readItems("gear"));
 
-    console.log(gear);
-
     return (
         <>
             <div className="flex flex-col gap-2 pt-2 w-full max-w-[800px]">
