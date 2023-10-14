@@ -32,7 +32,7 @@ export default async function LinksPage() {
                                 <p className="flex flex-row items-center gap-2 font-semibold">
                                     <Image src={`https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${link.link}&size=16`} width={16} height={16} alt="" aria-label={`Favicon for ${link.name}`} />
                                     {" "}
-                                    <span className="inline-block text-sm font-normal text-neutral-500">
+                                    <span className="inline-block pr-2 text-sm font-normal text-neutral-500">
                                         {link.name}
                                     </span>
                                 </p>
