@@ -6,6 +6,7 @@ import './globals.css'
 import Nav from '@/components/nav';
 import Footer from '@/components/footer';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'], display: "swap", variable: "--font-inter" });
 const sora = Sora({ subsets: ['latin'], display: "swap", variable: "--font-sora" });
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable} ${readexPro.variable} ${literata.variable}`}>
       <body className=' bg-neutral-100 dark:bg-neutral-900'>
+        <Script async src="https://analytics.tygr.dev/script.js" data-website-id="817137dd-63e0-4d02-bf17-a0f7723860b2" />
         <div className='w-full p-2 sm:p-4'>
           <Providers>
             <Nav />
