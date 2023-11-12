@@ -1,31 +1,28 @@
-"use client"
-
-import { allPosts } from "@/.contentlayer/generated";
 import BlogCard from "@/components/blog/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { compareDesc } from "date-fns";
+import { cms } from "@/lib/directus";
+import { readItems } from "@directus/sdk";
 import { Archive } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { Suspense } from "react";
 
-export default function BlogPage() {
-    const posts = allPosts.filter(post => post.archived === false).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
-    const [query, setQuery] = useState("");
+export default async function BlogPage() {
+    const posts = await cms.request(readItems("posts")).then((res) => {
+        return res.filter((post) => post.status === "published");
+    });
 
     return (
         <>
             <div className="max-w-[800px] w-full flex flex-col items-start gap-2">
-                <div>
-                    <h2 className="text-2xl font-bold sm:text-3xl">
-                        ~/blog
-                    </h2>
-                    <p className="text-sm">
-                        All of my blog posts and tutorials. I write about web development, programming, and games.
-                    </p>
-                </div>
-                <div className="flex flex-row items-center justify-between w-full gap-2 pb-4">
-                    <Input className="max-w-[400px]" placeholder="Search articles..." value={query} onChange={(e) => setQuery(e.target.value.toLowerCase())} />
+                <div className="flex flex-row items-center justify-between w-full px-2">
+                    <div>
+                        <h2 className="text-2xl font-bold sm:text-3xl">
+                            ~/blog
+                        </h2>
+                        <p className="text-sm">
+                            All of my blog posts and tutorials. I write about web development, programming, and games.
+                        </p>
+                    </div>
                     <Link href="/blog/archive">
                         <Button size="sm" className="p-1">
                             <Archive />
@@ -33,16 +30,18 @@ export default function BlogPage() {
                     </Link>
                 </div>
 
-                <div className="flex flex-col items-center justify-center w-full py-8">
+                <Suspense fallback={<p>Loading...</p>}>
                     {posts.length === 0 && (
-                        <p className="text-neutral-500">There are no posts to show at the moment.</p>
+                        <div className="flex flex-col items-center justify-center w-full py-8">
+                            <p className="text-neutral-500">There are no posts to show at the moment.</p>
+                        </div>
                     )}
-                </div>
-                <div className="grid grid-cols-1 gap-4 px-2 sm:px-0 sm:gap-2 sm:grid-cols-2">
-                    {posts.filter((post) => post.title.toLowerCase().includes(query) || post.summary.toLowerCase().includes(query)).map((post, idx) => (
-                        <BlogCard key={idx} post={post} />
-                    ))}
-                </div >
+                    <div className="grid grid-cols-1 gap-4 px-2 sm:px-0 sm:gap-2 sm:grid-cols-2 py-">
+                        {posts.map((post, idx) => (
+                            <BlogCard key={idx} post={post} />
+                        ))}
+                    </div>
+                </Suspense>
             </div >
         </>
     )

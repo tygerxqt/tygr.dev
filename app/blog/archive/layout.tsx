@@ -1,7 +1,7 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: 'tygr.dev | Archived Blog',
+  title: 'tygr.dev | Blog Archive ',
   description: "All of my archived blog posts.",
   keywords: ["tygerxqt archived blog", "ty mason archived blog", "tygr dev archived blog", "tygr archived blog", "tyger796 archived blog", "tyger archived blog"],
 }

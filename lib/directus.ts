@@ -47,11 +47,24 @@ export interface Tool {
     image: string;
 }
 
+export interface Post {
+    slug: string,
+    status: "published" | "archived" | "draft",
+    date_created: string,
+    user_updated: string | null,
+    date_updated: string | null,
+    content: string,
+    heading: string,
+    hero: string,
+    summary: string
+}
+
 interface Schema {
     projects: Project[];
     links: Link[];
     gallery: Image[];
     gear: Tool[];
+    posts: Post[];
 }
 
 export const cms = createDirectus<Schema>(process.env.NEXT_PUBLIC_CMS_URL as string).with(rest());
