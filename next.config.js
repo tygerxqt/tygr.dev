@@ -9,20 +9,14 @@ const nextConfig = {
                 source: '/(.*)',
                 headers: securityHeaders,
             },
-            {
-                source: "/api",
-                headers: [
-                    { key: "Content-Type", value: "text/html; charset=utf-8" },
-                ]
-            }
         ];
     },
 };
 
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `
-    default-src 'self' vercel.live vitals.vercel-insights.com;
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' vercel.live vitals.vercel-insights.com;
+    default-src 'self' vercel.live analytics.tygr.dev;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' vercel.live analytics.tygr.dev;
     style-src 'self' 'unsafe-inline';
     img-src * blob: data:;
     media-src 'none';
