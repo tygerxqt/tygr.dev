@@ -9,8 +9,8 @@ export default async function GearPage() {
         <>
             <div className="flex flex-col gap-2 pt-2 w-full max-w-[800px]">
                 <div className="pb-4">
-                    <h2 className="text-2xl font-bold sm:text-3xl">
-                        ~/gear
+                    <h2 className="text-2xl font-bold sm:text-3xl font-display">
+                        My Gear
                     </h2>
                     <p className="text-sm">
                         The entire list of the gear I use for productivity, development, and gaming.

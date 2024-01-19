@@ -2,7 +2,7 @@ import { Tool } from "@/lib/directus";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { FaShoppingCart } from "react-icons/fa";
+import Icons from "../icons";
 
 export default function GearCard({ tool }: { tool: Tool }) {
     return (
@@ -32,8 +32,8 @@ export default function GearCard({ tool }: { tool: Tool }) {
                         </div>
                     </div>
                     <Link href={tool.url} passHref target="_blank">
-                        <Button size={"icon"} className="px-2 py-1 h-[36px] w-[36px]">
-                            <FaShoppingCart fill="currentColor" className="w-full h-full" />
+                        <Button size="md" className="px-2 py-1 h-[36px] items-center flex flex-row gap-2">
+                            <Icons.Cart fill="currentColor" className="w-full h-full" /> Buy
                         </Button>
                     </Link>
                 </div>
