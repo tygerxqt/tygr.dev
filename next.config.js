@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['secure.gravatar.com', 'cms.tygr.dev', 't2.gstatic.com'],
+        remotePatterns: [
+            { hostname: "cms.tygr.dev" },
+            { hostname: "t2.gstatic.com" }
+        ]
     },
     headers() {
         return [

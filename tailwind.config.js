@@ -10,6 +10,7 @@ module.exports = {
         sans: ["var(--font-inter)", ...fontFamily.sans],
         display: ["var(--font-sora)", ...fontFamily.sans],
         serif: ["var(--font-literata)", ...fontFamily.serif],
+        mono: ["var(--font-jetbrains-mono)", ...fontFamily.mono]
       },
       keyframes: {
         "accordion-down": {

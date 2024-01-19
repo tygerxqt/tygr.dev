@@ -17,8 +17,8 @@ export default async function LinksPage() {
         <>
             <div className="flex flex-col gap-2 pt-2 w-full max-w-[800px]">
                 <div className="pb-4">
-                    <h2 className="text-2xl font-bold sm:text-3xl">
-                        ~/links
+                    <h2 className="text-2xl font-bold sm:text-3xl font-display">
+                        Links
                     </h2>
                     <p className="text-sm">
                         A bunch of useful links ranging from all my social media, resources that are helpful, to even my wishlist.

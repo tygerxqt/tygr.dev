@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { Box, ChevronDown, ImageIcon, LinkIcon, Menu, Paperclip, User, Wrench } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import Icons from "@/components/icons";
 
 export default function Nav() {
     return (
@@ -35,26 +35,26 @@ export default function Nav() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild className="outline-none">
                                 <Button variant="link">
-                                    <ChevronDown />
+                                    <Icons.ChevronDown />
                                     <span className="sr-only">More items</span>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <Link href="/gallery">
                                     <DropdownMenuItem>
-                                        <ImageIcon className="w-4 h-4 mr-2" />
+                                        <Icons.Image className="w-4 h-4 mr-2" />
                                         <span>Gallery</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/gear">
                                     <DropdownMenuItem>
-                                        <Wrench className="w-4 h-4 mr-2" />
+                                        <Icons.Wrench className="w-4 h-4 mr-2" />
                                         <span>Gear</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/links">
                                     <DropdownMenuItem>
-                                        <LinkIcon className="w-4 h-4 mr-2" />
+                                        <Icons.Link className="w-4 h-4 mr-2" />
                                         <span>Links</span>
                                     </DropdownMenuItem>
                                 </Link>
@@ -67,43 +67,43 @@ export default function Nav() {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild className="outline-none">
                                 <Button variant="ghost" className="text-black sm:hidden dark:text-white" size="icon">
-                                    <Menu />
+                                    <Icons.Menu />
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <Link href="/">
                                     <DropdownMenuItem>
-                                        <User className="w-4 h-4 mr-2" />
+                                        <Icons.User className="w-4 h-4 mr-2" />
                                         <span>About</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/projects">
                                     <DropdownMenuItem>
-                                        <Box className="w-4 h-4 mr-2" />
+                                        <Icons.Package className="w-4 h-4 mr-2" />
                                         <span>Projects</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/blog">
                                     <DropdownMenuItem>
-                                        <Paperclip className="w-4 h-4 mr-2" />
+                                        <Icons.Paperclip className="w-4 h-4 mr-2" />
                                         <span>Blog</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/gallery">
                                     <DropdownMenuItem>
-                                        <ImageIcon className="w-4 h-4 mr-2" />
+                                        <Icons.Image className="w-4 h-4 mr-2" />
                                         <span>Gallery</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/gear">
                                     <DropdownMenuItem>
-                                        <Wrench className="w-4 h-4 mr-2" />
+                                        <Icons.Wrench className="w-4 h-4 mr-2" />
                                         <span>Gear</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/links">
                                     <DropdownMenuItem>
-                                        <LinkIcon className="w-4 h-4 mr-2" />
+                                        <Icons.Link className="w-4 h-4 mr-2" />
                                         <span>Links</span>
                                     </DropdownMenuItem>
                                 </Link>
