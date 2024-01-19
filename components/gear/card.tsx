@@ -33,7 +33,10 @@ export default function GearCard({ tool }: { tool: Tool }) {
                     </div>
                     <Link href={tool.url} passHref target="_blank">
                         <Button size="md" className="px-2 py-1 h-[36px] items-center flex flex-row gap-2">
-                            <Icons.Cart fill="currentColor" className="w-full h-full" /> Buy
+                            <Icons.Cart fill="currentColor" className="w-full h-full" />
+                            <span className="hidden sm:block">
+                                Buy
+                            </span>
                         </Button>
                     </Link>
                 </div>
