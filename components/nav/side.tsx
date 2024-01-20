@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Drawer } from "vaul";
 import Icons from "../icons";
 import { Button } from "../ui/button";
+import React from "react";
 
 export default function SideNav({ children }: { children?: React.ReactNode }) {
     return (
@@ -33,40 +34,52 @@ export default function SideNav({ children }: { children?: React.ReactNode }) {
                             <hr className="my-4 border-b border-black/10 dark:border-white/10" />
                             <div className="flex flex-col items-start w-full gap-4">
                                 <Link href="/" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.User className="w-6 h-6" /> About
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.User className="w-6 h-6" /> About
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                                 <Link href="/projects" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.Package className="w-6 h-6" /> Projects
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.Package className="w-6 h-6" /> Projects
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                                 <Link href="/blog" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.Paperclip className="w-6 h-6" /> Blog
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.Paperclip className="w-6 h-6" /> Blog
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                                 <Link href="/gallery" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.Image className="w-6 h-6" /> Gallery
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.Image className="w-6 h-6" /> Gallery
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                                 <Link href="/gear" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.Wrench className="w-6 h-6" /> Gear
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.Wrench className="w-6 h-6" /> Gear
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                                 <Link href="/links" passHref className="w-full">
-                                    <Button variant="bordered" className="flex flex-row w-full gap-2">
-                                        <Icons.Link className="w-6 h-6" /> Links
-                                    </Button>
+                                    <Drawer.Close className="w-full">
+                                        <Button variant="bordered" className="flex flex-row w-full gap-2">
+                                            <Icons.Link className="w-6 h-6" /> Links
+                                        </Button>
+                                    </Drawer.Close>
                                 </Link>
                             </div>
                         </div>
                     </div>
                 </Drawer.Content>
             </Drawer.Portal>
-        </Drawer.Root>
+        </Drawer.Root >
     )
 }

@@ -72,53 +72,6 @@ export default function NavBar() {
                                 <Icons.Menu />
                             </Button>
                         </SideNav>
-
-
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild className="outline-none">
-                                <Button variant="ghost" className="text-black sm:hidden dark:text-white" size="icon">
-                                    <Icons.Menu />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <Link href="/">
-                                    <DropdownMenuItem>
-                                        <Icons.User className="w-4 h-4 mr-2" />
-                                        <span>About</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link href="/projects">
-                                    <DropdownMenuItem>
-                                        <Icons.Package className="w-4 h-4 mr-2" />
-                                        <span>Projects</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link href="/blog">
-                                    <DropdownMenuItem>
-                                        <Icons.Paperclip className="w-4 h-4 mr-2" />
-                                        <span>Blog</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link href="/gallery">
-                                    <DropdownMenuItem>
-                                        <Icons.Image className="w-4 h-4 mr-2" />
-                                        <span>Gallery</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link href="/gear">
-                                    <DropdownMenuItem>
-                                        <Icons.Wrench className="w-4 h-4 mr-2" />
-                                        <span>Gear</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link href="/links">
-                                    <DropdownMenuItem>
-                                        <Icons.Link className="w-4 h-4 mr-2" />
-                                        <span>Links</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
                     </div>
                 </div>
             </nav>
