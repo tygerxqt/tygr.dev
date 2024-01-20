@@ -15,7 +15,9 @@ const buttonVariants = cva(
                 primary: "hover:bg-white hover:text-black  disabled:hover:bg-black disabled:hover:text-white  hover:active:bg-neutral-200  dark:hover:bg-black dark:hover:text-white  disabled:dark:hover:bg-white disabled:dark:hover:text-black  dark:hover:active:bg-neutral-700",
                 shadow: "hover:-translate-y-0.5 hover:active:translate-y-0 shadow-md active:shadow-md hover:shadow-xl",
                 ghost: "text-neutral-500 hover:text-black bg-transparent border-none hover:border hover:bg-neutral-200 hover:active:bg-neutral-300  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:bg-neutral-700 dark:hover:active:bg-neutral-600",
-                link: "text-neutral-500 hover:text-black bg-transparent border-none hover:border hover:underline hover:underline-offset-4  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:underline hover:underline-offset-4"
+                link: "text-neutral-500 hover:text-black bg-transparent border-none hover:border hover:underline hover:underline-offset-4  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:underline hover:underline-offset-4",
+                bordered: "text-neutral-500 hover:text-black bg-transparent border border-black/10 dark:border-white/10 hover:bg-neutral-200 hover:active:bg-neutral-300  dark:text-neutral-500 dark:hover:text-white dark:bg-transparent dark:hover:border dark:hover:bg-neutral-700 dark:hover:active:bg-neutral-600",
+
             },
             size: {
                 none: "p-0",

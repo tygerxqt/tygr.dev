@@ -11,6 +11,7 @@ export default function Footer() {
                         <div className="flex flex-col items-center gap-2 px-2 py-4">
                             {/* Now playing */}
                             <div className="flex items-center justify-center text-neutral-500">
+                                {/* TODO: Implement Spotify now playing / Lastfm now playing */}
                             </div>
 
                             {/* Links */}
@@ -55,9 +56,9 @@ export default function Footer() {
                                             GitHub
                                         </Button>
                                     </Link>
-                                    <Link href="https://twitter.com/tygerxqt">
+                                    <Link href="https://bsky.app/profile/tygr.dev">
                                         <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Twitter
+                                            Bluesky
                                         </Button>
                                     </Link>
                                     <Link href="https://www.instagram.com/tygerxqt">

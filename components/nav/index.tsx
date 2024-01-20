@@ -1,20 +1,23 @@
 import Image from "next/image";
-import { Button } from "./ui/button";
-import { ThemeToggle } from "./theme-toggle";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "../theme-toggle";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import Icons from "@/components/icons";
+import SideNav from "./side";
 
-export default function Nav() {
+export default function NavBar() {
     return (
         <>
             <nav className="flex flex-col items-center justify-center w-full">
                 <div className="flex flex-row items-center justify-between max-w-[800px] w-full gap-4 px-2 py-4">
-                    <div>
-                        <Image width={32} height={32} src="/logos/dark.jpg" alt="logo" className="hidden dark:block" />
-                        <Image width={32} height={32} src="/logos/light.jpg" alt="logo" className="dark:hidden" />
-                    </div>
+                    <Link href="/" passHref>
+                        <div>
+                            <Image width={32} height={32} src="/logos/dark.jpg" alt="logo" className="hidden dark:block" />
+                            <Image width={32} height={32} src="/logos/light.jpg" alt="logo" className="dark:hidden" />
+                        </div>
+                    </Link>
 
                     <div className="hidden sm:flex">
                         <a href="/">
@@ -64,6 +67,13 @@ export default function Nav() {
 
                     <div>
                         <ThemeToggle />
+                        <SideNav>
+                            <Button variant="ghost" className="text-black sm:hidden dark:text-white" size="icon">
+                                <Icons.Menu />
+                            </Button>
+                        </SideNav>
+
+
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild className="outline-none">
                                 <Button variant="ghost" className="text-black sm:hidden dark:text-white" size="icon">
