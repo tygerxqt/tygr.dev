@@ -34,7 +34,7 @@ export default function AuthenticationDemo() {
                             </div>
                             <div className="flex flex-row gap-2">
                                 <span>
-                                    Don't have an account?
+                                    Don&apos;t have an account?
                                 </span>
                                 <a href="#" className="text-blue-500 hover:underline">Register</a>
                             </div>
