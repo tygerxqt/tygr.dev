@@ -26,6 +26,9 @@ dependencies:
   date-fns:
     specifier: ^3.3.0
     version: 3.3.0
+  motion:
+    specifier: ^10.17.0
+    version: 10.17.0
   next:
     specifier: ^14.1.0
     version: 14.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -48,8 +51,8 @@ dependencies:
     specifier: ^1.5.0
     version: 1.5.0
   rehype-shikiji:
-    specifier: 0.10.0-beta.9
-    version: 0.10.0-beta.9
+    specifier: 0.10.0
+    version: 0.10.0
   sugar-high:
     specifier: ^0.5.6
     version: 0.5.6
@@ -277,6 +280,53 @@ packages:
       '@types/mdx': 2.0.10
       '@types/react': 18.2.48
       react: 18.2.0
+    dev: false
+
+  /@motionone/animation@10.17.0:
+    resolution: {integrity: sha512-ANfIN9+iq1kGgsZxs+Nz96uiNcPLGTXwfNo2Xz/fcJXniPYpaz/Uyrfa+7I5BPLxCP82sh7quVDudf1GABqHbg==}
+    dependencies:
+      '@motionone/easing': 10.17.0
+      '@motionone/types': 10.17.0
+      '@motionone/utils': 10.17.0
+      tslib: 2.6.2
+    dev: false
+
+  /@motionone/dom@10.17.0:
+    resolution: {integrity: sha512-cMm33swRlCX/qOPHWGbIlCl0K9Uwi6X5RiL8Ma6OrlJ/TP7Q+Np5GE4xcZkFptysFjMTi4zcZzpnNQGQ5D6M0Q==}
+    dependencies:
+      '@motionone/animation': 10.17.0
+      '@motionone/generators': 10.17.0
+      '@motionone/types': 10.17.0
+      '@motionone/utils': 10.17.0
+      hey-listen: 1.0.8
+      tslib: 2.6.2
+    dev: false
+
+  /@motionone/easing@10.17.0:
+    resolution: {integrity: sha512-Bxe2wSuLu/qxqW4rBFS5m9tMLOw+QBh8v5A7Z5k4Ul4sTj5jAOfZG5R0bn5ywmk+Fs92Ij1feZ5pmC4TeXA8Tg==}
+    dependencies:
+      '@motionone/utils': 10.17.0
+      tslib: 2.6.2
+    dev: false
+
+  /@motionone/generators@10.17.0:
+    resolution: {integrity: sha512-T6Uo5bDHrZWhIfxG/2Aut7qyWQyJIWehk6OB4qNvr/jwA/SRmixwbd7SOrxZi1z5rH3LIeFFBKK1xHnSbGPZSQ==}
+    dependencies:
+      '@motionone/types': 10.17.0
+      '@motionone/utils': 10.17.0
+      tslib: 2.6.2
+    dev: false
+
+  /@motionone/types@10.17.0:
+    resolution: {integrity: sha512-EgeeqOZVdRUTEHq95Z3t8Rsirc7chN5xFAPMYFobx8TPubkEfRSm5xihmMUkbaR2ErKJTUw3347QDPTHIW12IA==}
+    dev: false
+
+  /@motionone/utils@10.17.0:
+    resolution: {integrity: sha512-bGwrki4896apMWIj9yp5rAS2m0xyhxblg6gTB/leWDPt+pb410W8lYWsxyurX+DH+gO1zsQsfx2su/c1/LtTpg==}
+    dependencies:
+      '@motionone/types': 10.17.0
+      hey-listen: 1.0.8
+      tslib: 2.6.2
     dev: false
 
   /@next/env@14.1.0:
@@ -2355,6 +2405,10 @@ packages:
     resolution: {integrity: sha512-nAxA0v8+vXSBDt3AnRUNjyRIQ0rD+ntpbAp4LnPkumc5M9yUbSMa4XDU9Q6etY4f1Wp4bNgvc1yjiZtsTTrSng==}
     dev: false
 
+  /hey-listen@1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
+    dev: false
+
   /ignore@5.3.0:
     resolution: {integrity: sha512-g7dmpshy+gD7mh88OC9NwSGTKoc3kyLAZQRU1mt53Aw/vnvfXnbC+F/7F7QoYVKbV+KNvJx8wArewKy1vXMtlg==}
     engines: {node: '>= 4'}
@@ -3182,6 +3236,15 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dev: true
 
+  /motion@10.17.0:
+    resolution: {integrity: sha512-yBHYkrnJRiomuo88YQzG/v+nzFXKNlKw/Hh7uy8AV7nrYHnE07O6PEECShGbFmZvLrAOGc9qKzEDYmspDYjNWw==}
+    dependencies:
+      '@motionone/animation': 10.17.0
+      '@motionone/dom': 10.17.0
+      '@motionone/types': 10.17.0
+      '@motionone/utils': 10.17.0
+    dev: false
+
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -3710,13 +3773,13 @@ packages:
       set-function-name: 2.0.1
     dev: true
 
-  /rehype-shikiji@0.10.0-beta.9:
-    resolution: {integrity: sha512-nJXt6ff5/o7pubbLegocop6mb6zMQ1YhJy9DFWs3qr7Eq3AXG6wG1hajGDMkhUWt3t/gRCt+VWhyF07IEtq47A==}
+  /rehype-shikiji@0.10.0:
+    resolution: {integrity: sha512-iLc5d8ZzV7iCCZt6m9+PeNy+dY358SbTpLddf9n78aw08X5kx6+9ympHmN0mjD1HY8aF1UpUFPRMJlB9+fBKKQ==}
     dependencies:
       '@types/hast': 3.0.3
       hast-util-to-string: 3.0.0
-      shikiji: 0.10.0-beta.9
-      shikiji-transformers: 0.10.0-beta.9
+      shikiji: 0.10.0
+      shikiji-transformers: 0.10.0
       unified: 11.0.4
       unist-util-visit: 5.0.0
     dev: false
@@ -3871,20 +3934,20 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /shikiji-core@0.10.0-beta.9:
-    resolution: {integrity: sha512-7dgwTyN9PeKyc4KJeyKo/qW8gi8XbR//c1CO+0B5GaeozWexNTpEL/tSohyIKkj0Z+7spfm2REmAaS39NlC4Lw==}
+  /shikiji-core@0.10.0:
+    resolution: {integrity: sha512-imG+bvRkuNlZUi2q9tMVfegRRouTpDxMFejpfF/6J+bFX3NDKtlW9T9iIAkBYnw4pcCtSwirW0AvkwlQR4wyxg==}
     dev: false
 
-  /shikiji-transformers@0.10.0-beta.9:
-    resolution: {integrity: sha512-giqkVspbFtl7wwX1k/wcz+MKEHFlfEAxAkk+d7hU3XfPeLf38TTbTH0zEzr2cPfCZNnL6AN1uRkMnbDchjhKMw==}
+  /shikiji-transformers@0.10.0:
+    resolution: {integrity: sha512-x9oYybeF/XOrIc6Mm8G1gU5ezunMxdgD4WwBTKrZ5tAmFFaNIWCjwZENgRt1uR4iMi0+pGH0g9bmrbraSC41nA==}
     dependencies:
-      shikiji: 0.10.0-beta.9
+      shikiji: 0.10.0
     dev: false
 
-  /shikiji@0.10.0-beta.9:
-    resolution: {integrity: sha512-I+sv642n9M7/FK/dVcXp9vMv7v5Wa8gU2UuKwkIWKQFvyo+qKB8eV1zNNtRYas+jC7BLwdAaflc5BFUozAonFQ==}
+  /shikiji@0.10.0:
+    resolution: {integrity: sha512-1dAzIOWbtM7B4Sem5BvE+CEdsebDsRA34SfCxM4qJ4PLgR73ZD92VEtNfbcoZ3xOLSqvtV0J9i4WpCgVsmQteg==}
     dependencies:
-      shikiji-core: 0.10.0-beta.9
+      shikiji-core: 0.10.0
     dev: false
 
   /side-channel@1.0.4:

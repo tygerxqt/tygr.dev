@@ -3,8 +3,7 @@ name: Feature request
 about: Suggest an idea for the site.
 title: "[REQ]"
 labels: enhancement
-assignees: tygerxqt
-
+assignees: tygrxqt
 ---
 
 **Is your feature request related to a problem? Please describe.**

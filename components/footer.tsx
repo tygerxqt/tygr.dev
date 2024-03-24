@@ -2,15 +2,15 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Footer() {
-    return (
-        <>
-            <footer className="flex flex-row items-center justify-center w-full">
-                <div className="flex flex-col items-center pt-4 w-full max-w-[800px]">
-                    <div className="flex flex-col min-w-full">
-                        <hr className="w-full border border-black/10 dark:border-white/10" />
-                        <div className="flex flex-col items-center gap-2 px-2 py-4">
-                            {/* Now playing */}
-                            {/* <div className="flex items-center justify-center my-2 text-neutral-500">
+	return (
+		<>
+			<footer className="flex flex-row items-center justify-center w-full">
+				<div className="flex flex-col items-center pt-4 w-full max-w-[800px]">
+					<div className="flex flex-col min-w-full">
+						<hr className="w-full border border-black/10 dark:border-white/10" />
+						<div className="flex flex-col items-center gap-2 px-2 py-4">
+							{/* Now playing */}
+							{/* <div className="flex items-center justify-center my-2 text-neutral-500">
                                 <svg className="w-6 h-6 mr-2" viewBox="0 0 168 168">
                                     <path
                                         fill="#1ED760"
@@ -19,64 +19,91 @@ export default async function Footer() {
                                 </svg>
                             </div> */}
 
-                            {/* Links */}
-                            <div className="grid justify-between w-full grid-cols-3">
-                                <div className="flex flex-col items-start justify-start gap-2">
-                                    <Link href="/">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            About
-                                        </Button>
-                                    </Link>
-                                    <Link href="/projects">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Projects
-                                        </Button>
-                                    </Link>
-                                    <Link href="/blog">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Blog
-                                        </Button>
-                                    </Link>
-                                </div>
-                                <div className="flex flex-col items-center justify-center gap-2">
-                                    <Link href="/gear">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            My Gear
-                                        </Button>
-                                    </Link>
-                                    <Link href="/gallery">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Gallery
-                                        </Button>
-                                    </Link>
-                                    <Link href="/links">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Links
-                                        </Button>
-                                    </Link>
-                                </div>
-                                <div className="flex flex-col items-end justify-end gap-2">
-                                    <Link href="https://github.com/tygerxqt">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            GitHub
-                                        </Button>
-                                    </Link>
-                                    <Link href="https://twitter.com/tygerxqt">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Twitter
-                                        </Button>
-                                    </Link>
-                                    <Link href="https://www.instagram.com/tygerxqt">
-                                        <Button variant="link" className="p-0 py-1 text-sm sm:text-base">
-                                            Instagram
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </>
-    )
+							{/* Links */}
+							<div className="grid justify-between w-full grid-cols-3">
+								<div className="flex flex-col items-start justify-start gap-2">
+									<Link href="/">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											About
+										</Button>
+									</Link>
+									<Link href="/projects">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Projects
+										</Button>
+									</Link>
+									<Link href="/blog">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Blog
+										</Button>
+									</Link>
+								</div>
+								<div className="flex flex-col items-center justify-center gap-2">
+									<Link href="/gear">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											My Gear
+										</Button>
+									</Link>
+									<Link href="/gallery">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Gallery
+										</Button>
+									</Link>
+									<Link href="/links">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Links
+										</Button>
+									</Link>
+								</div>
+								<div className="flex flex-col items-end justify-end gap-2">
+									<Link href="https://github.com/tygrdev">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											GitHub
+										</Button>
+									</Link>
+									<Link href="https://twitter.com/tygrdev">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Twitter
+										</Button>
+									</Link>
+									<Link href="https://www.instagram.com/tygrdev">
+										<Button
+											variant="link"
+											className="p-0 py-1 text-sm sm:text-base"
+										>
+											Instagram
+										</Button>
+									</Link>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</>
+	);
 }

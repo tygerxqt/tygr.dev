@@ -1,100 +1,90 @@
 [
-  {
-    "id": "_pb_users_auth_",
-    "name": "users",
-    "type": "auth",
-    "system": false,
-    "schema": [
-      {
-        "id": "users_name",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "options": {
-          "min": 2,
-          "max": 24,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "users_avatar",
-        "name": "avatar",
-        "type": "file",
-        "system": false,
-        "required": false,
-        "options": {
-          "maxSelect": 1,
-          "maxSize": 12582912,
-          "mimeTypes": [
-            "image/jpeg",
-            "image/png",
-            "image/gif",
-            "image/webp"
-          ],
-          "thumbs": null,
-          "protected": false
-        }
-      },
-      {
-        "id": "iko3vue1",
-        "name": "banner",
-        "type": "file",
-        "system": false,
-        "required": false,
-        "options": {
-          "maxSelect": 1,
-          "maxSize": 12582912,
-          "mimeTypes": [
-            "image/png",
-            "image/jpeg",
-            "image/webp",
-            "image/gif"
-          ],
-          "thumbs": [],
-          "protected": false
-        }
-      },
-      {
-        "id": "kycz7f20",
-        "name": "dev",
-        "type": "bool",
-        "system": false,
-        "required": false,
-        "options": {}
-      },
-      {
-        "id": "gn9xk4c1",
-        "name": "qt",
-        "type": "bool",
-        "system": false,
-        "required": false,
-        "options": {}
-      },
-      {
-        "id": "3zt60acx",
-        "name": "beta",
-        "type": "bool",
-        "system": false,
-        "required": false,
-        "options": {}
-      }
-    ],
-    "indexes": [],
-    "listRule": "",
-    "viewRule": "",
-    "createRule": "",
-    "updateRule": "id = @request.auth.id && verified = true",
-    "deleteRule": "id = @request.auth.id && verified = true",
-    "options": {
-      "allowEmailAuth": true,
-      "allowOAuth2Auth": true,
-      "allowUsernameAuth": true,
-      "exceptEmailDomains": null,
-      "manageRule": null,
-      "minPasswordLength": 8,
-      "onlyEmailDomains": null,
-      "requireEmail": true
-    }
-  }
+	{
+		"id": "_pb_users_auth_",
+		"name": "users",
+		"type": "auth",
+		"system": false,
+		"schema": [
+			{
+				"id": "users_name",
+				"name": "name",
+				"type": "text",
+				"system": false,
+				"required": true,
+				"options": {
+					"min": 2,
+					"max": 24,
+					"pattern": ""
+				}
+			},
+			{
+				"id": "users_avatar",
+				"name": "avatar",
+				"type": "file",
+				"system": false,
+				"required": false,
+				"options": {
+					"maxSelect": 1,
+					"maxSize": 12582912,
+					"mimeTypes": ["image/jpeg", "image/png", "image/gif", "image/webp"],
+					"thumbs": null,
+					"protected": false
+				}
+			},
+			{
+				"id": "iko3vue1",
+				"name": "banner",
+				"type": "file",
+				"system": false,
+				"required": false,
+				"options": {
+					"maxSelect": 1,
+					"maxSize": 12582912,
+					"mimeTypes": ["image/png", "image/jpeg", "image/webp", "image/gif"],
+					"thumbs": [],
+					"protected": false
+				}
+			},
+			{
+				"id": "kycz7f20",
+				"name": "dev",
+				"type": "bool",
+				"system": false,
+				"required": false,
+				"options": {}
+			},
+			{
+				"id": "gn9xk4c1",
+				"name": "qt",
+				"type": "bool",
+				"system": false,
+				"required": false,
+				"options": {}
+			},
+			{
+				"id": "3zt60acx",
+				"name": "beta",
+				"type": "bool",
+				"system": false,
+				"required": false,
+				"options": {}
+			}
+		],
+		"indexes": [],
+		"listRule": "",
+		"viewRule": "",
+		"createRule": "",
+		"updateRule": "id = @request.auth.id && verified = true",
+		"deleteRule": "id = @request.auth.id && verified = true",
+		"options": {
+			"allowEmailAuth": true,
+			"allowOAuth2Auth": true,
+			"allowUsernameAuth": true,
+			"exceptEmailDomains": null,
+			"manageRule": null,
+			"minPasswordLength": 8,
+			"onlyEmailDomains": null,
+			"requireEmail": true
+		}
+	}
 ]
