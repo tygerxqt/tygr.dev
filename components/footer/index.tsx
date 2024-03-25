@@ -7,8 +7,6 @@ export default async function Footer() {
 	const rawPlaying = await getNowPlaying();
 	const nowPlaying = await rawPlaying.json();
 
-	console.log(nowPlaying.item.artists[0]);
-
 	return (
 		<>
 			<footer className="flex flex-row items-center justify-center w-full">

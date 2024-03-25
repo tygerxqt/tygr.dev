@@ -31,7 +31,7 @@ export default async function Home() {
 									<Icons.Bluesky className="w-full h-full" />
 								</Button>
 							</Link>
-							<Link href="https://instagram.com/tygrxqt" target="_blank">
+							<Link href="https://instagram.com/tygrdev" target="_blank">
 								<Button size={"icon"} className="px-2 py-1 h-[40px] w-[40px]">
 									<Icons.Instagram className="w-full h-full" />
 								</Button>
