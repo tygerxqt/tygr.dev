@@ -4,6 +4,7 @@ const nextConfig = {
 		remotePatterns: [
 			{ hostname: "cms.tygr.dev" },
 			{ hostname: "t2.gstatic.com" },
+			{ hostname: "i.scdn.co" },
 		],
 	},
 	headers() {

@@ -1,10 +1,4 @@
-import {
-	Inter,
-	JetBrains_Mono,
-	Literata,
-	Readex_Pro,
-	Sora,
-} from "next/font/google";
+import { Inter, JetBrains_Mono, Literata, Sora } from "next/font/google";
 import Providers from "./providers";
 
 import "./globals.css";
