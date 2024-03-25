@@ -106,7 +106,7 @@ export const getNowPlaying = async () => {
 			Authorization: `Bearer ${access_token}`
 		},
 		next: {
-			revalidate: 1
+			revalidate: 60
 		}
 	});
 };
