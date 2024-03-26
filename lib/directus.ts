@@ -37,11 +37,12 @@ export interface Image {
 
 export interface Tool {
 	id: number;
-	date_updated: Date | null;
-	dob: Date | null;
-	dod: Date | null;
+	date_updated?: Date;
+	dob?: Date;
+	dod?: Date;
 	name: string;
 	summary: string;
+	category: string;
 	status:
 		| "alive"
 		| "replaced"
@@ -50,15 +51,14 @@ export interface Tool {
 		| "discontinued"
 		| "dead";
 	url: string;
-	image: string;
 }
 
 export interface Post {
 	slug: string;
 	status: "published" | "archived" | "draft";
 	date_created: string;
-	user_updated: string | null;
-	date_updated: string | null;
+	user_updated?: string;
+	date_updated?: string;
 	content: string;
 	heading: string;
 	hero: string;
